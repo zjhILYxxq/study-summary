@@ -19,15 +19,69 @@ React 是构建**快速响应**的大型 Web 应用程序的首选。
   Suspense 以及 useDeferedValue
 
 
+关键：**将同步的更新变为可中断的异步更新**。
+
+
+
+#### React 架构
+
+React16(及后续版本)架构可以分为三层：
+- **Scheduler(调度器)**：根据任务的优先级调度任务，高优先级的任务优先进入 Reconciler；
+- **Reconciler(协调器)**：更新 fiber tree，找出变化的 fiber node，并收集 fiber node 变化导致的副作用(对应 react 更新的 render 阶段)；
+- **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
+
+
+#### react element
+
+
+#### fiber tree
+
+
+#### fiber node
+
+静态数据结构
+
+动态工作单元
+
+调度优先级
+
+#### 双缓存
+
+内存中构建并直接替换的技术叫作双缓存，主要是为了解决交互过程中的白屏问题？？
+
+React 采用双缓存技术来完成 fiber tree 的构建和更新，对应 dom tree 的创建和更新。
+
+
+#### 双缓存 fiber tree
+
+React 中最多会同时存在两颗 fiber tree。 当前屏幕上显示的内容对应的 fiber tree 称为 current fiber tree (即 old fiber tree)，正在内存中构建的 fiber tree 称之为 workInProgress Fiber tree。
+
+current fiber tree 中的 fiber node 称之为 current fiber node (即 old fiber node)， workInProgress fiber tree 中的 fiber node 称之为 workInProgress fiber node (即 new fiber node)， current fiber node 和 workInProgress fiber node 之间通过 alternate 属性连接。
+
+fiber root node 的 current 指针指向 current fiber tree，更新完成以后，current 指针就会指向 workInProgress fiber tree，作为下一次的 current fiber tree。
+
+
+
+#### 为什么要采用双缓存 fiber tree
+
+双缓存 fiber tree 主要是为非阻塞渲染服务的。如果是阻塞同步渲染，其实 fiber tree 就足够了。但是如果是非阻塞渲染，就需要双缓存 fiber tree 了。
+
+低优先级的更新在 render 过程中，如果有更高优先级的更新进来，就需要重置 workInProgress fiber tree。
 
 
 
 
-  #### Suspense
+
+
+#### requestIdleCallback
 
 
 
-  #### useDeferedValue
+#### Suspense
+
+
+
+#### useDeferedValue
 
 
 
