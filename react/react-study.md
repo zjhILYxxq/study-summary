@@ -69,6 +69,12 @@ fiber root node 的 current 指针指向 current fiber tree，更新完成以后
 低优先级的更新在 render 过程中，如果有更高优先级的更新进来，就需要重置 workInProgress fiber tree。
 
 
+#### 任务调度
+
+
+#### Concurrent
+
+
 
 
 
