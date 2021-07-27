@@ -75,6 +75,9 @@ fiber root node 的 current 指针指向 current fiber tree，更新完成以后
 #### Concurrent
 
 
+#### diff 算法
+
+
 
 
 
@@ -84,6 +87,39 @@ fiber root node 的 current 指针指向 current fiber tree，更新完成以后
 
 
 #### Suspense
+
+对组件的 Suspense
+
+对数据的 Suspense
+
+
+Suspense 不是一个数据请求的库，而是一个机制。这个机制是用来给数据请求库向 React 通信说明某个组件正在读取的数据当前仍是不可用的。通信之后，React 可以继续等待数据的返回，并更新 UI。
+
+Suspense 将成为组件读取异步数据的主要方式。
+
+Suspense 可以做什么：
+- 它能让数据获取库与 React 紧密结合；
+- 它能让你有针对性地安排加载状态的展示；
+- 它能够消除 race conditions
+
+Suspense 让组件表达出他们正在等待已经发出获取行为的数据。
+
+瀑布问题： waterfall
+
+
+数据获取方式：
+- Fetch-on-render: 渲染之后获取数据(useEffect 中获取数据)，可能导致瀑布问题；
+- Fetch-then-render: 接到全部数据以后渲染(获取数据之前，我们什么也做不了)；
+- Render as you fetch: 获取数据之后渲染(获取数据时就开始渲染；接收到全部数据后，迭代的渲染)；
+
+
+通过 Suspense，我们可以更改加载状态的粒度并控制程序，而无需调整代码
+
+resource 在数据请求之前无法获取
+
+race condition
+
+错误边界处理
 
 
 
