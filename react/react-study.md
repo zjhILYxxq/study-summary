@@ -12,7 +12,7 @@ React 是构建**快速响应**的大型 Web 应用程序的首选。
     一次 react 更新会经历两个阶段 - render 阶段和 commit 阶段。其中 render 阶段由于需要对 fiber tree 做 diff 比较，最有可能会耗时比较久导致阻塞渲染进程。
 
     
-    为了解决这个问题，react 18 将原来同步的不可中断的 render 过程变为异步可中断的。具体是将一个完整的 render 过程拆解到一系列小的时间片(5ms)内处理。如果时间片时间到期，render 阶段还没有结束，就让出线程给渲染进程，然后在下一个时间片段内继续中断的渲染过程。
+    为了解决这个问题，react 18 将原来同步的不可中断的 render 过程变为异步可中断的。具体是将一个完整的 render 过程分解到一系列小的时间片(5ms)内处理。如果时间片时间到期，render 阶段还没有结束，就让出线程给渲染进程，然后在下一个时间片段内继续中断的渲染过程。
 
 - **IO 瓶颈** 
   
@@ -71,6 +71,11 @@ fiber root node 的 current 指针指向 current fiber tree，更新完成以后
 
 #### 任务调度
 
+优先级：
+- 调度优先级
+- react 优先级
+- lane 优先级
+
 
 #### Concurrent
 
@@ -84,18 +89,37 @@ fiber root node 的 current 指针指向 current fiber tree，更新完成以后
 
 #### requestIdleCallback
 
+#### 如何理解 Concurrent 模式
+
+Concurrent 模式是一组 React 新功能，可帮助应用响应，可以根据用户的设备性能和网速进行适当的调整。
+
+阻塞渲染: 渲染一次更新，不能中断包括创建新的 DOM 节点和运行组件中代码在内的工作。
+
+在分支上准备每一次更新？？
+
+Concurrent 模式下加载异步组件/异步数据
+
+Concurrent 模式中， React 可以同时更新多个状态 ？？
+
+Concurrent 模式在内部使用不同的优先级，大致对应于人类感知研究中的交互级别
+
+
+
+
 
 
 #### Suspense
 
-对组件的 Suspense
+对组件的 Suspense，组件懒加载
 
-对数据的 Suspense
+对数据的 Suspense，数据异步获取
+
+Suspense 让组件"等待"某个异步操作，直到该异步操作结束即可渲染。
 
 
 Suspense 不是一个数据请求的库，而是一个机制。这个机制是用来给数据请求库向 React 通信说明某个组件正在读取的数据当前仍是不可用的。通信之后，React 可以继续等待数据的返回，并更新 UI。
 
-Suspense 将成为组件读取异步数据的主要方式。
+Suspense 将成为组件读取异步数据的主要方式 - 无论数据来自何方。
 
 Suspense 可以做什么：
 - 它能让数据获取库与 React 紧密结合；
@@ -104,7 +128,7 @@ Suspense 可以做什么：
 
 Suspense 让组件表达出他们正在等待已经发出获取行为的数据。
 
-瀑布问题： waterfall
+瀑布问题： waterfall - 本该并行发出的请无意中被串行发送出去
 
 
 数据获取方式：
@@ -117,7 +141,7 @@ Suspense 让组件表达出他们正在等待已经发出获取行为的数据�
 
 resource 在数据请求之前无法获取
 
-race condition
+Suspense 消除 race condition
 
 错误边界处理
 
@@ -125,6 +149,7 @@ race condition
 
 #### useDeferedValue
 
+返回一个延迟响应的值，通常用于在具有基于用户输入立即渲染的内容，以及需要等待数据获取的内容时，保持接口的可响应性。
 
 
 
