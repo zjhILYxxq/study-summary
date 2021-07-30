@@ -185,6 +185,8 @@ Suspense 消除 race condition
 
 #### redux
 
+#### concurrent 模式下 setTimeout 中的更新是批量的更新吗
+
 #### react-router
 
 
