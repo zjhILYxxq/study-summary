@@ -26,9 +26,11 @@
 
 
 
-#### ts 小技巧
+#### ts 知识点
 
-1. K[keyof K]: K 所有 key 类型的联合类型
+1. 基础类型
+
+2. K[keyof K]: K 所有 key 类型的联合类型
 
     ```
     interface IProps {
@@ -44,3 +46,24 @@
 
     type attr1 = IProps[keyof IProps]   // type attr1 = string | number;
     ```
+
+3. 交叉类型 & 取的是多个类型的并集，如果有相同的 key 但是类型不同，则 key 的类型为 never;
+
+    ```
+    interface IA {
+        name: string;
+        age: number;
+    }
+
+    interface IB {
+        name: string;
+        age: string;
+    }
+
+    const user: IA & IB = {
+        name: 'zjh',
+        age: (function() { throw new Error()})()   // age 为 never 类型
+    }
+    ```
+
+4. 
