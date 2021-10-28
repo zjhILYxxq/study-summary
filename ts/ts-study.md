@@ -1,10 +1,10 @@
-#### 为什么要使用 typescript 
+#### 1. 为什么要使用 typescript 
 
 js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 通过 typescript，在编译检查阶段就可以发现不匹配的变量类型
 
-#### 基础类型
+#### 2. 基础类型
 
 - **boolean 类型**
 
@@ -23,6 +23,7 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
     ```
 - **symbol 类型 ??**
   
+
 - **undefined 类型**
 
     ```
@@ -55,8 +56,9 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
         ...
     ```
 
-    在 tsconfig.json 的 compilerOptions 配置项中，我们可以通过配置 noImplicitAny = true，不允许代码中出现任何 any。
+    在 **tsconfig.json** 的 **compilerOptions** 配置项中，我们可以通过配置 **noImplicitAny = true**，不允许代码中出现任何 any。
 
+    > 设置 **noImplicitAny = true** 以后，给**变量**设置 **any** 类型不会报错，**函数**入参设置 **any** 类型会报错。
 
 
 - **void 类型**
@@ -76,10 +78,33 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
     ```
         let u: void = undefined || null;
     ```
+
+    > **void 类型最大的意义就是用于定义没有返回值的函数。**
+
+- **unknow 类型**
+  
+
+
+- **never 类型**
+
 - **array 类型**
 - **object 类型**
 - **never 类型**
 - **unknow 类型**
+
+
+#### 3. any、unknow、never 类型的比较
+
+
+#### 4. ts 中子集和父集的理解
+
+
+#### 联合类型 & 交叉类型
+
+联合: |
+
+交叉: &
+
   
 
 #### 泛型
