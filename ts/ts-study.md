@@ -1,3 +1,9 @@
+#### 为什么要使用 typescript 
+
+js 是弱类型语言， 无法在编译阶段知道变量是什么类型
+
+通过 typescript，在编译检查阶段就可以发现不匹配的变量类型
+
 #### 基础类型
 
 - **boolean 类型**
@@ -30,15 +36,42 @@
 
 - **any 类型**
 
+    任何类型都可以归为 **any** 类型，这使得 any 类型成为了类型系统的顶级类型。
+
+    使用 **any** 类型，可以帮助我们**跳过 typescript 的类型检查**，这点在修改老代码却无法为变量指定一个类型时非常有用。
+
+    滥用 **any** 类型，实际上是**屏蔽**了 **typescript** 的类型检查功能，违背了我们使用 **typescript** 的初衷。
+
+
+    ```
+        let u: any = 1;
+
+        let u: any = 'fengnian';
+
+        function func(params: any) {
+            console.log(params);
+        }
+
+        ...
+    ```
+
+    在 tsconfig.json 的 compilerOptions 配置项中，我们可以通过配置 noImplicitAny = true，不允许代码中出现任何 any。
+
+
+
 - **void 类型**
   
-    某种程度上来讲， **void** 类型和 **any** 类型**相反**，表示没有任何类型。当一个**函数**没有**返回值**时，它的类型通常为 **void**。
+    某种程度上来讲， **void** 类型和 **any** 类型**相反**，表示没有任何类型。
+    
+    当一个**函数**没有**返回值**时，它的类型通常为 **void**。
 
     ```
         function func(): void {
             console.log('func');
         }
     ```
+
+    声明 **void** 类型的**变量**没有什么意义，我们只能为它赋值 **undefined** 或者 **null**。(**严格模式**下，只能赋值 **undefined**)。
   
     ```
         let u: void = undefined || null;
