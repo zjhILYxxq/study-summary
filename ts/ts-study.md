@@ -1,3 +1,54 @@
+#### 基础类型
+
+- **boolean 类型**
+
+    ```
+        let isDone: boolean = false;
+    ```
+- **number 类型**
+  
+    ```
+        let count: number = 1;
+    ```
+- **string 类型**
+
+    ```
+        let name: string = 'fengnian';
+    ```
+- **symbol 类型 ??**
+  
+- **undefined 类型**
+
+    ```
+        let u: undefined = undefined;  // 用处不大
+    ```
+- **null 类型**
+
+    ```
+        let u: null = null // 和 undefined 一样， 用处不大
+    ```
+
+- **any 类型**
+
+- **void 类型**
+  
+    某种程度上来讲， **void** 类型和 **any** 类型**相反**，表示没有任何类型。当一个**函数**没有**返回值**时，它的类型通常为 **void**。
+
+    ```
+        function func(): void {
+            console.log('func');
+        }
+    ```
+  
+    ```
+        let u: void = undefined || null;
+    ```
+- **array 类型**
+- **object 类型**
+- **never 类型**
+- **unknow 类型**
+  
+
 #### 泛型
 
 #### 泛型接口
@@ -66,4 +117,20 @@
     }
     ```
 
-4. 
+4. 实现继承
+
+    如果是 interface，通过 extends 关键字实现；
+
+    如果是 type，通过交叉类型 & 实现；
+
+    ```
+    interface T1 {
+        name: string;
+    }
+
+    interface T2 {
+        age: number;
+    }
+
+    interface Student extends T1, T2
+    ```
