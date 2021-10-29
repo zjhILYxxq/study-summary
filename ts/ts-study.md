@@ -9,31 +9,36 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 - **boolean 类型**
 
     ```
-        let isDone: boolean = false;
+    let isDone: boolean = false;
     ```
 - **number 类型**
   
     ```
-        let count: number = 1;
+    let count: number = 1;
     ```
 - **string 类型**
 
     ```
-        let name: string = 'fengnian';
+    let name: string = 'fengnian';
     ```
 - **symbol 类型 ??**
   
 
-- **undefined 类型**
+- **undefined 类型 & null 类型**
+
+    在 **ts** 中， **undefined** 和 **null** 两者各有自己的类型 **undefined** 和 **null**。
+
+    和 **void** 类型一样， **undefined** 和 **null** 的用处不大。
 
     ```
-        let u: undefined = undefined;  // 用处不大
-    ```
-- **null 类型**
+    let u: undefined = undefined;  // 用处不大
 
+    let u: null = null // 和 undefined 一样， 用处不大
     ```
-        let u: null = null // 和 undefined 一样， 用处不大
-    ```
+
+    默认情况下，**undefined** 和 **null** 可以给除 **unknow**、**never** 以外的其他类型赋值。
+
+    > 当我们在 **tsconfig.json** 的 **compilerOptions** 配置项中，设置 **strictNullChecks = true** 时, **undefined** 只能赋值给 **void** 和**自己**， 而 **null** 类型只能赋值给**自己**。
 
 - **any 类型**
 
@@ -45,15 +50,15 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 
     ```
-        let u: any = 1;
+    let u: any = 1;
 
-        let u: any = 'fengnian';
+    let u: any = 'fengnian';
 
-        function func(params: any) {
-            console.log(params);
-        }
+    function func(params: any) {
+        console.log(params);
+    }
 
-        ...
+    ...
     ```
 
     在 **tsconfig.json** 的 **compilerOptions** 配置项中，我们可以通过配置 **noImplicitAny = true**，不允许代码中出现任何 any。
@@ -70,15 +75,15 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
     当一个**函数**没有**返回值**时，它的类型通常为 **void**。
 
     ```
-        function func(): void {
-            console.log('func');
-        }
+    function func(): void {
+        console.log('func');
+    }
     ```
 
     声明 **void** 类型的**变量**没有什么意义，我们只能为它赋值 **undefined** 或者 **null**。(**严格模式**下，只能赋值 **undefined**)。
   
     ```
-        let u: void = undefined || null;
+    let u: void = undefined || null;
     ```
 
     > **void 类型最大的意义就是用于定义没有返回值的函数。**
@@ -114,7 +119,35 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 - **array 类型**
 - **object 类型**
-- **枚举类型**
+- **enum类型**
+  
+    使用枚举可以为一组数组赋予友好的名字。
+
+    ```
+    enum Color = { Red, Green, Yellow};
+
+    let color: Color = Color.Red  // color = 0
+    ```
+
+    枚举类型编译以后的代码为:
+
+    ```
+    var Color;
+    (function (Color) {
+        Color[Color["red"] = 0] = "red";
+        Color[Color["green"] = 1] = "green";
+        Color[Color["yellow"] = 2] = "yellow";
+    })(Color || (Color = {}));
+
+    ```
+
+    如果没有为枚举元素指定值，那么默认从 0 开始为枚举元素编号。我们可以为枚举元素指定为其它数字、字符串。
+
+    > **注意，不能为枚举元素指定需要计算的值，如 1 + 2、boolean 类型、对象等**。
+
+    使用**枚举类型**时，我们既可以通过**枚举元素**获取**值**，也可以通过**枚举值**获取对应的**枚举元素(得到是**枚举元素**对应的**字符串**)**。
+
+
 
 
 #### 3. any、unknow、never 的比较
