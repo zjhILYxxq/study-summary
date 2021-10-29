@@ -216,12 +216,37 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
   通常情况下，**interface** 类型做合并操作会更有意义， 生成的新的 **interface** 类型会包含所有合并的 **interface** 的属性。
   
   **合并**时如果存在**同名属性**且**属性类型不同**，那么会根据属性类型的不同分别做处理:
-  - 属性是**基础类型**，那么新的 **interface** 的属性的类型为 **never**；
-  - 属性是 **interface** 类型，对 **interface** 类型再做合并处理；
-  
+  - 属性是**基础类型**，那么新的 **interface** 的属性的类型为 **never**;
+  - 属性是 **interface** 类型，对 **interface** 类型再做合并处理;
+
+
+  **交叉类型**可以作为所有**合并类型**的**子类型**， 即**交叉类型**可以赋值给**合并类型**。
+
+  ```
+  let c = { name: 'zjh', age: 20 };
+
+  let a: A = c;   // C 是 A 和 B 的交叉类型， C 是 A、B 的子类型
+
+  let b: B = c;  
+  ```
   
 - **联合类型 - |**
-- 
+  
+    有时，我们希望一个类型可以是 string 或者 number，此时可以使用**联合类型 - |**。
+
+    ```
+    type Param = string | number | boolean;   // Param 的类型是 string 或者 number 或者 boolean
+    ```
+
+    使用**联合类型**时，我们只能使用**联合类型**内所有类型**共有**的成员。
+
+    ```
+    function func(param: Param): void {
+        console.log(param.length);   // Error, number、boolean 类型的值没有 length 属性
+    }
+    ```
+
+
 
   
 
