@@ -316,10 +316,34 @@ function func(param: Param) {
 }    
 ```
 
+#### 类型别名 - type
 
+**类型别名 - type** 只会给类型起一个新的名字，并**不会创建**一个新的类型，只是创建一个类型的**引用**。
 
+```
+interface A {
+    name: string
+}
 
-  
+type B = A;
+
+type C = string | number | boolean;
+```
+
+**类型别名**也可以使用**泛型**。
+
+```
+type A<T> = {
+    name: T
+}
+```
+**类型别名**一般在定义**交叉类型**、**联合类型**时使用。
+
+#### type 和 interface
+
+**type** 和 **interface** 的区别:
+- **interface** 创建了一个名字，可以在任何地方使用； **type** 并不会创建一个新的名字 ； ？？
+- **type** 不能被 **extends**、**implements**，适用于**联合类型**、**交叉类型**、**元祖类型**；
 
 #### 泛型
 
