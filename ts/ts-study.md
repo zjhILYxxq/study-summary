@@ -253,9 +253,13 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 **类型保护**，也就是我们经常说的**类型收敛**。
 
 实现**类型保护**的方式:
+
 - **typeof 关键字**
 
-    **typeof v** 的返回值必须是 **string**、 **number**、 **boolean** 或者 **symbol**(??), 否则 **v** 的类型将会被判断为 **never**。
+    **typescript** 会根据 **typeof v** 的返回值，来判断 **v** 是什么类型:
+    - 如果 **v** 是 **unknow** 类型，会根据 **typeof** 将 **v** 收敛为 **string**、**number**、**boolean**、**symbol**、**null**、**undefined**、**Function**、**object**； 不匹配 **typeof** 的还是 **unkonw** 类型；
+    - 如果 **v** 是**联合类型**，匹配 **typeof** 的会被收敛为**联合类型**中的类型，不匹配的会收敛为 **never** 类型；
+    - 如果 **v** 是**自变量类型**，匹配 **typeof** 的会被收敛为对应的**自变量**，不匹配的会收敛为 **never** 类型；
 
     ```
     function func(param: unknow) {
@@ -270,7 +274,7 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
                 console.log(param);  // param 的类型为 boolean
                 break;
             case 'function':
-                console.log(param);  // param 的类型为 never
+                console.log(param);  // param 的类型为 Function
                 break;
             default:
                 console.log(param);  // param 的类型为 unknow
@@ -279,32 +283,40 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
     }
     ```
+- **instanceof**
+  
+    **instanceof** 类型保护是通过**构造函数**来细化类型的一种方式。
 
-    当需要做保护的类型是**联合类型**时，**typescript** 会**自行判断**是什么类型。
-
-    ```
-    type Param = string | number;
-
-    function func(param: Param) {
-        if (typeof param === 'string') {
-            ...    // param 的类型为 string
-        } else {
-            ...    // param 的类型为 number
-        }
-    }
-
-    function func(param: Param) {
-        if (typeof param === 'string') {
-            ...    // param 的类型为 string
-        } else if (typeof param === 'number') {
-            ...    // param 的类型为 number
-        } else {
-            ...    // param 的类型为 never
-        }
-    }
-
+- **in**
     
-    ```
+    我们也可以通过 **in** 来判断某个 **key** 是否存在于类型中来**收敛**类型。
+
+
+当需要做保护的类型是**联合类型**时，**typescript** 会**自行判断**是什么类型。
+
+```
+type Param = string | number;
+
+function func(param: Param) {
+    if (typeof param === 'string') {
+        ...    // param 的类型为 string
+    } else {
+        ...    // param 的类型为 number
+    }
+}
+
+function func(param: Param) {
+    if (typeof param === 'string') {
+        ...    // param 的类型为 string
+    } else if (typeof param === 'number') {
+        ...    // param 的类型为 number
+    } else {
+        ...    // param 的类型为 never
+    }
+}    
+```
+
+
 
 
   
