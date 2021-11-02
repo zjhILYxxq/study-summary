@@ -253,6 +253,58 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 **类型保护**，也就是我们经常说的**类型收敛**。
 
 实现**类型保护**的方式:
+- **typeof 关键字**
+
+    **typeof v** 的返回值必须是 **string**、 **number**、 **boolean** 或者 **symbol**(??), 否则 **v** 的类型将会被判断为 **never**。
+
+    ```
+    function func(param: unknow) {
+        switch(typeof param) {
+            case 'string':
+                console.log(param);   // param 的类型为 string
+                break;
+            case 'number':
+                console.log(param);  // param 的类型为 number
+                break;
+            case 'boolean':
+                console.log(param);  // param 的类型为 boolean
+                break;
+            case 'function':
+                console.log(param);  // param 的类型为 never
+                break;
+            default:
+                console.log(param);  // param 的类型为 unknow
+                break;
+        }
+
+    }
+    ```
+
+    当需要做保护的类型是**联合类型**时，**typescript** 会**自行判断**是什么类型。
+
+    ```
+    type Param = string | number;
+
+    function func(param: Param) {
+        if (typeof param === 'string') {
+            ...    // param 的类型为 string
+        } else {
+            ...    // param 的类型为 number
+        }
+    }
+
+    function func(param: Param) {
+        if (typeof param === 'string') {
+            ...    // param 的类型为 string
+        } else if (typeof param === 'number') {
+            ...    // param 的类型为 number
+        } else {
+            ...    // param 的类型为 never
+        }
+    }
+
+    
+    ```
 
 
   
