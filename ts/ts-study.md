@@ -458,9 +458,27 @@ class BasicCalculator {
 }
 ```
 
+#### 索引类型
+
+- **keyof 索引查询**
+  
+    对于任何类型 **T**， **keyof T** 的结果为该类型上所有**公共属性(不包含类的私有属性、保护属性)** **key** 的**联合**:
+
+    ```
+    interface T1 {
+        name: string;
+        age: number;
+    }
+
+    typeof T2 = keyof T1  //  T2  的类型为 'name' | 'string', 由字符串字面量类型组成的联合类型
+    ```
+
+#### 映射类型
+
 
 
 #### 泛型
+
 
 #### 泛型接口
 
