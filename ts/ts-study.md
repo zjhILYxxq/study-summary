@@ -248,9 +248,11 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 #### 类型保护
 
-**类型保护**就是一些**表达式**，他们会在运行时(运行时怎么理解？？)进行类型检查以确保该类型在一定范围内。
+**类型保护**就是就是通过一些**表达式**，将**不确定的类型**收敛为某个**具体的类型**。
 
-**类型保护**，也就是我们经常说的**类型收敛**。
+常见的**类型保护**:
+- 将 **unkonw 类型**收敛为某个**具体类型**；
+- 将**联合类型**收敛为**组成联合类型的某个具体类型**；
 
 实现**类型保护**的方式:
 
@@ -360,6 +362,42 @@ type A<T> = {
     ```
 
 **字面量类型**常常配合**类型别名**、**联合类型**一起使用。
+
+#### 可辨识联合类型
+
+如果一个**联合类型**，可收敛为某一个具体的类型，那么这个**联合类型**可称为**可辨识联合类型**。
+
+**可辨识联合类型**的特征:
+- 组成**联合类型**的多个类型都具有**相同的属性**；
+- 相同的属性为**字面量类型**，且**属性值**必须不相等；
+
+```
+interface Square {
+    kind: "square";
+    size: number;
+}
+interface Rectangle {
+    kind: "rectangle";
+    width: number;
+    height: number;
+}
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+
+type Shape = Square | Rectangle | Circle;
+
+function area(s: Shape): number {
+    switch(s.kind) {
+        case 'square': return s.size * s.size;    // Shape 收敛为 Square
+        case 'rectangle': return s.width * s.height; // Shape 收敛为 Rectangle
+        case 'circle': return Math.PI * s.radius ** 2; // Shape 收敛为 Circle
+    }
+}
+```
+在进行**类型收敛**时，如果没有涵盖所有**可辨识联合类型**的变化，编译器会提示报错 - 完整性检查。如上面示例总，假如我们给 Shape 添加了新的类型，却没有修改 area， 编译器会报错，提醒我们去完善 area。
+
 
 #### 泛型
 
