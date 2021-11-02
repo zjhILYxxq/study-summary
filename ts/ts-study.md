@@ -396,7 +396,68 @@ function area(s: Shape): number {
     }
 }
 ```
-在进行**类型收敛**时，如果没有涵盖所有**可辨识联合类型**的变化，编译器会提示报错 - 完整性检查。如上面示例总，假如我们给 Shape 添加了新的类型，却没有修改 area， 编译器会报错，提醒我们去完善 area。
+在进行**类型收敛**时，如果没有涵盖所有**可辨识联合类型**的变化，编译器会提示报错 - **完整性检查**。如上面示例中，假如我们给 Shape 添加了新的类型，却没有修改 area， 编译器会报错，提醒我们去完善 area。
+
+
+#### 多态的 this 类型
+
+为了让**类实例**的方法支持**链式调用**，我们通常会在**实例方法**中返回**实例对象**，如:
+
+```
+class BasicCalculator {
+    public constructor(protected value: number = 0) { }
+    public currentValue(): number {
+        return this.value;
+    }
+    public add(operand: number): BasicCalculator {
+        this.value += operand;
+        return this;
+    }
+    public multiply(operand: number): BasicCalculator {
+        this.value *= operand;
+        return this;
+    }
+}
+
+let v = new BasicCalculator(2).multiply(5).add(1);   // 支持链式调用
+```
+
+此时，有一个新的类 **ScientificCalculator** 继承 **BasicCalculator**，**ScientificCalculator** 实例可以使用继承自 **BasicCalculator** 的方法，
+
+```
+class ScientificCalculator extends BasicCalculator {
+    public constructor(value = 0) {
+        super(value);
+    }
+    public sin() {
+        this.value = Math.sin(this.value);
+        return this;
+    }
+}
+
+let v = new ScientificCalculator(2).multiply(5).sin();  // Error
+```
+**multiply** 方法继承自 **BasicCalculator**， 返回一个 **BasicCalculator** 实例，而 **BasicCalculator** 实例没有 **sin** 方法，编译器会报错。 
+
+我们可以通过将实例方法返回值的类型改为 **this 类型**的方式，来解决上述问题：
+
+```
+class BasicCalculator {
+    public constructor(protected value: number = 0) { }
+    public currentValue(): number {
+        return this.value;
+    }
+    public add(operand: number): this {
+        this.value += operand;
+        return this;
+    }
+    public multiply(operand: number): this {
+        this.value *= operand;
+        return this;
+    }
+}
+```
+
 
 
 #### 泛型
