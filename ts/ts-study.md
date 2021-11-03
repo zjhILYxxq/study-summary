@@ -489,8 +489,41 @@ class BasicCalculator {
     ```
     type T5 = T1[keyof T1]   // T5 的类型为 string | number
     ```
+- **索引遍历**
+  
+    通过 **k in keys** 的方式，可以遍历 **keys** 中的每个属性：
+
+    ```
+    type T2 = {
+        [key in keyof T2]?: T2[key]
+    }
+    ```
 
 #### 映射类型
+
+基于**原来的类型**，创建的**新类型**称为**映射类型**。在**映射类型**中，**新类型**以相同的方式去转换**旧类型**中的每个属性。
+
+```
+interface PersonPartial {
+    name: string;
+    age: number;
+}
+
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+}
+
+type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age?: number }
+```
+
+**typescript** 写入标准库的**映射类型**:
+
+- **Partial**
+  
+- **Readonly**
+  
+- **Pick**
+
 
 
 
