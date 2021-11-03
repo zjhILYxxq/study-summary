@@ -472,6 +472,23 @@ class BasicCalculator {
 
     typeof T2 = keyof T1  //  T2  的类型为 'name' | 'string', 由字符串字面量类型组成的联合类型
     ```
+- **索引访问**
+  
+    通过 **T[k]** 的方式，可以获取到 **T** 中属性 **key** 对应的类型:
+
+    ```
+    type T2 = T1['name'];    // T2 的类型为 string
+
+    type T3 = T1['age'];     // T3 的类型为 number
+
+    type T4 = T1['phone'];   // T4 的类型为 any， 且会报错
+    ```
+
+    通过 **T[keyof T]** 的方式，可以获取到 **T** 中所有 **key** 类型的**联合类型**:
+
+    ```
+    type T5 = T1[keyof T1]   // T5 的类型为 string | number
+    ```
 
 #### 映射类型
 
