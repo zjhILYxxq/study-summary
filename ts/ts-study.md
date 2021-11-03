@@ -498,6 +498,16 @@ class BasicCalculator {
         [key in keyof T2]?: T2[key]
     }
     ```
+- **索引签名**
+    
+    在定义一个 **interface** 时，我们可能只知道 **interface** 的部分属性，其他属性并不确定，此时我们可以使用**索引签名**:
+
+    ```
+    type T2 = {
+        [key: string]: string | number | boolean;  // 字符串索引签名
+        [key: number]: string | number | boolean;  // 数字索引签名
+    }
+    ```
 
 #### 映射类型
 
