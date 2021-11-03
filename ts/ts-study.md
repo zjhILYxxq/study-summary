@@ -228,7 +228,7 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
     **interface** 中的 **(param: T, ...)** 称为**调用签名**(??)。
 
-- **interface 的实现**
+- **interface 的 implement**
   
   我们可以通过一个**类**去实现一个 **interface**:
 
@@ -248,11 +248,53 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
   **interface** 只是描述了类的 **public** 部分，它只会帮忙检查类的 **public** 成员，不会帮忙检查类的 **private**、**protected** 成员。
 
+  类静态部分和实例部分 ？？
+
+- **interface 的 extends**
+  
+  **interface** 之间可以相互**继承**，这使得我们可以从一个接口里面**复制**成员到另一个接口里，更灵活的分割接口达到**可重用接口**的目的。
+
+  ```
+  interface Shape {
+      color: string
+  }
+
+  // Square 为 { color: string; sideLength: number }
+  interface Square extends Shape {
+      sideLength: number; 
+  }
+
+  let a: Shape;
+  let b: Square;
+  a = b;
+  b = a;  // error
+  ```
+  **子类 interface** 的值可以赋值给**父类 interface** 的值，相反**父类 interface** 无法赋值给**子类 interface**。
+
+- **混合类型**
+  
+  在 js 中，函数作为一个对象，也存在属性。相应的，我们也可以在 ts 中通过**混合类型**定义一个有**额外属性**的函数：
+
+  ```
+  interface Func {
+      (): void;
+      name: string;
+      age: number;
+  }
+
+  let func: Func = (() => {}) as Func;
+  func.name = 'func';
+  func.age = 12;
+  func.key = '123';   // error, Func 中不存在 key
+
+  ```
+
+- **接口继承类 ？？**
   
 
 
 
-#### 3. any、unknow、never 的比较
+#### 4. any、unknow、never 的比较
 
 **unknow** 类型是类型系统的**顶层类型**，即任何类型包括 **never**、**void** 类型都可以赋值给 **unknow** 类型， 但是 **unknow** 类型无法赋值给除 **any**、**unknow** 以外的其他类型。使用 **unknow** 类型时，我们需要做**类型收敛**。
 
