@@ -166,6 +166,89 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 #### 3. interface
 
+**Typescript** 中 **interface** 是一个非常灵活的概念，除了可用于对**类的一部分行为进行抽象**以外，也常用于对**对象的形状**进行描述。
+
+- **描述对象**
+  
+  ```
+  interface T {
+      name: string;
+      age: number;
+  }
+
+  let student: T = { name: 'zjh', age: 30 };
+
+  let student: T = { name: 'zjh', age: 30, phone: 'xxxxx'};  // error， T 中不存在 phone 属性
+  ```
+  使用 **interface** 类型时，变量需要和定义的 **interface** 完全匹配。
+
+- **可选属性**
+  
+  ```
+  interface T {
+      name?: string;
+      age?: number;
+  }
+
+  let student: T = { name: 'zjh'};
+
+  let student: T = { name: 'zjh', phone: '********'};   // error， T 中不存在 phone 属性。 
+
+  ```
+
+  当 **interface** 中有**可选属性**时，我们可以在定义变量时**缺少**某个属性，但不能**多加**属性。
+
+- **只读属性**
+  
+  ```
+  interface T {
+      readonly name: string;
+  }
+  ```
+
+- **任意属性**
+  
+  ```
+  interface T {
+      [propName: string]: string | number | boolean;
+  }
+  ```
+
+  **任意属性**是通过**索引签名**实现的。
+
+- **interface 描述函数类型**
+  
+    **interface** 可以用来描述**函数类型**。
+
+    ```
+    interface Func {
+        (param: number): string
+    }
+    ```
+
+    **interface** 中的 **(param: T, ...)** 称为**调用签名**(??)。
+
+- **interface 的实现**
+  
+  我们可以通过一个**类**去实现一个 **interface**:
+
+  ```
+  interface T {
+      count: number;
+      setCount: (count: number) => void;
+  }
+
+  class C implements T {
+      // count = 'string'  // error， count 的 类型为 number， C 未定义 count 也报错
+      count = 0;
+      // setCount = (count: string) => { ... }  // error， 入参应该为 number 类型， C 未定义 setCount 也报错
+      setCount = (count: number) => { ... }
+  }
+  ```
+
+  **interface** 只是描述了类的 **public** 部分，它只会帮忙检查类的 **public** 成员，不会帮忙检查类的 **private**、**protected** 成员。
+
+  
 
 
 
