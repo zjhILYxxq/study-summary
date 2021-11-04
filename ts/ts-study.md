@@ -645,6 +645,14 @@ class BasicCalculator {
     }
 
     typeof T2 = keyof T1  //  T2  的类型为 'name' | 'string', 由字符串字面量类型组成的联合类型
+
+    class A {
+        public name: string;
+        private age: number;
+        protected address: string;
+    }
+
+    typeof T3 = keyof A  // A 的类型为 'name', 不包括私有类型、保护类型
     ```
 - **索引访问**
   
@@ -698,15 +706,137 @@ type Partial<T> = {
 }
 
 type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age?: number }
+
 ```
 
-**typescript** 写入标准库的**映射类型**:
+#### extends
+
+
+
+#### Ts 内置工具类型
 
 - **Partial**
   
+    通过 **Partial<T>**, 可以将 **T** 的属性变为**可选**的。
+
+    ```
+    interface T { name: string; age: number };
+
+    type T1 = Partial<T>   // { name?: string; age?: number }
+    ```
+
+    **Partial** 的实现:
+
+    ```
+    type Partial<T> = {
+        [k in keyof T]?: T[k]
+    }
+    ``` 
+    扩展一下，将指定 T 中的指定属性变为可选:
+
+    ```
+    type PartialOption<T, K extends keyof T> = {
+        [k in K]?: T[k]
+    }
+
+    PartialOption<T, 'name'>   // { name?: string}
+    ``` 
+    
+  
 - **Readonly**
   
+    通过 **Readonly<T>**, 可以将 **T** 的属性变为**readonly**的。
+
+    Readonly 的实现：
+
+    ```
+    type Readonly<T> = {
+        readonly [k in keyof T]: T[k];
+    }
+    ```
+  
 - **Pick**
+  
+    通过 **Pick<T, K extends keyof T>**，可以从 T 中挑选一组属性构建新的类型。
+
+    **Pick** 的实现：
+
+    ```
+    type Pick<T, K extends keyof T> = {
+        [k in K]: T[k]
+    }
+    ```
+    使用 **Pick** 时，必须保证选取的属性存在于 **T** 中。
+
+- **Record**
+  
+    通过 **Record<T, K>** 构造一个 **type**，**key** 为**联合类型 T**中的每个子类型，类型为 **K**:
+
+    ```
+    type T = Record<'name' | 'age' | 'phone', string>;
+    ```
+
+    使用 Record 时，必须保证 T 是由 **string** 、**number**、**symbol** 组成的**联合类型**，如 'a' | 2 | 'b' | string | number。
+
+    **Record** 的实现：
+
+    ```
+    type Record<T extends keyof any, K> = {
+        [k in T]: K
+    }
+    ```
+
+    **keyof any** 返回 **string | number | symbol**。
+
+- **Exclude**
+
+    **Exclude<T, U>** 提取存在于 **T**，但不存在于 **U** 的**类型**组成的**联合类型**。
+
+    ```
+    type T = Exclude<string | number | boolean, number | boolean>  // T 为 string
+    ```
+
+    Exclude 的实现:
+
+    ```
+    type Exclude<T, U> = T extends U ? never : T;
+
+    type T = string | never  // T 的类型为 string
+    ```
+
+- **Extract**
+  
+    **Extract<T, U>** 用于提取**联合类型 T** 和**联合类型 U** 的**交集**。 
+
+    **Extract** 的实现:
+
+    ```
+    type Extract<T, U> = T extends U ? T : never;
+    ```
+
+- **Omit**
+  
+    **Omit<T, U>** 用于从 **T** 中剔除 **U** 中的所有属性, 其中 **T** 是一个**类型**， **U** 是一个**类型属性**构成的**联合类型**:
+
+    ```
+    interface T1 { name: string; age: number; phone: string };
+
+    type T2 = Omit(T1, 'age' | 'phone')  // T2 为 { name: string }
+    ```
+
+    **Omit** 的实现：
+
+    ```
+    type Omit<T, U> = Pick<T, Exclude<keyof T, U>>
+
+    // 这个实现是否有问题？？
+    type Omit<T, U> = {
+        [P in Exclude<keyof T, U>]: T[P]
+    }
+    ```
+
+
+#### 同态 & 非同态
 
 
 
