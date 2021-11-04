@@ -291,6 +291,29 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
 - **接口继承类 ？？**
   
+#### 5. 类 - class
+
+**类的定义**、**类的实例化**、**类的继承**、**privite / public / protected 成员** 、**set / get 访问器** 、**抽闲类**、**静态方法**、**静态属性**、**类方法重载**
+
+#### 6. 函数重载
+
+我们可以通过提供**多个函数定义**来实现**函数重载**。
+
+```
+function add(a: string, b: string): string;
+function add(a: number, b: number): number;
+function add(a: string | number, b: string | number): unknow {
+    if(typeof a === 'string' && typeof b === 'string') {
+        ...
+    } else {
+        ...
+    }
+}
+```
+
+#### 7. 泛型
+
+
 
 
 
