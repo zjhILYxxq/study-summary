@@ -313,6 +313,34 @@ function add(a: string | number, b: string | number): unknow {
 
 #### 7. 泛型
 
+- **泛型约束**
+
+    我们可以通过关键字 **extends** 实现对**泛型**的约束:
+
+    ```
+    function func<T>(param: T): T {
+        console.log(param.length);  // error， T 的类型不确定，可能没有 length 属性
+        return T;
+    }
+
+    function func<T>(param: T): T {
+        if (typeof param === 'string' || Array.isArray(param)) {
+            console.log(param.length);    // 使用类型保护，进行类型收敛
+        }
+        return T;
+    }
+
+    interface Lengthwise {
+        length: number;
+    }
+
+    function func<T extends Lengthwise>(param: T): T {
+        console.log(param.length);  // 使用泛型约束
+        return T;
+    }
+
+    ```
+
 
 
 
