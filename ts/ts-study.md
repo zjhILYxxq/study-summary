@@ -338,11 +338,9 @@ function add(a: string | number, b: string | number): unknow {
         console.log(param.length);  // 使用泛型约束
         return T;
     }
-
     ```
 
-
-
+   **泛型约束**，就是 **T** 对应的值必须能赋值给对应的**约束类型**。
 
 
 #### 4. any、unknow、never 的比较
