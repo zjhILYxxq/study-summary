@@ -839,22 +839,65 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 #### 自定义高级类型
 
-- 将一个 **interface** 中指定属性变为**可选**
-
+- **返回 T 中所有的类型**
+  
     ```
     interface T1 {
         a: string;
         b: number;
         c: boolean;
         d: () => void;
+        e: null;
+        f: undefined;
+        g: never
     }
 
+    type GetType<T> = T[keyof T]   
+
+    type T2 = GetType<T1>   // T2 为 string | number | boolean | () => void | null | undefined;
+    ```
+
+    **GetType** 返回的联合类型不包含 **never**。
+
+- **将一个 interface 中指定属性变为可选**
+
+    ```
     type SetOptional<T, U extends keyof T> = {
         [k in U]?: T[k]
     } & Pick<T, Exclude<keyof T, U>>;
 
-    type T2 = SetOptional<T1, 'a' | 'b'>  // T2  的类型为 { c: boolean; d: () => void;}
+    type T2 = SetOptional<T1, 'a' | 'b'>  // T2  的类型为 { c: boolean; d: () => void; }
     ```
+- **获取没有同时存在于 T 和 U 内的类型**
+  
+    ```
+    type SymmetricDifference<T, U> = Exclude<T | U, T & U> ;
+
+    type T1 = SymmetricDifference<'a' | 'b' | 'c', 'b' | 'c' | 'd'>   // T1 的类型为 'a' | 'd'
+    ```
+
+- **挑选 T 中指定类型的属性形成一个新的类型**
+  
+    我们知道，通过 **Pick** 可以从 **T** 中挑选**指定属性**形成一个新的类型，那么如何从 **T** 中挑选**指定类型**呢？
+
+    分为两步:
+    - 第一步，从 **T** 中挑选指定类型的 **key**；
+    - 第二步， 利用 **Pick** 从 **T** 中挑选**指定属性**；
+  
+    ```
+    // 挑选指定类型的 key
+    type PickKeyByType<T, U> = {
+        [k in keyof T]: T[k] extends U ? k : never
+    }[keyof T]
+
+    // 挑选指定属性
+    type PickByType<T, U> = Pick<T,PickKeyByType<T, U>>
+    ```
+
+- **查找 T 中所有可选类型的 key 组成的联合类型**
+- **查找 T 中所有只读类型的 key 组成的联合类型**
+  
+
 
 
 
