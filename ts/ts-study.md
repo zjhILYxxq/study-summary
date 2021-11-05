@@ -839,8 +839,22 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 #### 自定义高级类型
 
-- 将一个 **interface** 中指定属性变为可选
-  
+- 将一个 **interface** 中指定属性变为**可选**
+
+    ```
+    interface T1 {
+        a: string;
+        b: number;
+        c: boolean;
+        d: () => void;
+    }
+
+    type SetOptional<T, U extends keyof T> = {
+        [k in U]?: T[k]
+    } & Pick<T, Exclude<keyof T, U>>;
+
+    type T2 = SetOptional<T1, 'a' | 'b'>  // T2  的类型为 { c: boolean; d: () => void;}
+    ```
 
 
 
