@@ -836,8 +836,11 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     ```
 
 
-#### 同态 & 非同态
 
+#### 自定义高级类型
+
+- 将一个 **interface** 中指定属性变为可选
+  
 
 
 
