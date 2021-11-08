@@ -709,7 +709,62 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 ```
 
-#### extends
+#### ts 中的 extends
+
+在 **ts** 中， **extends** 关键字有两种用法:
+
+- 用在 **interface**， 表示**继承**；
+    
+    ```
+    interface T1 {
+        name: string;
+    }
+
+    interface T2 {
+        age: number;
+    }
+
+    // T3: { name: string; age: number; sex: string }
+    interface T3 extends T1, T2 {
+        sex: string;
+    }
+    ```
+
+    我们可以使用交叉类型 & 来帮助 type 实现继承：
+
+    ```
+    type T3 = T1 & T2 & { sex: string }
+    ```
+- 表示**条件类型**，可用于**条件判断**
+
+    条件类型，**xx extends xxx ? xx : xx**, 类似我们在 **js** 中使用的**三元运算符**，如果前面的条件满足，返回问号后面的第一个参数，否则返回第二个参数。
+
+    **A extends B**，用于判断 **A** 是否可以分配给 **B**。
+  
+    ```
+    // T 为 2
+    // string | number 类型不可以分配给 number 类型， 返回 2
+    type T = string | number extends number ? 1 : 2;  
+
+    type P<T> = T extends number ? 1: 2;
+    // T1 为 1 | 2
+    // extends 作用于泛型，且 extends 之前的类型是泛型，会分发
+    // string 不可分配给 number，返回 2； number 可分配给 number， 返回 1；最后的结果为 1 | 2
+    type T1 = P<string | number>;
+    ```
+    在上面的示例中，我们发现当 **extends** 用于泛型时，结果会不一样。这是因为如果 **extends** 前面的类型是**泛型**，且泛型传入的是**联合类型**时，则会依次判断该**联合类型**的所有子类型是否可分配给 **extends** 后面的类型，这是一个**分发**的过程，然后将返回的结果组成新的**联合类型**。
+
+    如果想阻止分发特性，可以使用元祖类型:
+
+    ```
+    type P<T> = [T] extends [number] ? 1 : 2;
+
+    // T1 的类型为 2
+    type T1 = P<string | number>; 
+    ```
+
+
+  
 
 
 
