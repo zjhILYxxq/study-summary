@@ -988,7 +988,44 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type PickByType<T, U> = Pick<T,PickKeyByType<T, U>>
     ```
 
-    关于上面的示例，我
+    关于上面的示例，我们还有另外一种实现:
+
+    ```
+    type T1<T, U, M> = T extends U ? M : never;
+
+    type PickKeyByType1<T, U> = {
+        [k in keyof T]: T1<T[k], U, k>   
+    }[keyof T]
+
+    // 挑选指定属性
+    type PickByType1<T, U> = Pick<T,PickKeyByType1<T, U>>
+    ```
+
+    ```
+    interface Foo {
+        a: string;
+        b: number;
+        c: string | number;
+    }
+
+    type D1 = PickByType<Foo, string>;  // D1 为 { a: string };
+
+    type D2 = PickByType1<Foo, string>; // D2 为 { a: string; c: string | number};
+    ```
+
+    上面两个结果之所以不同，是因为第二种实现中 **extends** 前面的是**泛型**并且是**联合类型**，发生分发，导致 **c: string | number** 也被匹配。如果要避免这种情况，是需要使用**元祖类型**来阻止**分发**。
+
+    ```
+    type T1<T, U, M> = [T] extends [U] ? M : never;
+
+    type PickKeyByType1<T, U> = {
+        [k in keyof T]: T1<T[k], U, k>   
+    }[keyof T]
+
+    // 挑选指定属性
+    type PickByType1<T, U> = Pick<T,PickKeyByType1<T, U>>
+
+    ```
 
     
 
