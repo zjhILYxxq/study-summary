@@ -834,7 +834,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         [P in Exclude<keyof T, U>]: T[P]
     }
     ```
-
+#### 同态 & 非同态
 
 
 #### 自定义高级类型
@@ -859,6 +859,27 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     **GetType** 返回的联合类型不包含 **never**。
 
+- **返回 T 中所有可选的属性**
+  
+    返回 **T** 中所有**可选**的属性，最关键的一步就是如何**判断属性是可选**的。
+
+    我们可以通过 **{} extends T**, 来判断 **T** 中的属性是否可选。如果 **{}** 是 **T** 的**子类型**，那么 **T** 中的属性都是**可选**的，如果不是，则 **T** 中存在**必选的属性**。
+  
+    ```
+    type OptionalKey<T> = {
+        [k in keyof T]: {} extends Pick<T, k> ? k : never;
+    }[keyof T]
+    ```
+
+    返回 **T** 中所有**必选**的**属性**
+
+    ```
+    type RequiredKey<T> = Exclude<keyof T, OptionalKey<T>>
+    ```
+
+- **返回 T 中所有只读的属性？**
+
+
 - **将一个 interface 中指定属性变为可选**
 
     ```
@@ -866,8 +887,17 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         [k in U]?: T[k]
     } & Pick<T, Exclude<keyof T, U>>;
 
-    type T2 = SetOptional<T1, 'a' | 'b'>  // T2  的类型为 { c: boolean; d: () => void; }
+    type T2 = SetOptional<T1, 'a' | 'b'> 
     ```
+
+    同样的，也可以将 **interface** 中指定属性变为**只读**的。
+
+    ```
+    type setReadonly<T, U extends keyof T> = {
+        readonly [k in U]: T[k]
+    } & Pick<T, Excluse<keyof T, U>>
+    ```
+
 - **获取没有同时存在于 T 和 U 内的类型**
   
     ```
@@ -894,8 +924,15 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type PickByType<T, U> = Pick<T,PickKeyByType<T, U>>
     ```
 
-- **查找 T 中所有可选类型的 key 组成的联合类型**
-- **查找 T 中所有只读类型的 key 组成的联合类型**
+
+
+#### 其他
+
+理解交集、并集
+
+T[keyof T]
+
+利用泛型套一层元祖规避 extends 的分发式联合类型的特性 ??
   
 
 
