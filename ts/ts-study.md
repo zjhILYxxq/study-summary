@@ -735,6 +735,16 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     ```
     type T3 = T1 & T2 & { sex: string }
     ```
+- 用在**泛型**中，表示**泛型约束**；
+  
+    ```
+    type Pick<T, U extends M> = {
+        [k in U]: T[k]
+    }
+    ```
+    其中 U 需要匹配 M， 否则就不报错。
+
+
 - 表示**条件类型**，可用于**条件判断**
 
     条件类型，**xx extends xxx ? xx : xx**, 类似我们在 **js** 中使用的**三元运算符**，如果前面的条件满足，返回问号后面的第一个参数，否则返回第二个参数。
@@ -796,7 +806,6 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     PartialOption<T, 'name'>   // { name?: string}
     ``` 
-    
   
 - **Readonly**
   
@@ -972,12 +981,16 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     ```
     // 挑选指定类型的 key
     type PickKeyByType<T, U> = {
-        [k in keyof T]: T[k] extends U ? k : never
+        [k in keyof T]: T[k] extends U ? k : never   // 注意，在这里 T[k] 不是泛型哦
     }[keyof T]
 
     // 挑选指定属性
     type PickByType<T, U> = Pick<T,PickKeyByType<T, U>>
     ```
+
+    关于上面的示例，我
+
+    
 
 
 
