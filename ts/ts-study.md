@@ -961,6 +961,20 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         readonly [k in U]: T[k]
     } & Pick<T, Excluse<keyof T, U>>
     ```
+- **将一个 interface 中的可选属性变为必选**
+  
+    ```
+    type SetRequired<T> = {
+        [k in keyof T]-?: T[k]
+    }
+    ```
+    同样的，也可以将一个 **interface** 中的只读属性变为**非只读**
+
+    ```
+    type SetNoReadonly<T> = {
+        -readonly [k in keyof T]: T[k]
+    }
+    ```
 
 - **获取没有同时存在于 T 和 U 内的类型**
   
@@ -1027,7 +1041,56 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     ```
 
+- **从 T 中提取存在于 U 中的 key 和对应的类型**
+
+    ```
+    type Intersection<T extends object, U extends object> =  Pick<T, Extract<keyof T, keyof U>>
+    ```
+- **从 T 中排除存在于 U 中的 key 和对应的类型**
+  
+    ```
+    type Diff<T extends object, U extends object> = Pick<T, Exclude<keyof T, keyof U>>;
+    ```
+
+- **Overwrite - 使用 U 覆写 T 中的同名属性**
+  
+    ```
+    type Overwrite<T extends object, U extends object> = {
+        [k in keyof T]: k extends Extract<keyof T, keyof U> ? U[k] : T[k]
+    }
+    ```
+
+- **Assign - 合并 T、U**
+  
+    ```
+    type Assign<T extends object, U extends object> = 
+        Pick<U, Extract<keyof T, keyof U>> & Pick<T, Exclude<keyof T, keyof U>> & Pick<U, Exclude<keyof U, keyof T>>
+    ```
+
+- **ts 中的递归 ??**
     
+    ```
+    // 递归
+
+    type DeepRequired<T> = 
+        T extends Function ? T : 
+            T extends Array<any> ?   :
+                T extends object ?  DeepRequiredObject<T>  :
+                    T
+
+    // 递归对象
+    type DeepRequiredObject<T extends object> = {
+        [k in keyof T]-?: DeepRequired<T[k]>
+    } 
+
+    // 递归数组
+    type DeepRequiredArray<T extends Array<any>> = {
+        [k in keyof T]: DeepRequired<T[k]>
+    }
+
+    ```
+
+- **将联合类型变为交叉类型**
 
 
 
@@ -1037,7 +1100,6 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 T[keyof T]
 
-利用泛型套一层元祖规避 extends 的分发式联合类型的特性 ??
   
 
 
