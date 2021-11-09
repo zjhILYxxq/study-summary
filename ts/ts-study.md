@@ -342,6 +342,16 @@ function add(a: string | number, b: string | number): unknow {
 
    **泛型约束**，就是 **T** 对应的值必须能赋值给对应的**约束类型**。
 
+- **泛型 & 联合类型 & 类型别名**
+  
+    ```
+    type T<U> = {
+        [k in keyof U]: U[k]
+    }
+
+    type T1 = T <A | B>   // type T1 = T<A> | T<B>
+    ```
+
 
 #### 4. any、unknow、never 的比较
 
@@ -1067,14 +1077,14 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         Pick<U, Extract<keyof T, keyof U>> & Pick<T, Exclude<keyof T, keyof U>> & Pick<U, Exclude<keyof U, keyof T>>
     ```
 
-- **ts 中的递归 ??**
+- **ts 中的递归**
     
     ```
     // 递归
 
     type DeepRequired<T> = 
         T extends Function ? T : 
-            T extends Array<any> ?   :
+            T extends Array<any> ? DeepRequiredArray<T<number>>   :
                 T extends object ?  DeepRequiredObject<T>  :
                     T
 
@@ -1084,11 +1094,13 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     } 
 
     // 递归数组
-    type DeepRequiredArray<T extends Array<any>> = {
-        [k in keyof T]: DeepRequired<T[k]>
-    }
+    interface DeepRequiredArray<T> extends Array<DeepRequired<T>> {}
 
     ```
+
+    递归数组类型时，关键的一步是 **T<number>**。 通过 **T<number>**， 可以获取到数组类型 **T** 中所有**子类型**的**联合类型**。
+
+    疑问：泛型中使用联合类型时的异常情况？？
 
 - **将联合类型变为交叉类型**
 
