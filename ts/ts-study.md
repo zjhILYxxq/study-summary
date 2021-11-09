@@ -783,6 +783,26 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type T1 = P<string | number>; 
     ```
 
+#### infer
+
+**infer** 用在 **extends** 条件语句中，表示待推断的**类型变量**。
+
+**infer** 的用法:
+- 返回函数的参数类型；
+  
+    ```
+    type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
+    ```
+- 返回函数的返回值类型；
+  
+    ```
+    type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer P ? P : never;
+    ```
+- 返回数组第一个元素的类型；
+  
+    ```
+    type FirstChild<T extends any[]> = T extends [first: infer P, ...rest] => P : never;
+    ```
 
   
 
@@ -907,6 +927,41 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type Omit<T, U> = {
         [P in Exclude<keyof T, U>]: T[P]
     }
+    ```
+
+- **Parameters - 获取函数的参数类型**
+  
+    **Parameters** 用于获取**函数**的**参数类型**。
+
+    ```
+    type Func = (param1: string, param2: number) => string;
+
+    type T = Parameters<Func>;   // T 为 [string, number];
+    ```
+
+    **Parameters** 的实现:
+
+    ```
+    type MyParameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
+
+    type T = MyParameters<Func>;  // T 为 [string, number];
+    ```
+
+
+- **ReturnType - 获取函数的返回值类型**
+  
+    **ReturnType** 用于获取**函数**的**返回类型**。
+
+    ```
+    type T = ReturnType<Func>;   // T 为 string;
+    ```
+
+    **ReturnType** 的实现:
+
+    ```
+    type MyReturnType<T extends (...args: any) => void> = T extends (...args: any) => infer P ? P : never;
+
+    type T = MyReturnType<Func>;  // T 为 string;
     ```
 #### 同态 & 非同态
 
