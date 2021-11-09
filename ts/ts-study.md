@@ -1077,14 +1077,14 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         Pick<U, Extract<keyof T, keyof U>> & Pick<T, Exclude<keyof T, keyof U>> & Pick<U, Exclude<keyof U, keyof T>>
     ```
 
-- **ts 中的递归**
+- **ts 中的递归??**
     
     ```
     // 递归
 
     type DeepRequired<T> = 
         T extends Function ? T : 
-            T extends Array<any> ? DeepRequiredArray<T<number>>   :
+            T extends Array<any> ? DeepRequiredArray<T[number]>   :
                 T extends object ?  DeepRequiredObject<T>  :
                     T
 
@@ -1101,6 +1101,15 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     递归数组类型时，关键的一步是 **T<number>**。 通过 **T<number>**， 可以获取到数组类型 **T** 中所有**子类型**的**联合类型**。
 
     疑问：泛型中使用联合类型时的异常情况？？
+
+- **数组类型扁平化**
+  
+    ```
+    type FlatArray<T extends any[]> = {
+        [k in keyof T]: T[k] extends any[] ? FlatArray<T[k]> : T[k]
+    }[number]
+
+    ```
 
 - **将联合类型变为交叉类型**
 
