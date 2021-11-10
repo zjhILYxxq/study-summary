@@ -372,6 +372,7 @@ function add(a: string | number, b: string | number): unknow {
 
 #### 5. ts 中子集和父集的理解
 
+继承的意义、联合类型、交叉类型
 
 #### 6. 交叉类型 & 联合类型 
 
@@ -436,7 +437,7 @@ function add(a: string | number, b: string | number): unknow {
 
 常见的**类型保护**:
 - 将 **unkonw 类型**收敛为某个**具体类型**；
-- 将**联合类型**收敛为**组成联合类型的某个具体类型**；
+- 将**联合类型**收敛为**组成联合类型的某个具体类型 - 可辨识联合类型**；
 
 实现**类型保护**的方式:
 
@@ -502,52 +503,7 @@ function func(param: Param) {
 }    
 ```
 
-#### 8. 类型别名 - type
-
-**类型别名 - type** 只会给类型起一个新的名字，并**不会创建**一个新的类型，只是创建一个类型的**引用**。
-
-```
-interface A {
-    name: string
-}
-
-type B = A;
-
-type C = string | number | boolean;
-```
-
-**类型别名**也可以使用**泛型**。
-
-```
-type A<T> = {
-    name: T
-}
-```
-**类型别名**一般在定义**交叉类型**、**联合类型**时使用。
-
-#### 9. type 和 interface
-
-**type** 和 **interface** 的区别:
-- **interface** 创建了一个名字，可以在任何地方使用； **type** 并不会创建一个新的名字 ； ？？
-- **type** 不能被 **extends**、**implements**，适用于**联合类型**、**交叉类型**、**元祖类型**；
-
-
-#### 字面量类型
-
-- **字符串字面量类型**
-  
-    ```
-    type A = 'string' | 'number' | 'boolean';
-    ```
-- **数字字面量类型**
-  
-    ```
-    type B = 1 | 2 | 3 | 4；
-    ```
-
-**字面量类型**常常配合**类型别名**、**联合类型**一起使用。
-
-#### 可辨识联合类型
+#### 8. 可辨识联合类型
 
 如果一个**联合类型**，可收敛为某一个具体的类型，那么这个**联合类型**可称为**可辨识联合类型**。
 
@@ -582,8 +538,56 @@ function area(s: Shape): number {
 ```
 在进行**类型收敛**时，如果没有涵盖所有**可辨识联合类型**的变化，编译器会提示报错 - **完整性检查**。如上面示例中，假如我们给 Shape 添加了新的类型，却没有修改 area， 编译器会报错，提醒我们去完善 area。
 
+#### 9. 类型别名 - type
 
-#### 11. 多态的 this 类型
+**类型别名 - type** 只会给类型起一个新的名字，并**不会创建**一个新的类型，只是创建一个类型的**引用**。
+
+```
+interface A {
+    name: string
+}
+
+type B = A;
+
+type C = string | number | boolean;
+```
+
+**类型别名**也可以使用**泛型**。
+
+```
+type A<T> = {
+    name: T
+}
+```
+**类型别名**一般在定义**交叉类型**、**联合类型**、**自定义高级类型**时使用。
+
+#### 10. type 和 interface
+
+**type** 和 **interface** 的区别:
+- **interface** 创建了一个名字，可以在任何地方使用； **type** 并不会创建一个新的名字 ； ？？
+- **type** 不能被 **extends**、**implements**，适用于**联合类型**、**交叉类型**、**元祖类型**、**自定义高级类型**，而 **interface** 不适用于此类场景。
+- **type** 使用时需要**赋值**， 而 **interface** 不需要；
+
+
+#### 11. 字面量类型
+
+- **字符串字面量类型**
+  
+    ```
+    type A = 'string' | 'number' | 'boolean';
+    ```
+- **数字字面量类型**
+  
+    ```
+    type B = 1 | 2 | 3 | 4；
+    ```
+
+**字面量类型**常常配合**类型别名**、**联合类型**一起使用。
+
+
+
+
+#### 12. 多态的 this 类型
 
 为了让**类实例**的方法支持**链式调用**，我们通常会在**实例方法**中返回**实例对象**，如:
 
@@ -642,7 +646,7 @@ class BasicCalculator {
 }
 ```
 
-#### 12. 索引类型
+#### 13. 索引类型
 
 - **keyof 索引查询**
   
@@ -681,6 +685,15 @@ class BasicCalculator {
     ```
     type T5 = T1[keyof T1]   // T5 的类型为 string | number
     ```
+
+    如果 **T** 的为**数组类型**，通过 **T[number]** 可以获取到 **T** 中所有**子类型**的**联合类型**:
+
+    ```
+    type T = [string, number];
+
+    type T1 = T[number];   // T1 的类型为 string | number
+    ```
+
 - **索引遍历**
   
     通过 **k in keys** 的方式，可以遍历 **keys** 中的每个属性：
@@ -690,6 +703,8 @@ class BasicCalculator {
         [key in keyof T2]?: T2[key]
     }
     ```
+    > 索引遍历只能用在 interface 的 key 中？？
+
 - **索引签名**
     
     在定义一个 **interface** 时，我们可能只知道 **interface** 的部分属性，其他属性并不确定，此时我们可以使用**索引签名**:
@@ -701,7 +716,7 @@ class BasicCalculator {
     }
     ```
 
-#### 13. 映射类型
+#### 14. 映射类型
 
 基于**原来的类型**，创建的**新类型**称为**映射类型**。在**映射类型**中，**新类型**以相同的方式去转换**旧类型**中的每个属性。
 
@@ -719,9 +734,9 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 ```
 
-#### 14. ts 中的 extends
+#### 15. ts 中的 extends
 
-在 **ts** 中， **extends** 关键字有两种用法:
+在 **ts** 中， **extends** 关键字有三种用法:
 
 - 用在 **interface**， 表示**继承**；
     
@@ -740,7 +755,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     }
     ```
 
-    我们可以使用交叉类型 & 来帮助 type 实现继承：
+    我们可以使用**交叉类型 &** 来帮助 **type** 实现**继承**：
 
     ```
     type T3 = T1 & T2 & { sex: string }
@@ -752,7 +767,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
         [k in U]: T[k]
     }
     ```
-    其中 U 需要匹配 M， 否则就不报错。
+    其中 U 需要匹配 M， 否则就会报错。
 
 
 - 表示**条件类型**，可用于**条件判断**
@@ -783,7 +798,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type T1 = P<string | number>; 
     ```
 
-#### 15. infer
+#### 16. infer
 
 **infer** 用在 **extends** 条件语句中，表示待推断的**类型变量**。
 
@@ -803,7 +818,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 
 
-####  16. Ts 内置工具类型
+####  17. Ts 内置工具类型
 
 - **Partial**
   
@@ -958,10 +973,10 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     type T = MyReturnType<Func>;  // T 为 string;
     ```
-#### 17. 同态 & 非同态
+#### 18. 同态 & 非同态
 
 
-#### 18. 自定义高级类型
+#### 19. 自定义高级类型
 
 - **返回 T 中所有的类型**
   
@@ -1098,8 +1113,9 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     // 挑选指定属性
     type PickByType1<T, U> = Pick<T,PickKeyByType1<T, U>>
-
     ```
+
+    分发现象也会发生在索引查询、索引遍历操作中；
 
 - **从 T 中提取存在于 U 中的 key 和对应的类型**
 
@@ -1163,9 +1179,10 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 
 
-#### 关键知识点
+#### 20. 关键知识点
 - 基础 ts 类型
 - 类型推论 
-- 索引相关知识点
+- 索引相关: keyof 索引查询、索引访问、索引遍历、索引签名；
 - 函数重载
 - 类型保护、泛型约束
+- extends 关键字: interface 继承、类继承、泛型约束、条件判断(分发)；
