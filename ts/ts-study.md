@@ -370,10 +370,10 @@ function add(a: string | number, b: string | number): unknow {
 
 
 
-#### 4. ts 中子集和父集的理解
+#### 5. ts 中子集和父集的理解
 
 
-#### 交叉类型 & 联合类型 
+#### 6. 交叉类型 & 联合类型 
 
 - **交叉类型 - &**
   
@@ -430,7 +430,7 @@ function add(a: string | number, b: string | number): unknow {
     **联合类型**，适用于值可以为**不同类型**的情况。
 
 
-#### 类型保护
+#### 7. 类型保护
 
 **类型保护**就是就是通过一些**表达式**，将**不确定的类型**收敛为某个**具体的类型**。
 
@@ -502,7 +502,7 @@ function func(param: Param) {
 }    
 ```
 
-#### 类型别名 - type
+#### 8. 类型别名 - type
 
 **类型别名 - type** 只会给类型起一个新的名字，并**不会创建**一个新的类型，只是创建一个类型的**引用**。
 
@@ -525,7 +525,7 @@ type A<T> = {
 ```
 **类型别名**一般在定义**交叉类型**、**联合类型**时使用。
 
-#### type 和 interface
+#### 9. type 和 interface
 
 **type** 和 **interface** 的区别:
 - **interface** 创建了一个名字，可以在任何地方使用； **type** 并不会创建一个新的名字 ； ？？
@@ -583,7 +583,7 @@ function area(s: Shape): number {
 在进行**类型收敛**时，如果没有涵盖所有**可辨识联合类型**的变化，编译器会提示报错 - **完整性检查**。如上面示例中，假如我们给 Shape 添加了新的类型，却没有修改 area， 编译器会报错，提醒我们去完善 area。
 
 
-#### 多态的 this 类型
+#### 11. 多态的 this 类型
 
 为了让**类实例**的方法支持**链式调用**，我们通常会在**实例方法**中返回**实例对象**，如:
 
@@ -642,7 +642,7 @@ class BasicCalculator {
 }
 ```
 
-#### 索引类型
+#### 12. 索引类型
 
 - **keyof 索引查询**
   
@@ -701,7 +701,7 @@ class BasicCalculator {
     }
     ```
 
-#### 映射类型
+#### 13. 映射类型
 
 基于**原来的类型**，创建的**新类型**称为**映射类型**。在**映射类型**中，**新类型**以相同的方式去转换**旧类型**中的每个属性。
 
@@ -719,7 +719,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 ```
 
-#### ts 中的 extends
+#### 14. ts 中的 extends
 
 在 **ts** 中， **extends** 关键字有两种用法:
 
@@ -783,32 +783,27 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type T1 = P<string | number>; 
     ```
 
-#### infer
+#### 15. infer
 
 **infer** 用在 **extends** 条件语句中，表示待推断的**类型变量**。
 
 **infer** 的用法:
-- 返回函数的参数类型；
+- 返回**函数**的**参数类型**；
   
     ```
     type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
     ```
-- 返回函数的返回值类型；
+- 返回**函数**的**返回值类型**；
   
     ```
     type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer P ? P : never;
     ```
-- 返回数组第一个元素的类型；
-  
-    ```
-    type FirstChild<T extends any[]> = T extends [first: infer P, ...rest] => P : never;
-    ```
 
   
 
 
 
-#### Ts 内置工具类型
+####  16. Ts 内置工具类型
 
 - **Partial**
   
@@ -963,10 +958,10 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     type T = MyReturnType<Func>;  // T 为 string;
     ```
-#### 同态 & 非同态
+#### 17. 同态 & 非同态
 
 
-#### 自定义高级类型
+#### 18. 自定义高级类型
 
 - **返回 T 中所有的类型**
   
@@ -1166,104 +1161,11 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
     ```
 
-- **将联合类型变为交叉类型**
 
 
-
-#### 其他
-
-理解交集、并集
-
-T[keyof T]
-
-  
-
-
-
-
-#### 泛型
-
-
-#### 泛型接口
-
-
-#### 元祖
-
-
-#### 泛型类
-
-
-#### 泛型约束
-
-泛型约束类型：
-- 确保属性存在；  extends 
-- 检查对象上的属性是否存在  keyof extends
-
-
-#### 泛型参数默认类型 ？？
-
-
-#### 泛型条件类型 ？？
-
-
-#### 泛型工作类型 ？？
-
-
-
-#### ts 知识点
-
-1. 基础类型
-
-2. K[keyof K]: K 所有 key 类型的联合类型
-
-    ```
-    interface IProps {
-        name: string;
-        age: number
-    }
-
-    type name = IProps["name"]  // type name = string;
-
-    type age = IProps["age"]    // type age = number;
-
-    type attr = keyof IProps    // type attr = 'name' | 'age';
-
-    type attr1 = IProps[keyof IProps]   // type attr1 = string | number;
-    ```
-
-3. 交叉类型 & 取的是多个类型的并集，如果有相同的 key 但是类型不同，则 key 的类型为 never;
-
-    ```
-    interface IA {
-        name: string;
-        age: number;
-    }
-
-    interface IB {
-        name: string;
-        age: string;
-    }
-
-    const user: IA & IB = {
-        name: 'zjh',
-        age: (function() { throw new Error()})()   // age 为 never 类型
-    }
-    ```
-
-4. 实现继承
-
-    如果是 interface，通过 extends 关键字实现；
-
-    如果是 type，通过交叉类型 & 实现；
-
-    ```
-    interface T1 {
-        name: string;
-    }
-
-    interface T2 {
-        age: number;
-    }
-
-    interface Student extends T1, T2
-    ```
+#### 关键知识点
+- 基础 ts 类型
+- 类型推论 
+- 索引相关知识点
+- 函数重载
+- 类型保护、泛型约束
