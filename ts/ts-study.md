@@ -922,6 +922,8 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type T = string | never  // T 的类型为 string
     ```
 
+    注意，当 **extends** 关键字前面是**泛型**且是**联合类型**时，会**分发**。
+
 - **Extract**
   
     **Extract<T, U>** 用于提取**联合类型 T** 和**联合类型 U** 的**交集**。 
@@ -1199,3 +1201,5 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 - **类型保护、泛型约束**；
 - **extends 关键字**: interface 继承、类继承、泛型约束、条件判断(分发)；
 - **泛型分发**：条件判断分发、keyof 分发、还有吗？？
+- **infer 推断**：必须和 extends 一起使用；
+- **内置工具类型**: Partial、Readonly、Record、Pick、Exclude、Extract、Omit、Parameters、ReturnType;
