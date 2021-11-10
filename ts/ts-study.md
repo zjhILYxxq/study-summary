@@ -703,7 +703,21 @@ class BasicCalculator {
         [key in keyof T2]?: T2[key]
     }
     ```
-    > 索引遍历只能用在 interface 的 key 中？？
+    > **索引遍历只能用在 interface 的 key 中**？？
+
+    在**索引遍历**时，如果 **keyof** 后面的是**泛型**，并且是**联合类型**，那么会出现**分发**的情况：
+
+    ```
+    interface T1 { name: string; age: number };
+
+    interface T2 { phone: string; address: string };
+
+    type T3<T> = {
+        [k in keyof T]?: T[k]
+    }
+
+    type T4 = T3<T1 | T2>; // T4 为 T3[T1] | T3[T2]
+    ```
 
 - **索引签名**
     
@@ -1115,8 +1129,6 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     type PickByType1<T, U> = Pick<T,PickKeyByType1<T, U>>
     ```
 
-    分发现象也会发生在索引查询、索引遍历操作中；
-
 - **从 T 中提取存在于 U 中的 key 和对应的类型**
 
     ```
@@ -1180,9 +1192,10 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 
 #### 20. 关键知识点
-- 基础 ts 类型
-- 类型推论 
-- 索引相关: keyof 索引查询、索引访问、索引遍历、索引签名；
-- 函数重载
-- 类型保护、泛型约束
-- extends 关键字: interface 继承、类继承、泛型约束、条件判断(分发)；
+- **基础 ts 类型**
+- **类型推论**:
+- **索引相关**: keyof 索引查询、索引访问、索引遍历、索引签名；
+- **函数重载**；
+- **类型保护、泛型约束**；
+- **extends 关键字**: interface 继承、类继承、泛型约束、条件判断(分发)；
+- **泛型分发**：条件判断分发、keyof 分发、还有吗？？
