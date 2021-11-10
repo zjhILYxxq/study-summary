@@ -719,6 +719,8 @@ class BasicCalculator {
     type T4 = T3<T1 | T2>; // T4 为 T3[T1] | T3[T2]
     ```
 
+    另外，**索引遍历**时不会遍历**原型链**上的**属性**。
+
 - **索引签名**
     
     在定义一个 **interface** 时，我们可能只知道 **interface** 的部分属性，其他属性并不确定，此时我们可以使用**索引签名**:
@@ -803,7 +805,7 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
     ```
     在上面的示例中，我们发现当 **extends** 用于泛型时，结果会不一样。这是因为如果 **extends** 前面的类型是**泛型**，且泛型传入的是**联合类型**时，则会依次判断该**联合类型**的所有子类型是否可分配给 **extends** 后面的类型，这是一个**分发**的过程，然后将返回的结果组成新的**联合类型**。
 
-    如果想阻止分发特性，可以使用元祖类型:
+    如果想阻止**分发**特性，可以使用**元祖类型**:
 
     ```
     type P<T> = [T] extends [number] ? 1 : 2;
@@ -1195,11 +1197,13 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 #### 20. 关键知识点
 - **基础 ts 类型**
-- **类型推论**:
+- **父子类型**: 子类型可以分配给父类型；
 - **索引相关**: keyof 索引查询、索引访问、索引遍历、索引签名；
+- **keyof & in**: **keyof** 返回一个**联合类型**； **in** 用来遍历**联合类型**，**in** 不能**单独使用**，必须放在**索引签名？？**中使用；
 - **函数重载**；
 - **类型保护、泛型约束**；
 - **extends 关键字**: interface 继承、类继承、泛型约束、条件判断(分发)；
 - **泛型分发**：条件判断分发、keyof 分发、还有吗？？
-- **infer 推断**：必须和 extends 一起使用；
+- **阻止泛型分发**：使用**元祖**；
+- **infer 推断**：必须和 **extends** 一起使用；
 - **内置工具类型**: Partial、Readonly、Record、Pick、Exclude、Extract、Omit、Parameters、ReturnType;
