@@ -1207,3 +1207,8 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 - **阻止泛型分发**：使用**元祖**；
 - **infer 推断**：必须和 **extends** 一起使用；
 - **内置工具类型**: Partial、Readonly、Record、Pick、Exclude、Extract、Omit、Parameters、ReturnType;
+
+
+
+#### 21. ts 中的小技巧
+- 如何判断一个属性是否可选？
