@@ -57,12 +57,22 @@ React SSR
     - **shallow?**, 更新当前页面的路由而不重新执行 getStaicProps、getServerSideProps、getInitialProps， 默认为 false;
     - **locale?**, 提供不同的语言环境？
 
+4. 可以通过 **'next/router'** 实现手动切换路由 
 
 
 
 
 #### next.js 学习问题
 1. 如果 **Link** 的 **child** 是一个**功能组件(自定义组件)**，需要使用 **React.forwardRef** 包裹，为什么？？
+2. 动态路由??
+3. 客户端路由和服务端路由??
+4. next.js 是一个怎么样的工作过程??
+5. 浅层路由 shallow route 是一个什么东东?? 
 
+     - 浏览器输入一个 url， server 根据路由找到对应的组件(入口组件以及匹配路由的组件 ？？)，然后生成一个 html 文件返回给客户端；
+     - 客户端基于 react hydrate 模式渲染页面；
+     - 客户端页面跳转，如果客户端路由匹配，客户端渲染；如果客户端不匹配，服务端渲染?? 是这样的吗？？
+
+6. SSR 模式下的路由机制 ??
 
 
