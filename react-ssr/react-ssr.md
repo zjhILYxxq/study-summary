@@ -60,6 +60,17 @@ React SSR
 4. 可以通过 **'next/router'** 实现手动切换路由 
 
 
+5. 一个 **next** 项目，可以在根目录下添加一个 **next.config.js** 文件， 覆盖 **next** 默认的配置 - **defaultConfig**。
+
+    ```
+    // next.config.js
+
+    module.export = {
+        distDir: 'build',
+        ...
+    }
+    ```
+    常用的配置项如下(待整理):
 
 
 #### next.js 学习问题
@@ -74,5 +85,6 @@ React SSR
      - 客户端页面跳转，如果客户端路由匹配，客户端渲染；如果客户端不匹配，服务端渲染?? 是这样的吗？？
 
 6. SSR 模式下的路由机制 ??
+7. esc module （vite 的原理 ？？）
 
 
