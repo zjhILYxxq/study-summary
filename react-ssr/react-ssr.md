@@ -72,6 +72,50 @@ React SSR
     ```
     常用的配置项如下(待整理):
 
+    ```
+    module.exports = {
+        // 环境变量，可在代码中通过 process.env 进行访问
+        env: { ... },
+        // 为应用程序设置路径前缀
+        basePath: '',
+        // 重写
+        rewrites: () => { ... },
+        // 重定向
+        redirects: () => { ... },
+        // 自定义标题
+        headers: () => { ... },
+        // 自定义页面扩展
+        pageExtensions: [xxx],
+        // 支持 CDN 前缀
+        assetPrefix: '',
+        // 自定义的 webpack 配置
+        webpack: () => { ... }
+        // 使用 gzip 来压缩呈现的内容和静态文件
+        compress: true,
+        // 仅限服务器的运行时配置
+        serverRuntimeConfig: { ... },
+        // 客户端和服务端都可以访问的运行时配置 ？？
+        publicRuntimeConfig: { ... },
+        // 是否添加 x-powered-by 标题
+        poweredByHeader: false,
+        // 是否为每一页生成 etag(缓存策略)
+        generateEtags: false,
+        // 自定义构建目录
+        distDir: '',
+        // 配置构建 ID
+        generateBuildId: () => { ... },
+        // ESlint 相关配置
+        eslint: { ... }
+        // 导出路径图
+        exportPathMap: () => { ... },
+        // 是否开启严格模式
+        reactStrictMode: false,
+
+        ...
+    }
+
+    ```
+
 
 #### next.js 学习问题
 1. 如果 **Link** 的 **child** 是一个**功能组件(自定义组件)**，需要使用 **React.forwardRef** 包裹，为什么？？
