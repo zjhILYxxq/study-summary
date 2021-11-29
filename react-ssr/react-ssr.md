@@ -144,8 +144,20 @@ React SSR
 13. pre-rendering 预渲染
 
     预渲染有两类:
-    - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面；
+    - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面，可以被 cdn 缓存；
     - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面；每次请求都生成页面？
+  
+14. 客户端渲染 - CSR、静态生成 - SSG、服务端渲染 - SSR；
+    
+15. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
+
+    getStaticProps： 
+
+16. getStaticProps 是如何工作的？
+
+17. getStaticPaths 是如何工作的？
+
+18. getServerSideProps 是如何工作的?  
 
 
 #### next.js 学习问题
