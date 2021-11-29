@@ -20,7 +20,6 @@ React SSR
 根据 path 找到组件，找到组件以后，执行组件的静态方法，获取数据，等得到数据以后，将数据传递给组件
 
 
-#### 组件脱水 & 组件注水
 
 #### 数据脱水 & 数据注水
 
@@ -118,6 +117,36 @@ React SSR
 
     ```
 
+6. nextjs 会根据 pages 目录下每一个组件文件，会打包生成一个 js 文件和 对应的 html 文件；
+
+7. 通过 next/router 切换页面时，都是懒加载，会根据路径，去 window.__BUILD_MANIFEST 变量中查找路径对应的 js 文件；
+
+8. nextjs 项目在构建的时候，会生成一个 _buildManifest.js 文件， 该文件会在客户端页面加载的时候执行，给 window 对象注入 __BUILD_MANIFEST 变量。
+
+    __BUILD_MANIFEST 变量包含路由和对应的 js 文件的映射关系；
+
+9. next/dist/client/next.js 是 nextjs 应用客户端的入口文件。 应用启动以后，渲染首屏，会采用 ReactDOM.hydrate 方法；跳转页面，采用 React.render 渲染；
+
+    每次切换路由时，都会通过 React.render 从根节点开始渲染。
+
+10. next/dist/pages/_app.js 会返回一个 App 组件，该 App 组件会作为 react 应用的根组件;
+
+    _app.js 就是打包 chunk 文件中的 _app 文件，在 mian.js 文件之后执行；
+
+11. 组件脱水 & 注水
+
+    利用 react-dom-server  提供的 renderToString、 renderToNodeStream 方法可以给 react 组件脱水，将 react 组件转化为转化为实际的 dom 结构，不绑定时间，不触发组件的 componentDidMount、effect；
+
+    组件注水，就是使用 react-dom 提供的 hydreate 方法，给组件对应的 dom 节点绑定事件，并触发生命周期方法；
+
+12. 动态路由 ？
+    
+13. pre-rendering 预渲染
+
+    预渲染有两类:
+    - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面；
+    - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面；每次请求都生成页面？
+
 
 #### next.js 学习问题
 1. 如果 **Link** 的 **child** 是一个**功能组件(自定义组件)**，需要使用 **React.forwardRef** 包裹，为什么？？
@@ -132,5 +161,6 @@ React SSR
 
 6. SSR 模式下的路由机制 ??
 7. esc module （vite 的原理 ？？）
+8. 
 
 
