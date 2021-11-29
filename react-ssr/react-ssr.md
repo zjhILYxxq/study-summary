@@ -88,8 +88,10 @@ React SSR
         pageExtensions: [xxx],
         // 支持 CDN 前缀
         assetPrefix: '',
-        // 自定义的 webpack 配置
-        webpack: () => { ... }
+        // 自定义的 webpack4 配置
+        webpack: () => { ... },
+        // 自定义的 webpack5 配置
+        webpack: () => { ... },
         // 使用 gzip 来压缩呈现的内容和静态文件
         compress: true,
         // 仅限服务器的运行时配置
