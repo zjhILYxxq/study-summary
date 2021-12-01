@@ -159,6 +159,22 @@ React SSR
 
 18. getServerSideProps 是如何工作的?  
 
+19. 页面是否有 middleware ？？ 
+
+20. 几个关键的 manifest.json 
+
+    server/pages-manifest.json
+
+    build-manifest.json
+
+    routes-manifest.json
+
+21. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+
+    client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
+
+    
+
 
 #### next.js 学习问题
 1. 如果 **Link** 的 **child** 是一个**功能组件(自定义组件)**，需要使用 **React.forwardRef** 包裹，为什么？？
