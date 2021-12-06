@@ -197,20 +197,41 @@ React SSR
 
 19. getServerSideProps 是如何工作的?  
 
+    (猜测，待验证)！
+
+    如果组件中定义了 getServerSideProps 方法，那么 build 阶段， 组件就不会生成一个 .html 文件，而是会生成一个 .js 文件。
+
+    当站点启动以后，客户请求页面时，站点会根据请求路径去找到对应的 js 文件，然后先执行 getServerSideProps 方法，获取数据，然后再将数据作为 props 传递给组件。通过 renderToHtml 方法，给组件脱水，然后生成一个 html 内容字符串，返回到客户端。
+
 20. getStaticProps 和 getServerSideProps 的区别？
 
-21. server router 是什么东东 ?? 
+    两者之间的区别:
+    1. getStaticProps 用于 SSG， getServerSideProps 用于 SSR；
+    2. 使用 getStaticProps，组件经过 build 阶段会生成一个 .html 文件； 而使用 getServerSideProps，组件经过 build 阶段会生成一个 .js 文件(实际上只是做了一下编译)；
+    3. 站点启动以后，如果是 SSG，直接请求 html 页面；如果是 SSR，还需要根据路由找到对应的 js 文件，然后再执行 getServerSideProps 方法，将返回的结果作为 props 传递给组件，然后触发 renderToHtml 方法，给组件脱水，然后返回 html 字符串；
 
-22. next.js 内置的 _app.tsx 组件
+    getStaticProps 和 getServerSideProps 不能共存，即一个页面要么是 SSG， 要么是 SSR;
+
+
+
+
+21. SSG & 动态路由
+
+
+22. SSR & 动态路由
+    
+23. server router 是什么东东 ?? 
+
+24. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
     这个 App 组件有什么用？？
 
 
-23. 页面是否有 middleware ？？ 
+25. 页面是否有 middleware ？？ 
 
-24. 几个关键的 manifest.json 
+26. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -218,7 +239,7 @@ React SSR
 
     routes-manifest.json
 
-25. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+27. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -234,7 +255,6 @@ React SSR
 
      - 浏览器输入一个 url， server 根据路由找到对应的组件(入口组件以及匹配路由的组件 ？？)，然后生成一个 html 文件返回给客户端；
      - 客户端基于 react hydrate 模式渲染页面；
-     - 客户端页面跳转，如果客户端路由匹配，客户端渲染；如果客户端不匹配，服务端渲染?? 是这样的吗？？
 
 6. SSR 模式下的路由机制 ??
 7. esc module （vite 的原理 ？？）
