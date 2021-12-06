@@ -148,20 +148,69 @@ React SSR
     - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面；每次请求都生成页面？
   
 14. 客户端渲染 - CSR、静态生成 - SSG、服务端渲染 - SSR；
+
+    CSR - client side render, 客户端渲染；
+
+    SSR - server side render， 服务端渲染；
+
+    SSG - server static generate， 服务端静态页面生成；
     
 15. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
 
-    getStaticProps： 
+    getStaticProps: 用于 SSG， 在构建时获取数据, 获取的数据将用于组件的脱水；
+
+    getStaticPaths: 用于 SSG， 根据数据指定动态路由预渲染页面；
+
+    getServerSideProps: 用于 SSR，获取每个请求的数据 ？
+
+
 
 16. getStaticProps 是如何工作的？
 
-17. getStaticPaths 是如何工作的？
+    在 build 阶段， next.js 调用 renderToString 方法将组件变为字符串之前，会执行组件定义的 getStaticProps 方法，将 getStaticProps 方法返回的结果作为组件的 props 传递给组件。
 
-18. getServerSideProps 是如何工作的?  
+    getStaticProps 返回的结果包含的属性:
+    - props, object，作为组件的 props，是一个可序列化的对象；
+    - revalidate，boolean， 默认为 false， 涉及静态增量再生 - ISR；
+    - notFound，boolean，可选，如果为 true，会返回 404；
+    - redirect，object，设置重定向；
+  
+    
 
-19. 页面是否有 middleware ？？ 
+17. ISR - 增量静态再生(Incremental Static Regeneration)
 
-20. 几个关键的 manifest.json 
+    ISR，提供了一种创建站点以后，仍然可以创建或者更新静态页面的方式。
+
+    使用 revalidate 属性以后的页面请求过程如下:
+    - 初始请求和 revalidate 时间内，请求的页面是构建阶段生成的页面；
+    - revalidate 窗口过后，请求的页面依旧是原来的页面；
+    - 站点重新生成页面；
+    - 重新生成页面成功，使用新的页面；生成页面失败，使用原来缓存的页面；
+
+    ISR 的工作机制是怎么样的？？
+
+18. getStaticPaths 是如何工作的？
+
+    如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
+
+    getStaticPaths 的工作机制: 
+
+19. getServerSideProps 是如何工作的?  
+
+20. getStaticProps 和 getServerSideProps 的区别？
+
+21. server router 是什么东东 ?? 
+
+22. next.js 内置的 _app.tsx 组件
+
+    在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
+
+    这个 App 组件有什么用？？
+
+
+23. 页面是否有 middleware ？？ 
+
+24. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -169,11 +218,11 @@ React SSR
 
     routes-manifest.json
 
-21. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+25. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
-    
+
 
 
 #### next.js 学习问题
