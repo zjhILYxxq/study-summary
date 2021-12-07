@@ -216,22 +216,41 @@ React SSR
 
 
 21. SSG & 动态路由
+    
+    如果是动态路由，且定义了 getStaticProps，则必须定义 getStaticPaths，否则会抛出异常(这个比较好理解，如果定义了 getStaticProps，说明需要走 SSG，如果此时不定义 getStaticPaths，拿不到完整的路径，就无法走 SSG 了);
+
+    如果不是动态路由，但定义了 getStaticPaths，也会抛出异常。why?
+
+    如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。 why?
 
 
 22. SSR & 动态路由
-    
-23. server router 是什么东东 ?? 
 
-24. next.js 内置的 _app.tsx 组件
+23. 动态路由的工作机制 
+    
+24. server router 是什么东东 ?? 
+
+25. getInitialProps 有什么用？ 
+
+    getInitialProps 是什么东东?
+
+    为什么 getInitialProps 和 getStaticProps 不能同时存在?
+
+    getInitialProps 和 getServerSideProps 不能同时存在
+
+26. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
     这个 App 组件有什么用？？
 
 
-25. 页面是否有 middleware ？？ 
 
-26. 几个关键的 manifest.json 
+27. 页面是否有 middleware ？？ 
+
+
+
+28. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -239,10 +258,15 @@ React SSR
 
     routes-manifest.json
 
-27. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+29. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
+    server 端构建的话，会采用 SSG 和 SSR；
+
+    server 端构建的详细步骤，这里需要整理一个流程图出来!!
+
+30. SEO
 
 
 
