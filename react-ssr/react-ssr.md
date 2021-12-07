@@ -193,7 +193,7 @@ React SSR
 
     如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
 
-    getStaticPaths 的工作机制: 
+    getStaticPaths 的工作机制: pages 目录下文件的命名采用了动态路径，且定义了 getStaticPaths、getStaticProps，在 build 阶段，会先执行 getStaticPaths 方法将动态路径转化为静态路径，然后在根据静态路径生成静态页面；
 
 19. getServerSideProps 是如何工作的?  
 
@@ -219,9 +219,9 @@ React SSR
     
     如果是动态路由，且定义了 getStaticProps，则必须定义 getStaticPaths，否则会抛出异常(这个比较好理解，如果定义了 getStaticProps，说明需要走 SSG，如果此时不定义 getStaticPaths，拿不到完整的路径，就无法走 SSG 了);
 
-    如果不是动态路由，但定义了 getStaticPaths，也会抛出异常。why?
+    如果不是动态路由，但定义了 getStaticPaths，也会抛出异常(这是一个没有意义的操作，当然要报错了！！)
 
-    如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。 why?
+    如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。(动态路由，默认走的是 SSR。定义 getStaticParhs，说明想走 SSG，此时不定义 getStaticProps,那当然报错了)
 
 
 22. SSR & 动态路由
