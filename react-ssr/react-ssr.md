@@ -226,6 +226,9 @@ React SSR
 
 22. SSR & 动态路由
 
+
+
+
 23. 动态路由的工作机制 
 
     在 nextjs 中，我们可以通过将 [] 添加到 pages 下页面的文件名中，来定义动态路由， 如 pages 目录下文件的文件名为 [pid].js
@@ -234,21 +237,24 @@ React SSR
 
     通过 'pages/post/[[...pid]].js' 的方式，可以匹配 /post/xx/xx/xx, 包括 /post 的路径
 
+    动态路由的工作过程:
+    - 在 build 阶段，生成一个静态 html 文件；
+    - 站点启动以后，根据请求的路由，返回对应的 html 文件；
+    - 初始化全局的 router 对象，访问的路由会回去对应的动态路由，解析出路由中的动态参数，存到 router 对象的 query 中；
+    - 给页面对应的组件注水，组件渲染过程中可以从全局的 router 对象中获取到动态路由中的参数；
 
 
+    使用 getStaticProps、getStaticPaths 以后，动态路由的参数在 build 阶段就可以被解析出来，在组件脱水过程中使用、
     
 24. nextjs 路由匹配的的先后顺序
 
     预定义静态路由 > 动态路由 > 捕获所有路由
 
-
-
-
-
-
-
 25. 浅层路由是啥？？
 
+    浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps、getInitialProps 方法？？
+
+    这是什么意思？？
 
 26. server router 是什么东东？？ client 端路由？ server 端路由？
     
