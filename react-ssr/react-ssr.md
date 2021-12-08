@@ -147,6 +147,7 @@ React SSR
     - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面，可以被 cdn 缓存；
     - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面；每次请求都生成页面？
   
+  
 14. 客户端渲染 - CSR、静态生成 - SSG、服务端渲染 - SSR；
 
     CSR - client side render, 客户端渲染；
@@ -154,6 +155,7 @@ React SSR
     SSR - server side render， 服务端渲染；
 
     SSG - server static generate， 服务端静态页面生成；
+
     
 15. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
 
@@ -244,7 +246,9 @@ React SSR
     - 给页面对应的组件注水，组件渲染过程中可以从全局的 router 对象中获取到动态路由中的参数；
 
 
-    使用 getStaticProps、getStaticPaths 以后，动态路由的参数在 build 阶段就可以被解析出来，在组件脱水过程中使用、
+    使用 getStaticProps、getStaticPaths 以后，动态路由的参数在 build 阶段就可以被解析出来，在组件脱水过程中使用;
+
+    如果动态路由使用了 getServerSideProps, 那么在 build 阶段，动态路由不会生成一个 html 文件，只会生成一个 js 文件。当站点启动后，根据客户端访问的路径，找到对应的 js 文件，先执行 getServerSideProps 方法，再对组件脱水，生成一个 html 字符串返回给客户端。给组件脱水的时候，动态路由参数也会被解析。
     
 24. nextjs 路由匹配的的先后顺序
 
