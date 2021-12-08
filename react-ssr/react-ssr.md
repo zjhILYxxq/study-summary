@@ -227,10 +227,39 @@ React SSR
 22. SSR & 动态路由
 
 23. 动态路由的工作机制 
-    
-24. server router 是什么东东 ?? 
 
-25. getInitialProps 有什么用？ 
+    在 nextjs 中，我们可以通过将 [] 添加到 pages 下页面的文件名中，来定义动态路由， 如 pages 目录下文件的文件名为 [pid].js
+
+    我们可以通过 'pages/post/[...pid].js' 的方式，来匹配 /post/xx/xx/xx 的路径，但不能匹配 /post 的路径；
+
+    通过 'pages/post/[[...pid]].js' 的方式，可以匹配 /post/xx/xx/xx, 包括 /post 的路径
+
+
+
+    
+24. nextjs 路由匹配的的先后顺序
+
+    预定义静态路由 > 动态路由 > 捕获所有路由
+
+
+
+
+
+
+
+25. 浅层路由是啥？？
+
+
+26. server router 是什么东东？？ client 端路由？ server 端路由？
+    
+
+
+
+
+
+
+
+27. getInitialProps 有什么用？ 
 
     getInitialProps 是什么东东?
 
@@ -238,7 +267,9 @@ React SSR
 
     getInitialProps 和 getServerSideProps 不能同时存在
 
-26. next.js 内置的 _app.tsx 组件
+
+
+28. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
@@ -246,11 +277,11 @@ React SSR
 
 
 
-27. 页面是否有 middleware ？？ 
+29. 页面是否有 middleware ？？ 
 
 
 
-28. 几个关键的 manifest.json 
+30. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -258,7 +289,7 @@ React SSR
 
     routes-manifest.json
 
-29. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+31. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -266,7 +297,7 @@ React SSR
 
     server 端构建的详细步骤，这里需要整理一个流程图出来!!
 
-30. SEO
+32. SEO
 
 
 
