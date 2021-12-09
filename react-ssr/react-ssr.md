@@ -256,12 +256,25 @@ React SSR
 
 25. 浅层路由是啥？？
 
-    浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps、getInitialProps 方法？？
+    浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps、getInitialProps 方法。
 
-    这是什么意思？？
+    如果一个页面，定义了 getStaticProps、getServerSideProps、getInitialProps 方法，那么每次导航到该页面时，会触发上述这些方法。
+
+    其中， getStaticProps 只会触发一次， getServerSideProps 每次都会触发， getInitialProps？
+
+    如果导航的时候设置了 shallow 为 true，那么导航到该页面的时候，则不会触发上述方法。
 
 26. server router 是什么东东？？ client 端路由？ server 端路由？
-    
+
+
+27. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
+
+
+28. RSC、SSG、SSP 是什么东东？？
+
+    SSG 对应 getStaticProps ？
+
+    SSP 对应 getServerSideProps ？
 
 
 
@@ -269,7 +282,9 @@ React SSR
 
 
 
-27. getInitialProps 有什么用？ 
+
+
+29. getInitialProps 有什么用？ 
 
     getInitialProps 是什么东东?
 
@@ -279,7 +294,7 @@ React SSR
 
 
 
-28. next.js 内置的 _app.tsx 组件
+30. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
@@ -287,11 +302,11 @@ React SSR
 
 
 
-29. 页面是否有 middleware ？？ 
+31. 页面是否有 middleware ？？ 
 
 
 
-30. 几个关键的 manifest.json 
+32. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -299,7 +314,7 @@ React SSR
 
     routes-manifest.json
 
-31. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+33. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -307,7 +322,7 @@ React SSR
 
     server 端构建的详细步骤，这里需要整理一个流程图出来!!
 
-32. SEO
+34. SEO
 
 
 
