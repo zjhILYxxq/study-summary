@@ -44,7 +44,7 @@ React SSR
 
     页面 '/pages/posts/xxx.js' 对应的路由为 '/posts/xxx';
 
-3. 可以使用 **'next/link'** 提供的 **Link** 组件实现**客户端路由**之前的切换？？
+3. 可以使用 **'next/link'** 提供的 **Link** 组件实现**客户端路由**之间的切换
 
     **Link** 组件的属性:
     - **href！**,要导航的 **url 字符串**或者 **URL 对象**;
@@ -56,10 +56,18 @@ React SSR
     - **shallow?**, 更新当前页面的路由而不重新执行 getStaicProps、getServerSideProps、getInitialProps， 默认为 false;
     - **locale?**, 提供不同的语言环境？
 
-4. 可以通过 **'next/router'** 实现手动切换路由 
+4. 使用 **next/link** 提供的 Link 的组件可以实现预提取功能。
+
+    nextjs 在 build 阶段下，会将 pages 目录下的每一个文件解析成一个 js 文件。客户端切换路由时会通过懒加载的方式去加载对应的 js 文件。
+
+    如果在页面中使用了 next/link 提供的 Link 组件，默认情况下会在 Link 组件的 useEffect 中向 server 端预提取对应的 js 文件。
+
+    如果我们设置了 Link 的 prefetch 属性为 false，那么只会在 Link 组件的 onMouseEnter 事件触发时，向 server 端预提取对应的 js 文件。
+
+5. 可以通过 **'next/router'** 实现手动切换路由 
 
 
-5. 一个 **next** 项目，可以在根目录下添加一个 **next.config.js** 文件， 覆盖 **next** 默认的配置 - **defaultConfig**。
+6. 一个 **next** 项目，可以在根目录下添加一个 **next.config.js** 文件， 覆盖 **next** 默认的配置 - **defaultConfig**。
 
     ```
     // next.config.js
@@ -117,38 +125,38 @@ React SSR
 
     ```
 
-6. nextjs 会根据 pages 目录下每一个组件文件，会打包生成一个 js 文件和 对应的 html 文件；
+7. nextjs 会根据 pages 目录下每一个组件文件，会打包生成一个 js 文件和 对应的 html 文件；
 
-7. 通过 next/router 切换页面时，都是懒加载，会根据路径，去 window.__BUILD_MANIFEST 变量中查找路径对应的 js 文件；
+8. 通过 next/router 切换页面时，都是懒加载，会根据路径，去 window.__BUILD_MANIFEST 变量中查找路径对应的 js 文件；
 
-8. nextjs 项目在构建的时候，会生成一个 _buildManifest.js 文件， 该文件会在客户端页面加载的时候执行，给 window 对象注入 __BUILD_MANIFEST 变量。
+9.  nextjs 项目在构建的时候，会生成一个 _buildManifest.js 文件， 该文件会在客户端页面加载的时候执行，给 window 对象注入 __BUILD_MANIFEST 变量。
 
     __BUILD_MANIFEST 变量包含路由和对应的 js 文件的映射关系；
 
-9. next/dist/client/next.js 是 nextjs 应用客户端的入口文件。 应用启动以后，渲染首屏，会采用 ReactDOM.hydrate 方法；跳转页面，采用 React.render 渲染；
+10. next/dist/client/next.js 是 nextjs 应用客户端的入口文件。 应用启动以后，渲染首屏，会采用 ReactDOM.hydrate 方法；跳转页面，采用 React.render 渲染；
 
     每次切换路由时，都会通过 React.render 从根节点开始渲染。
 
-10. next/dist/pages/_app.js 会返回一个 App 组件，该 App 组件会作为 react 应用的根组件;
+11. next/dist/pages/_app.js 会返回一个 App 组件，该 App 组件会作为 react 应用的根组件;
 
     _app.js 就是打包 chunk 文件中的 _app 文件，在 mian.js 文件之后执行；
 
-11. 组件脱水 & 注水
+12. 组件脱水 & 注水
 
     利用 react-dom-server  提供的 renderToString、 renderToNodeStream 方法可以给 react 组件脱水，将 react 组件转化为转化为实际的 dom 结构，不绑定时间，不触发组件的 componentDidMount、effect；
 
     组件注水，就是使用 react-dom 提供的 hydreate 方法，给组件对应的 dom 节点绑定事件，并触发生命周期方法；
 
-12. 动态路由 ？
+13. 动态路由 ？
     
-13. pre-rendering 预渲染
+14. pre-rendering 预渲染
 
     预渲染有两类:
     - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面，可以被 cdn 缓存；
-    - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面；每次请求都生成页面？
+    - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面; 
   
   
-14. 客户端渲染 - CSR、静态生成 - SSG、服务端渲染 - SSR；
+15. 客户端渲染 - CSR、静态生成 - SSG、服务端渲染 - SSR；
 
     CSR - client side render, 客户端渲染；
 
@@ -157,7 +165,7 @@ React SSR
     SSG - server static generate， 服务端静态页面生成；
 
     
-15. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
+16. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
 
     getStaticProps: 用于 SSG， 在构建时获取数据, 获取的数据将用于组件的脱水；
 
@@ -167,7 +175,7 @@ React SSR
 
 
 
-16. getStaticProps 是如何工作的？
+17. getStaticProps 是如何工作的？
 
     在 build 阶段， next.js 调用 renderToString 方法将组件变为字符串之前，会执行组件定义的 getStaticProps 方法，将 getStaticProps 方法返回的结果作为组件的 props 传递给组件。
 
@@ -179,7 +187,7 @@ React SSR
   
     
 
-17. ISR - 增量静态再生(Incremental Static Regeneration)
+18. ISR - 增量静态再生(Incremental Static Regeneration)
 
     ISR，提供了一种创建站点以后，仍然可以创建或者更新静态页面的方式。
 
@@ -191,13 +199,13 @@ React SSR
 
     ISR 的工作机制是怎么样的？？
 
-18. getStaticPaths 是如何工作的？
+19. getStaticPaths 是如何工作的？
 
     如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
 
     getStaticPaths 的工作机制: pages 目录下文件的命名采用了动态路径，且定义了 getStaticPaths、getStaticProps，在 build 阶段，会先执行 getStaticPaths 方法将动态路径转化为静态路径，然后在根据静态路径生成静态页面；
 
-19. getServerSideProps 是如何工作的?  
+20. getServerSideProps 是如何工作的?  
 
     (猜测，待验证)！
 
@@ -205,7 +213,7 @@ React SSR
 
     当站点启动以后，客户请求页面时，站点会根据请求路径去找到对应的 js 文件，然后先执行 getServerSideProps 方法，获取数据，然后再将数据作为 props 传递给组件。通过 renderToHtml 方法，给组件脱水，然后生成一个 html 内容字符串，返回到客户端。
 
-20. getStaticProps 和 getServerSideProps 的区别？
+21. getStaticProps 和 getServerSideProps 的区别？
 
     两者之间的区别:
     1. getStaticProps 用于 SSG， getServerSideProps 用于 SSR；
@@ -217,7 +225,7 @@ React SSR
 
 
 
-21. SSG & 动态路由
+22. SSG & 动态路由
     
     如果是动态路由，且定义了 getStaticProps，则必须定义 getStaticPaths，否则会抛出异常(这个比较好理解，如果定义了 getStaticProps，说明需要走 SSG，如果此时不定义 getStaticPaths，拿不到完整的路径，就无法走 SSG 了);
 
@@ -226,12 +234,12 @@ React SSR
     如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。(动态路由，默认走的是 SSR。定义 getStaticParhs，说明想走 SSG，此时不定义 getStaticProps,那当然报错了)
 
 
-22. SSR & 动态路由
+23. SSR & 动态路由
 
 
 
 
-23. 动态路由的工作机制 
+24. 动态路由的工作机制 
 
     在 nextjs 中，我们可以通过将 [] 添加到 pages 下页面的文件名中，来定义动态路由， 如 pages 目录下文件的文件名为 [pid].js
 
@@ -250,27 +258,27 @@ React SSR
 
     如果动态路由使用了 getServerSideProps, 那么在 build 阶段，动态路由不会生成一个 html 文件，只会生成一个 js 文件。当站点启动后，根据客户端访问的路径，找到对应的 js 文件，先执行 getServerSideProps 方法，再对组件脱水，生成一个 html 字符串返回给客户端。给组件脱水的时候，动态路由参数也会被解析。
     
-24. nextjs 路由匹配的的先后顺序
+25. nextjs 路由匹配的的先后顺序
 
     预定义静态路由 > 动态路由 > 捕获所有路由
 
-25. 浅层路由是啥？？
+26. 浅层路由
 
-    浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps、getInitialProps 方法。
+    浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps 方法。
 
     如果一个页面，定义了 getStaticProps、getServerSideProps、getInitialProps 方法，那么每次导航到该页面时，会触发上述这些方法。
 
-    其中， getStaticProps 只会触发一次， getServerSideProps 每次都会触发， getInitialProps？
+    其中， getStaticProps 只会触发一次， getServerSideProps 每次都会触发
 
     如果导航的时候设置了 shallow 为 true，那么导航到该页面的时候，则不会触发上述方法。
 
-26. server router 是什么东东？？ client 端路由？ server 端路由？
+27. server router 是什么东东？？ client 端路由？ server 端路由？
 
 
-27. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
+28. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
 
 
-28. RSC、SSG、SSP 是什么东东？？
+29. RSC、SSG、SSP 是什么东东？？
 
     SSG 对应 getStaticProps ？
 
@@ -284,13 +292,13 @@ React SSR
 
 
 
-29. getInitialProps 有什么用？ 
+30. getInitialProps 有什么用？ 
 
     getInitiaProps 是 nextjs 9.3 版本之前使用的 api，现在已经被 getStaticProps、getServerSideProps 替换。
 
 
 
-30. next.js 内置的 _app.tsx 组件
+31. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
@@ -298,11 +306,11 @@ React SSR
 
 
 
-31. 页面是否有 middleware ？？ 
+32. 页面是否有 middleware ？？ 
 
 
 
-32. 几个关键的 manifest.json 
+33. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -310,7 +318,7 @@ React SSR
 
     routes-manifest.json
 
-33. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+34. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -318,7 +326,7 @@ React SSR
 
     server 端构建的详细步骤，这里需要整理一个流程图出来!!
 
-34. SEO
+35. SEO
 
 
 
