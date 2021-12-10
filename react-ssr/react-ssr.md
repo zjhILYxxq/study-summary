@@ -184,6 +184,8 @@ React SSR
     - revalidate，boolean， 默认为 false， 涉及静态增量再生 - ISR；
     - notFound，boolean，可选，如果为 true，会返回 404；
     - redirect，object，设置重定向；
+
+    当用户再次访问预渲染页面时，会想服务端请求一个 json 文件，内部包含 getStaticProps 的结果。
   
     
 
@@ -197,8 +199,13 @@ React SSR
     - 站点重新生成页面；
     - 重新生成页面成功，使用新的页面；生成页面失败，使用原来缓存的页面；
 
-    ISR 的工作机制是怎么样的？？
+    revalidate 的工作机制:
+    1. build 阶段生成一个静态页面；
+    2. 站点启动后，首次请求时使用缓存的静态页面；
+    3. 到了 revalidate 指定时间以后，再次请求页面，会生成一个新的静态页面;
 
+
+    注意，上面的请求不是通过 next/router 请求，而是要向服务端发送请求。
 
 
 19. getStaticPaths 是如何工作的？
@@ -206,6 +213,16 @@ React SSR
     如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
 
     getStaticPaths 的工作机制: pages 目录下文件的命名采用了动态路径，且定义了 getStaticPaths、getStaticProps，在 build 阶段，会先执行 getStaticPaths 方法将动态路径转化为静态路径，然后在根据静态路径生成静态页面；
+
+    getStaticPaths 返回的结果结构如下:
+    - paths， 确定哪些路径将被预呈现，是一个数组；
+    - fallback，决定了如果请求的页面没有如果没有，该如果处理。
+
+    fallback 为 false，返回 404；
+
+    fallback 为 true，则先生成对应的静态页面，后放回 getStaticProps 的数据，开发可以通过 router.isFallback 来显示中间状态来优化(先返回不含数据的页面，再返回数据)；
+
+    fallback 为 'blocking', 和 SSR 相同，给客户端返回包含数据的页面；
 
 
 20. getServerSideProps 是如何工作的? 
@@ -341,9 +358,10 @@ React SSR
 
     server 端构建的详细步骤，这里需要整理一个流程图出来!!
 
-    
+
 
 35. SEO
+36. SWR
 
 
 
