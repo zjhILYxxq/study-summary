@@ -199,13 +199,16 @@ React SSR
 
     ISR 的工作机制是怎么样的？？
 
+
+
 19. getStaticPaths 是如何工作的？
 
     如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
 
     getStaticPaths 的工作机制: pages 目录下文件的命名采用了动态路径，且定义了 getStaticPaths、getStaticProps，在 build 阶段，会先执行 getStaticPaths 方法将动态路径转化为静态路径，然后在根据静态路径生成静态页面；
 
-20. getServerSideProps 是如何工作的?  
+
+20. getServerSideProps 是如何工作的? 
 
     (猜测，待验证)！
 
@@ -213,7 +216,9 @@ React SSR
 
     当站点启动以后，客户请求页面时，站点会根据请求路径去找到对应的 js 文件，然后先执行 getServerSideProps 方法，获取数据，然后再将数据作为 props 传递给组件。通过 renderToHtml 方法，给组件脱水，然后生成一个 html 内容字符串，返回到客户端。
 
-21. getStaticProps 和 getServerSideProps 的区别？
+
+
+21. getStaticProps 和 getServerSideProps 的区别
 
     两者之间的区别:
     1. getStaticProps 用于 SSG， getServerSideProps 用于 SSR；
@@ -262,6 +267,8 @@ React SSR
 
     预定义静态路由 > 动态路由 > 捕获所有路由
 
+
+
 26. 浅层路由
 
     浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps 方法。
@@ -272,7 +279,14 @@ React SSR
 
     如果导航的时候设置了 shallow 为 true，那么导航到该页面的时候，则不会触发上述方法。
 
+
+
 27. server router 是什么东东？？ client 端路由？ server 端路由？
+    
+
+
+
+
 
 
 28. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
@@ -295,6 +309,7 @@ React SSR
 30. getInitialProps 有什么用？ 
 
     getInitiaProps 是 nextjs 9.3 版本之前使用的 api，现在已经被 getStaticProps、getServerSideProps 替换。
+
 
 
 
@@ -325,6 +340,8 @@ React SSR
     server 端构建的话，会采用 SSG 和 SSR；
 
     server 端构建的详细步骤，这里需要整理一个流程图出来!!
+
+    
 
 35. SEO
 
