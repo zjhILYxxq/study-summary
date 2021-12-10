@@ -286,11 +286,7 @@ React SSR
 
 29. getInitialProps 有什么用？ 
 
-    getInitialProps 是什么东东?
-
-    为什么 getInitialProps 和 getStaticProps 不能同时存在?
-
-    getInitialProps 和 getServerSideProps 不能同时存在
+    getInitiaProps 是 nextjs 9.3 版本之前使用的 api，现在已经被 getStaticProps、getServerSideProps 替换。
 
 
 
