@@ -75,9 +75,33 @@
   
 - lerna version
 
+    lerna version 命令的主要工作是标识出上一个 tag 版以来发生更新的 package， 然后为这些包迅速出版本，在用户完成选择之后修改相关包的版本信息，并且将相关的变动 commit，然后打上 tag 推送到 git remote。
+
+    lerna version 命令的执行过程:
+    1. 检查当前 git 分支的信息(检验本地是否有 commit、分支是否正常、分支的远程分支是否存在、当前分支是否允许), 如果没有 commit，则无法进行，返回异常；
+    2. 拿到上次的打的 tag；
+    3. 检查哪个 packages 发生变化(使用 git diff 命令，对比上一次的 tag，判断 packages 是否发生变化);
+    4. 获取需要更新的 version，并由用户确认；
+    5. 更新 packages 的 versions，并更新依赖的 versions(固定模式下，更新所有的 packages；独立模式下，更新变化的 packages 的 versions);
+    6. 使用 git tag 打标记；
+    7. 使用 git push 命令 push；
+
+
+    独立模式下， package2 依赖 package1， package1 版本更新时，即使 package2 没有发生变化，也需要更新版本；
 
   
 - lerna publish
+  
+    将需要发布的包，发布到 npm registry。
+
+    ```
+    lerna publish    // lerna version + lerna publish from-git
+
+    lerna publish from-git  // 发布当前 commit 中打上 annoted tag version 的包
+
+    lerna publish from-packges  // 发布 package 中 pkg.json 上的 version 在 registry(高于 latest version)不存在的包
+    ```
+    
 
 
 ### 固定模式/独立模式
@@ -96,3 +120,6 @@ lerna init --independent // 采用独立模式；
 1. lerna init 命令执行的时候， --independent、 --exact 参数有什么用
 2. 软链接和硬链接?
 3. 包相关的生命周期方法?
+4. 为什么要打 tag ？
+
+    检查哪个 packages 是否发生变化，需要对比上一次的 tag；
