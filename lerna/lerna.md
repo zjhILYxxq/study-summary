@@ -54,8 +54,6 @@
     leran add package-1 --scope=package-2  --no-bootstrap  // 将 package-1 添加到 package-2 的 depedencies 中，不建立 link 关系，即 package-2 的 node_modules 中没有 package-1
 
     lerna add package-1 --scope-package-2  // 将 packge-1 添加到 package-2 中，并 link， 即 package-2 的 node_modules 中会有 packge-1
-    
-
     ```
 
 - 链接本地包
@@ -65,8 +63,19 @@
     ```
     
     除了链接本地包，lerna bootstrap 还会安装剩余的包依赖项
+
+    lerna bootstrap 命令的执行过程:
+    1. 建立各个 packages 之间的依赖关系，找到各个 packages 依赖的其他 packages
+    2. 使用 childProcess.exec 执行 npm install xxx / yarn add xxx 命令来安装依赖的包;
+    3. 基于 node 的 fs.symlink 的方式，根据 packages 之间的依赖关系，建立软链接( 和 npm link 的原理一样，软链接可以理解为应用的快捷访问方式，)
+
+    npm link 的工作过程(是这样吗):
+    - 在被引用的 package 中，执行 npm link 命令，在 /user/local/lib/node_modules 中建立一个软链接；
+    - 在引用的 package 中， 执行 npm link xxx 命令，在本地 node_modules 中建立一个软链接；
   
 - lerna version
+
+
   
 - lerna publish
 
@@ -84,5 +93,6 @@ lerna init --independent // 采用独立模式；
 ```
 
 ### Q & A 
-1. lerna init 命令执行的时候， --independent、 --exact 参数有什么用？
-2. 
+1. lerna init 命令执行的时候， --independent、 --exact 参数有什么用
+2. 软链接和硬链接?
+3. 包相关的生命周期方法?
