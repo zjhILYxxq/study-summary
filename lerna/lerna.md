@@ -73,7 +73,10 @@
     - 在被引用的 package 中，执行 npm link 命令，在 /user/local/lib/node_modules 中建立一个软链接；
     - 在引用的 package 中， 执行 npm link xxx 命令，在本地 node_modules 中建立一个软链接；
   
-- lerna version
+- 确定每个 packages 的 versions
+
+
+    使用的命令为 lerna versions
 
     lerna version 命令的主要工作是标识出上一个 tag 版以来发生更新的 package， 然后为这些包迅速出版本，在用户完成选择之后修改相关包的版本信息，并且将相关的变动 commit，然后打上 tag 推送到 git remote。
 
@@ -90,9 +93,9 @@
     独立模式下， package2 依赖 package1， package1 版本更新时，即使 package2 没有发生变化，也需要更新版本；
 
   
-- lerna publish
+- 发包
   
-    将需要发布的包，发布到 npm registry。
+    使用的命令是 lerna publish，将需要发布的包，发布到 npm registry。
 
     ```
     lerna publish    // lerna version + lerna publish from-git
@@ -100,6 +103,14 @@
     lerna publish from-git  // 发布当前 commit 中打上 annoted tag version 的包
 
     lerna publish from-packges  // 发布 package 中 pkg.json 上的 version 在 registry(高于 latest version)不存在的包
+    ```
+
+- 执行每个 packages 包的 script 脚本
+
+    使用的命令是 lerna run script
+
+    ```
+    lerna run build // 执行每个 packages 的 build 脚本
     ```
     
 
@@ -122,4 +133,4 @@ lerna init --independent // 采用独立模式；
 3. 包相关的生命周期方法?
 4. 为什么要打 tag ？
 
-    检查哪个 packages 是否发生变化，需要对比上一次的 tag；
+    检查哪个 packages 是否发生变化，需要对比上一次的 tag
