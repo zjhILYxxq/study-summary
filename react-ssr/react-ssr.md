@@ -251,6 +251,8 @@ React SSR
 
 
 
+
+
 22. SSG & 动态路由
     
     如果是动态路由，且定义了 getStaticProps，则必须定义 getStaticPaths，否则会抛出异常(这个比较好理解，如果定义了 getStaticProps，说明需要走 SSG，如果此时不定义 getStaticPaths，拿不到完整的路径，就无法走 SSG 了);
@@ -260,12 +262,19 @@ React SSR
     如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。(动态路由，默认走的是 SSR。定义 getStaticParhs，说明想走 SSG，此时不定义 getStaticProps,那当然报错了)
 
 
-23. SSR & 动态路由
+23. getStaticProps、getServerSideProps 返回的结果如何在 client 获取？
+
+    首次加载页面时，getStaticProps、getServerSideProps 返回的结果会通过一个 id 为 __NEXT_DATA__， 类型为 application/json 的 script 标签诸如到 html 页面中。 
+
+    当客户端首屏渲染时，会通过 document.getElementById('__NEXT_DATA__').textContent 的方式读取 getStaticProps、getServerSideProps 的结果，然后通过 props 诸如到组件中。
+
+    
+24. SSR & 动态路由 
 
 
 
 
-24. 动态路由的工作机制 
+25. 动态路由的工作机制 
 
     在 nextjs 中，我们可以通过将 [] 添加到 pages 下页面的文件名中，来定义动态路由， 如 pages 目录下文件的文件名为 [pid].js
 
@@ -284,13 +293,13 @@ React SSR
 
     如果动态路由使用了 getServerSideProps, 那么在 build 阶段，动态路由不会生成一个 html 文件，只会生成一个 js 文件。当站点启动后，根据客户端访问的路径，找到对应的 js 文件，先执行 getServerSideProps 方法，再对组件脱水，生成一个 html 字符串返回给客户端。给组件脱水的时候，动态路由参数也会被解析。
     
-25. nextjs 路由匹配的的先后顺序
+26. nextjs 路由匹配的的先后顺序
 
     预定义静态路由 > 动态路由 > 捕获所有路由
 
 
 
-26. 浅层路由
+27. 浅层路由
 
     浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps 方法。
 
@@ -302,7 +311,7 @@ React SSR
 
 
 
-27. server router 是什么东东？？ client 端路由？ server 端路由？
+28. server router 是什么东东？？ client 端路由？ server 端路由？
     
 
 
@@ -310,10 +319,10 @@ React SSR
 
 
 
-28. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
+29. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
 
 
-29. RSC、SSG、SSP 是什么东东？？
+30. RSC、SSG、SSP 是什么东东？？
 
     SSG 对应 getStaticProps ？
 
@@ -327,14 +336,14 @@ React SSR
 
 
 
-30. getInitialProps 有什么用？ 
+31. getInitialProps 有什么用？ 
 
     getInitiaProps 是 nextjs 9.3 版本之前使用的 api，现在已经被 getStaticProps、getServerSideProps 替换。
 
 
 
 
-31. next.js 内置的 _app.tsx 组件
+32. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
@@ -342,11 +351,11 @@ React SSR
 
 
 
-32. 页面是否有 middleware ？？ 
+33. 页面是否有 middleware ？？ 
 
 
 
-33. 几个关键的 manifest.json 
+34. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -354,7 +363,7 @@ React SSR
 
     routes-manifest.json
 
-34. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+35. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -364,7 +373,7 @@ React SSR
 
 
 
-35. SEO
+36. SEO
 
     SEO, 搜索引擎优化。 SEO 的目标是创建一种策略，以提高您在搜索引擎结果中的排名位置。
 
@@ -395,7 +404,7 @@ React SSR
 
 
 
-36. 测量网页内容加载速度的指标
+37. 测量网页内容加载速度的指标
 
     load
 
@@ -420,14 +429,16 @@ React SSR
     - 优化 js(缩小体积、懒加载等);
   
     
-37. SWR
+38. SWR
 
 
-38. next/image、next/font、 next/script
+39. next/image、next/font、 next/script
 
 
 
 #### next.js 学习问题
+
+
 1. 如果 **Link** 的 **child** 是一个**功能组件(自定义组件)**，需要使用 **React.forwardRef** 包裹，为什么？？
 2. 动态路由??
 3. 客户端路由和服务端路由??
