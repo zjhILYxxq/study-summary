@@ -119,10 +119,6 @@
     子应用可以预加载。
 
 
-  
-    
-
-
 - [x] **saas 关于微前端的最佳实践** 
 
     目前 saas 中微前端的实现方案: ssr + qiankun + module federation。
@@ -141,6 +137,10 @@
 - [ ] 常用的 webpack 优化手段、配置手段
   
 - [ ] webpack 工作过程原理
+
+    webpack 工作过程：
+    1. 
+- [ ] tree shaking 
 
 
 
@@ -176,7 +176,87 @@
 
 - [ ] 常用的 hooks
 
-- [ ]  babel-loader
+    compiler 几个常用的 hooks(按照执行顺序排列):
+    - initialize: compiler 完成初始化以后触发；
+    - beforeRun: compiler 的 run 方法执行之前触发；
+    - run: compiler 的 run 方法执行之后触发；
+    - beforeCompile: compilation param 构建以后触发；
+    - compile: beforeCompile 触发以后，compilation 创建之前触发；
+    - compilation: compilation 对象创建以后触发，此时我们可以订阅 compilation 的 hooks；
+    - make: 开始构建模块依赖图是触发，接下来都是 compilation 在工作，创建模块依赖图、分离 chunks、打包输出内容；
+    - afterCompilte: compilation 工作结束时触发；
+    - emit: 输出打包文件到指定目录之前触发；
+    - afterEmit：输出打包文件到指定目录之后触发；
+    - assetEmitted: 输出打包文件到指定目录之后触发， 可获取输出文件的路径、大小等；
+    - done： 本次编译打包正常结束时触发；
+    - failed： 本次编译打包失败时触发；
+
+
+    compilation hooks:
+    - buildModule： module 构建之前触发；
+    - succeedModule：module 构建完成之后触发；
+    - finishModules： module 依赖图构建完成之后触发；
+    - seal: 模块依赖图构建完成，开始分离 chunks 时触发；
+    - afterOptimizeAssets: 优化完每个 chunk 内包含的 assets 时触发；
+    - ...
+
+    比较关键的 hooks:
+    - compiler：run、 compilation、make、 afterEmit、done、failed 等；
+    - compilation： seal、 afterOptimizeAssets；
+
+    如果我们想要订阅 compilation 的 hooks， 我们需要先订阅 compiler 的 compilation hook。 compiler 创建 compilation 以后，会触发 compilation hook，我们就可以在 callback 中订阅 compilation 的 hooks。
+  
+
+
+
+
+
+- [ ] babel-loader
+
+
+
+- [ ] 如何写一个 loader、plugin  
+
+    loader 本质上一个函数，用于将其他类型的文件，转化为浏览器可以识别的文件类型。
+
+    自己写一个 Plugin:
+    - 创建一个 class，需要提供实例方法 - apply
+
+        apply 方法在触发时， 会传入一个 compiler 对象，然后我们可以在 apply 内部，通过 compiler.hooks.xxxx.tap('插件名称', callback) 的形式订阅 compiler 的 hooks。当到了 compiler 的某个阶段时，触发该阶段的对应的 hook，执行对应的 callback；
+    - 在 webpack 的 plugins 配置项中提供 Plugin 对应的实例；
+    - 在 compiler 构建初始化的过程中，会触发 plugin 实例的 apply 方法，订阅指定的 compiler 的 hook； 
+
+    写一个可替换打包文件内容中指定字符串的 Plugin:
+  
+    ```
+        class ReplacePlugin {
+            constructor(option) {
+
+            }
+
+            apply(compiler) {
+                compiler.hooks.compilation.tap('ReplacePlugin', (compilation, compilationParams) => {
+                    compilation.hooks.afterOptimizeAssets.tap('ReplacePlugin', (assets) => {
+                        Object.keys(assets).forEach(key => {
+                            assets[key] = new OriginalSource(assets[key].source().replace(/https:\/\/reactjs/, 'zjh'));
+                        })
+                    });
+                });
+            }
+        }
+    ```
+
+
+#### next.js 相关
+
+
+#### lerna 相关
+
+
+#### react 相关
+
+
+#### 基础知识相关
 
 
 #### 算法相关
