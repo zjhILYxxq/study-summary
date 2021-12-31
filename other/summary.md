@@ -344,7 +344,7 @@
 
 
 
-- [ ] 如何写一个 loader、plugin  
+- [x] 如何写一个 loader、plugin  
 
     loader 本质上一个函数，用于将其他类型的文件，转化为浏览器可以识别的文件类型。
 
