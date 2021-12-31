@@ -381,6 +381,98 @@
 
 #### lerna 相关
 
+- [x] monorepo： 所有项目的代码放在一个仓库；
+
+- [x] 常用的 lerna 命令
+
+    比较常用的 lerna 命令:
+    - lerna init - 初始化一个使用 lerna 管理的 git 仓库;
+    - lerna create < name > - 创建一个使用 lerna 管理的 package；
+    - lerna add < pkg > [globs] - 给 lerna 管理的 packages 添加依赖；
+    - lerna bootstrap - 链接本地包、安装依赖；
+    - lerna version - 确定每个 packages 的 versions；
+    - lerna publish - 发布包；
+
+    上面的几个常用命令，就基本涵盖了 lerna 的基本仓库:
+    - 先初始化一个使用 lerna 管理的 git 仓库；
+    - 创建需要通过 lerna 管理的 packages；
+    - 给 packages 添加依赖；
+    - 给 packages 安装依赖，建立 packages 之间的软链接；
+    - packages 开发完成以后，确定每个 packages 的 version；
+    - 发布包；
+
+- [x] 固定模式 / 独立模式
+
+    使用 lerna init 初始化一个使用 lerna 管理的 git 仓库时， 有两种模式：固定模式和独立模式
+
+    ```
+    lerna init --independent   // 独立模式
+
+    lerna init   // 默认为固定模式
+    ```
+
+    固定模式下， 所有 packages 的版本是绑定到一起的，任何包发生重大改动都会导致所有的包具有新的版本。
+
+    独立模式下，允许维护者单独为每个 package 更新版本；
+
+
+- [x] lerna bootstrap
+
+    通过 lerna bootstrap 命令，可以会 packages 安装依赖，并链接本地包。
+
+    lerna bootstrap 命令的执行过程:
+    1. 建立各个 packages 之间的依赖关系，找到各个 packages 依赖的其他 packages
+    2. 使用 childProcess.exec 执行 npm install xxx / yarn add xxx 命令来安装依赖的包;
+    3. 基于 node 的 fs.symlink 的方式，根据 packages 之间的依赖关系，建立软链接( 和 npm link 的原理一样，软链接可以理解为应用的快捷访问方式，)
+
+    npm link 的工作过程(是这样吗?):
+    - 在被引用的 package 中，执行 npm link 命令，在 /user/local/lib/node_modules 中建立一个软链接；
+    - 在引用的 package 中， 执行 npm link xxx 命令，在本地 node_modules 中建立一个软链接；
+
+- [x] lerna version
+  
+    使用 lerna version 可以为每个 packages 确定 versions。
+
+    lerna version 命令的主要工作是标识出上一个 tag 版以来发生更新的 package， 然后为这些包迅速出版本，在用户完成选择之后修改相关包的版本信息，并且将相关的变动 commit，然后打上 tag 推送到 git remote。
+
+    lerna version 命令的执行过程:
+    1. 检查当前 git 分支的信息(检验本地是否有 commit、分支是否正常、分支的远程分支是否存在、当前分支是否允许), 如果没有 commit，则无法进行，返回异常；
+    2. 拿到上次的打的 tag；
+    3. 检查哪个 packages 发生变化(使用 git diff 命令，对比上一次的 tag，判断 packages 是否发生变化);
+    4. 获取需要更新的 version，并由用户确认；
+    5. 更新 packages 的 versions，并更新依赖的 versions(固定模式下，更新所有的 packages；独立模式下，更新变化的 packages 的 versions);
+    6. 使用 git tag 打标记；
+    7. 使用 git push 命令 push；
+
+
+    独立模式下， package2 依赖 package1， package1 版本更新时，即使 package2 没有发生变化，也需要更新版本；
+
+    之所以要打 tag， 是为了检查哪个 packages 发生了变化。 git diff 命令需要用到上一次的 tag。
+
+- [x] lerna publish
+
+    需要发布的包，发布到 npm registry。
+
+    ```
+    lerna publish    // lerna version + lerna publish from-git
+
+    lerna publish from-git  // 发布当前 commit 中打上 annoted tag version 的包
+
+    lerna publish from-packges  // 发布 package 中 pkg.json 上的 version 在 registry(高于 latest version)不存在的包
+    ```
+
+- [x] lerna run xxx
+
+    执行每个 packages 的 script 脚本
+
+
+- [x] npm package 生成可执行文件 
+  
+    1. 生成一个 js 文件，首行 #!/usr/bin/env node (动态去查找 node 来执行当前命令)
+    2. 在 package.json 文件的 bin 配置项指向第一步的 js 文件；
+    3. 这样全局安装的时候，就会在 /usr/local/bin 生成一个可执行文件；
+
+
 
 #### react 相关
 
@@ -413,6 +505,7 @@
 #### 需要在额外了解的东西
 - [ ] web component
 - [ ] babel loader
+- [ ] 软链接和硬链接
   
    
 
