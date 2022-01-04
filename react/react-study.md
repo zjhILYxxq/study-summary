@@ -1,34 +1,279 @@
-#### 一、React 的理念 - 快速响应
+### react 相关知识总结
 
-React 是构建**快速响应**的大型 Web 应用程序的首选。
+涉及 react api 使用、react 原理、 react-router、redux、 mobx、react 优化等知识；
 
-日常开发中，制约**快速响应**的因素：
-- CPU 瓶颈 - JS 线程和 GUI 渲染线程的互斥，导致大计算量的操作会使渲染线程延迟工作，导致页面掉帧，造成卡顿；
-- IO 瓶颈 - 发送网络请求后，不能快速拿到结果导致不能快速响应；
 
-解决方法：
-- **CPU 瓶颈**
 
-    一次 react 更新会经历两个阶段 - render 阶段和 commit 阶段。其中 render 阶段由于需要对 fiber tree 做 diff 比较，最有可能会耗时比较久导致阻塞渲染进程。
+#### react 基础知识
 
-    
-    为了解决这个问题，react 18 将原来同步的不可中断的 render 过程变为异步可中断的。具体是将一个完整的 render 过程分解到一系列小的时间片(5ms)内处理。如果时间片时间到期，render 阶段还没有结束，就让出线程给渲染进程，然后在下一个时间片段内继续中断的渲染过程。
+- [ ] hooks api 的使用
 
-- **IO 瓶颈** 
+  常用的 hooks
+  - **useState**: 
   
-  Suspense 以及 useDeferedValue
+    通过 useState 可以给函数组件添加状态 state 以及用于修改 state 的 setState。 state 更新时，不会像类组件一样做合并操作，只会进行替换操作。
+
+    如果 state 更新依赖于之前的 state，可以在使用 setState 时传入一个 function callback。 该 function callback 触发时，入参为上一个 state。此时，我们就可以根据上一次的 state 返回新的 state。
+
+  - **useReducer**: 
+
+    如果一个函数组件中存在多个 state，我们可以通过 useReducer 将多个 state 合并为一个。
+
+    使用 useReducer 时要注意传入的 reducer 是一个纯函数，不要修改入参，否则在 strict 模式或者 concurrent 模式下，可能会出现不期望的副作用。
+    
+  - **useEffect**
+
+    useEffect 可用于处理 props、state 状态变化引发的副作用。
+
+    条件 effect - 做浅比较。
+
+    useEffect 的 callback 执行时会返回一个 destory 方法，供函数组件下一次触发 useEffect 时触发。
 
 
-关键：**将同步的更新变为可中断的异步更新**。
+  - **useLayoutEffect**
+
+    useLayoutEffect 也可用于处理 state 状态变化引发的副作用。
+
+    和 useEffect 不同的是， useLayoutEffect 在浏览器开始渲染之前触发，而 useEffect 则在浏览器完成渲染之后触发。
+
+    如果我们想对更新完成以后的 dom 结构做调整，可以在 useLayoutEffect 中做处理。
+
+  - **useMemo**
+
+    和 vue 的计算属性一样，可以用于复杂计算的缓存。
+
+  - **useCallback**
+
+    使用 useCallback，可以像 useMemo 一样，返回一个缓存的函数。
+
+  - **useRef**
+
+    useRef 返回一个可变的 ref 对象，其 .current 属性被初始化为传入的参数。返回的 ref 对象可以在组件的整个生命周期内保持不变。
+
+    使用 useRef， 我们帮助函数组件获取 dom 节点、类组件实例，也可以创建一个在组件生命周期内保持不变的变量。
+
+
+  - **useContext**
+
+      使用 useContext， 可以获取一个 context 对象的当前值。
+
+      使用 useContext 的函数组件，必须被对应的 Context.Provider 包裹。
+
+  - **useImperativeHandler**
+
+      使用 ref 时自定义暴露给父组件 ref.current 的值。
+
+      useImerativeHandler 一般会配合 React.forwardRef 使用，当然也可以配置 ref callback 使用。
+  
+  - **useTransition**
+
+    React18 新定义的 hook，使用时可以开启 concurrent 模式。
+
+  - **自定义 hook** 
 
 
 
-#### React 架构
+- [ ] 类组件生命周期方法使用
 
-React16(及后续版本)架构可以分为三层：
-- **Scheduler(调度器)**：根据任务的优先级调度任务，高优先级的任务优先进入 Reconciler；
-- **Reconciler(协调器)**：更新 fiber tree，找出变化的 fiber node，并收集 fiber node 变化导致的副作用(对应 react 更新的 render 阶段)；
-- **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
+
+
+
+
+- [ ] csr & ssr
+
+
+
+
+- [ ] context
+
+  context 的用法
+
+  context 的原理
+
+  
+
+- [ ] refs
+
+  父组件获取子组件 dom 节点的方式:
+  - 子组件是类组件：
+    - 父组件获取子组件实例，再通过子组件实例获取子组件的 dom 节点；
+    - ref callback - 将父组件给 ref callback 通过 props 传递给子组件，让子组件 dom 节点的 ref 属性值为 ref callback；
+- 子组件是函数组件(不能给函数组件添加 ref 属性):
+  - ref callback；
+  - forwardRef;
+  - 
+
+
+
+
+
+
+- [ ] 高阶组件
+
+
+
+- [ ] 严格模式 
+
+
+- [ ] 受控组件&非受控组件 
+
+- [ ] 懒加载
+
+- [x] 组件强制更新的方式
+
+    组件强制更新的方式:
+    - 类组件主动调用 forceUpdate；
+    - 使用的 context 的值发生了变化；
+    - shouldComponentUpdate 返回 ture(多此一举)；
+    - React.memo 返回 ture(多此一举)；
+
+
+
+
+
+
+
+
+#### react 原理
+
+- [x] React 的理念 - 快速响应
+
+    React 是构建**快速响应**的大型 Web 应用程序的首选。
+
+    日常开发中，制约**快速响应**的因素：
+    - CPU 瓶颈 - JS 线程和 GUI 渲染线程的互斥，导致大计算量的操作会使渲染线程延迟工作，导致页面掉帧，造成卡顿；
+    - IO 瓶颈 - 发送网络请求后，不能快速拿到结果导致不能快速响应；
+
+    解决方法：
+    - **CPU 瓶颈**
+
+        一次 react 更新会经历两个阶段 - render 阶段和 commit 阶段。其中 render 阶段由于需要对 fiber tree 做 diff 比较，最有可能会耗时比较久导致阻塞渲染进程。
+
+        
+        为了解决这个问题，react 18 将原来同步的不可中断的 render 过程变为异步可中断的。具体是将一个完整的 render 过程分解到一系列小的时间片(5ms)内处理。如果时间片时间到期，render 阶段还没有结束，就让出线程给渲染进程，然后在下一个时间片段内继续中断的渲染过程。
+
+    - **IO 瓶颈** 
+      
+      Suspense 以及 useDeferedValue
+
+
+    关键：**将同步的更新变为可中断的异步更新**。
+
+
+
+- [x] React 架构
+
+    React16(及后续版本)架构可以分为三层：
+
+    - **Scheduler(调度器)**：根据任务的优先级调度任务，高优先级的任务优先进入 Reconciler；
+  
+    - **Reconciler(协调器)**：更新 fiber tree，找出变化的 fiber node，并收集 fiber node 变化导致的副作用(对应 react 更新的 render 阶段)；
+  
+    - **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
+
+
+- [ ] legacy 模式和 concurrent 模式
+
+
+
+- [ ] diff 算法
+
+
+
+
+- [ ] 副作用处理
+
+
+- [ ] 父组件更新的时候，子组件是否会更新
+
+    父组件更新的时候，子组件默认会更新。
+
+    原因是 props 发生了变化。
+
+    可以使用 React.memo、shouldComponentUpdate 来判断子组件是否需要更新。
+
+
+
+#### react-router 相关
+
+
+
+
+
+#### react 状态管理相关
+
+
+
+
+
+
+#### react 优化相关
+
+- [ ] 常用的优化手段
+
+    类组件 - shouldComponentUpdate
+
+    函数组件 - React.memo
+
+
+
+
+#### 其他
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### react element
