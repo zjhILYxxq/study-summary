@@ -76,7 +76,61 @@
 
 - [ ] 类组件生命周期方法使用
 
+    **mount** 阶段的生命周期方法:
+    - **constructor**
 
+      构造函数，用于创建一个类组件实例对象；构建的类组件实例一直存在于类组件整个生命周期内。
+
+    - **static getDerivedStateFromProps**
+
+      根据传入的 props 计算 state。
+
+    - **render**
+      
+      render 阶段(或者协调阶段)触发，执行以后返回一个 react element， 用于生成类组件对应的 fiber tree；
+
+    - **componentDidMount**: 
+      
+      commit 阶段触发，类组件对应的 dom 节点添加到 dom tree 之后，浏览器开始渲染之前触发；
+
+
+    **update** 阶段的生命周期方法:
+
+    - **static getDerivedStateFromProps**
+
+      根据传入的 props 重新计算 state
+
+    - **shouldComponentUpdate**
+
+      可以根据 shouldComponentUpdate 的返回值，决定 render 方法是否需要执行。
+
+      如果返回 true，render 方法重新执行，返回新的 react element，然后要走 diff、副作用处理；
+
+      如果返回 false，render 方法不需要执行，组件不需要更新。
+
+      PureComponent 默认实现了 shouldComponentUpdate 方法，会对 props、state 做浅比较。
+
+    - **render**
+
+    - **getSnapshotBeforeUpdate**
+
+        更新 dom tree 之前调用。
+
+        > componentDidMount、componentDidUpdate、useLayoutEffect 是更新 dom tree 之后调用。 useEffect 是浏览器完成渲染以后调用。
+
+    - **componentDidUpdate**
+
+        commit 阶段触发，类组件对应的 dom 节点添加到 dom tree 之后，浏览器开始渲染之前触发。
+
+        componentDidUpdate 方法内部调用组件实例的 setState 方法，会出现死循环现象。
+
+    组件卸载: **componentWillUnmount**
+
+    错误边界: **static getDerivedStateFromError**、**componentDidCatch**
+
+    不安全的是生命周期方法: **componentWillMount**、**componentWillUpdate**、**componentWillReceiveProps**、**getDerivedStateFromProps**。
+
+    这几个生命周期方法都在 render 方法之前触发，在 concurrent 模式下，组件可能会发生二次渲染。如果这些方法中存在引发副作用的代码，那么最后会导致不可预知的错误。
 
 
 
@@ -215,6 +269,10 @@
 
 
 #### react 优化相关
+
+- [ ] react 项目全链路优化
+
+
 
 - [ ] 常用的优化手段
 
