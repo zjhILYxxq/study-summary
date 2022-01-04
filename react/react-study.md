@@ -260,7 +260,7 @@
 
 #### react 原理
 
-- [x] React 的理念 - 快速响应
+- [x] **React 的理念 - 快速响应**
 
     React 是构建**快速响应**的大型 Web 应用程序的首选。
 
@@ -285,7 +285,7 @@
 
 
 
-- [x] React 架构
+- [x] **React 架构**
 
     React16(及后续版本)架构可以分为三层：
 
@@ -295,24 +295,135 @@
   
     - **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
 
-- [ ] react 工作原理
 
-    虚拟节点树的链表化，是得协调过程可以随时打断。
-
-
-- [ ] legacy 模式和 concurrent 模式
+- [x] **react 工作过程**
 
 
+    jsx -> react element -> fiber tree -> dom tree
 
-- [ ] diff 算法
+    react 更新的工作过程:
+    1. 调用 setState 方法，创建一个 update 对象收集到对应的 updateQueue 中，根据触发 setState 的上下文，定义 update 的优先级；
+    2. 为更新创建一个调度任务，添加到 react 的 taskQueue 中；
+    3. 依次遍历 taskQueue 中的任务，开始 react 协调；
+    4. 开始协调时，要确定本次协调要处理的更新优先级(根据 lane 处理)；
+    5. 从根节点开始遍历 fiber tree，不需要协调的 fiber node 直接跳过，需要协调的 fiber node，则执行对应组件的 render 方法；
+    6. 将 fiber node 的子节点和 render 方法返回的 react element 做 diff 算法比较，确定子节点是否需要更新已经更新产生的副作用‘
+    7. fiber tree 协调结束，进入 commit 阶段，处理协调 fiber tree 产生的副作用；
+    8. 副作用处理完毕，浏览器开始渲染更新以后的 fiber tree；
 
 
+    fiber tree 在协调过程中，随时可以打断，所以就有了可中断的 concurrent 模式。
 
 
-- [ ] 副作用处理
+- [x] **legacy 模式和 concurrent 模式**
+
+    legacy 模式： fiber tree 的协调过程不可中断；
+
+    concurrent 模式: fiber tree 的协调过程可以中断；react 任务处理时会分配一个 5ms 的时间片，时间片到期，react 就会让出主线程，然后在下一个时间片继续 fiber tree 的协调；
+
+- [x] **concurrent 模式下的副作用**
+
+    由于 concurrent 模式下，高优先级的更新可以中断低优先级更新，所以会发生低优先级更新下组件重复渲染的情况。
+
+    此时，如果在类组件的 componentWillMount、componentWillUpdate、componentWillReceiveProps 等方法中有副作用的代码，那么就可能给最终的结果带来不可预测的问题。
+
+    另外， concurrent 模式下，高优先级的 state 会重复计算，如果 state 的计算过程也存在副作用，那么也会有问题。
+
+    副作用：
+    - 组件重复协调引发的副作用；
+    - update 重复处理引发的副作用；
+
+- [x] **react 更新的的三层 loop**
+
+    三层 loop:
+    - 事件循环: eventLoop, 基于 messageChannel 宏任务去请求时间片；
+    - react 任务调度: workLoop，遍历 taskQueue(基于最小堆实现，优先级最高的任务添加到堆顶), 处理堆顶任务；
+    - fiber tree 协调调度: workInPropgressLoop，每一个 react 任务，都有一个 workInPropgressLoop 来处理 fiber tree 的协调。 fiber tree 每次协调时都是根节点开始，采用深度优先遍历，确定要更新的 fiber node 以及收集更新产生的副作用。
+
+    fiber tree 协调结束以后就进入 commit 阶段，开始处理副作用。处理完毕以后，react 会立即开始处理下一个 task(时间片没有到期)。
+
+- [x] 双缓存 fiber tree
+
+    fiber tree 在做协调时，实际存在两颗 fiber tree： current fiber tree 和 workInProgress fiber tree。
+
+    current fiber tree 对应当前的页面结构， wokrInProgress fiber tree 是协调过程中生成的 new fiber tree，协调结束以后 workInProgress fiber tree 会作为下一次更新的 current fiber tree。
+
+    为什么要存在两颗 fiber tree?
+  
+    双缓存 fiber tree 最大的意义，就是为了支持 concurrent 模式下高优先级更新可以中断低优先级更新。
+    
+    当低优先级的更新的协调过程进行到一半时，先让出主线程；此时有高优先级的更新进来，就需要重置原来的 workInProgress fiber tree。
+
+- [x] react 任务的优先级 
+
+    根据触发 react 更新的上下文，可以确定对应的 react 任务的优先级。
+
+    react 任务的优先级:
+    - 直接优先级，优先级最高，对应 click、input、forcus、blur 等操作；
+    - 用户阻塞优先级，对应 scroll、mousemove 等操作；
+    - 普通优先级，对应 setTimeout、网络请求、useTransition 等；
+    - 低优先级，对应 Suspense ？
+    - 空闲优先级，对应 OffScreen，类似于 vue 的 keep-alive;
+
+- [x] lane
+
+    lane, 赛道的意思。
+
+    react 在触发更新时，会创建一个 update 对象，然后根据触发更新的上下文为这个 update 分配一个 lane。根据分配的 lane，就可以确定对应的 react 调度任务的优先级。
+
+    当开始处理 react 调度任务协调 fiber tree 时，还会确定本次协调要处理的 lane。然后根据 lane，处理满足条件的 update 对象。
+
+    fiber tree 协调中断时，会使用全局变量记录本次协调的  lane 以及正在处理的 fiber node。当获取到时间片以后，要重新计算协调的 lane。如果此次的 lane 的优先级比上次高，那么就说明有高优先级的更新进来，此时需要重置 workInProgress fiber tree；如果此次的 lane 的优先级没有上次高，那么就继续上次中断的协调。
+
+- [x] **diff 算法**
+
+    在协调过程中，如果组件节点的 render 方法被触发，返回新的 react element，那么就需要将组件节点原来的子节点和 react element 做对比，判断原来的子节点哪些可以复用，哪些需要新增，哪些需要新增。
+
+    diff 算法实际上就是按序遍历 currrent fiber node list 和 new react element list，比较 key 和 type，判断 current fiber node 可不可用：
+    - current fiber node list vs react element
+      
+      匹配的复用，不匹配的卸载；
+
+    - current fiber node list vs react element list
+
+      先按序遍历 current fiber node list 和 react element list，匹配复用，不匹配卸载；(要考虑 current fiber node list、 react element list 遍历完的情况)；
+
+      key 出现不匹配时，将剩余的 current fiber node 转化为一个 map，继续遍历 react element；
+
+    复用的 fiber node，如果是组件节点，如果未做优化，那是需要重新执行 render 方法的；如果是 dom 节点，要记录是否需要更新属性。
+
+    diff 算法比较难的一点，是判断节点发生了移动。需要比较匹配的 current fiber node 的 index 对比上一个没有发生移动的节点 index，如果小，说明发生了移动。
+
+    由于子节点是单链表的存在，所以只能从头节点开始遍历，不能首尾遍历。
 
 
-- [ ] 父组件更新的时候，子组件是否会更新
+- [x] **Scheduler - 调度器**
+
+    维护一个 taskQueue，调度 react 更新任务。
+
+    taskQueue 是一个最小堆。
+
+  
+- [x] **Render - 渲染器** 
+
+    渲染器工作内容就是 fiber tree 协调结束以后，处理副作用。
+
+    处理副作用的过程:
+    - dom 操作之前, 此时 dom tree 还没有更新；
+    - dom 操作，更新 dom tree、卸载不需要的组件、更新 ref 等；
+    - dom 操作之后， componentDidMount、componentDidUpdate、useLayoutEffect；
+    - 浏览器渲染完成以后， useEffect；
+
+    如何移动 dom 节点: 找到该节点之后不需要移动的 dom 节点。如果能找到，使用 insertBefore 移动 dom 节点；如果不能找到，使用 appendChild 移动 dom 节点。
+
+- [x] **useTransition**
+
+    useTransition 实现防抖节流：
+    - 防抖：高优先级更新中断低优先级更新、可中断的协调；
+    - 节流：任务有最大延迟时间；
+    
+
+- [x] 父组件更新的时候，子组件是否会更新
 
     父组件更新的时候，子组件默认会更新。
 
@@ -320,20 +431,81 @@
 
     可以使用 React.memo、shouldComponentUpdate 来判断子组件是否需要更新。
 
+- [x] react 和 vue 技术栈的对比
+
+    - 响应式更新原理不同
+
+        vue 是典型的观察订阅模式， data 属性是 Subject， 维护一个 dep 列表。组件实例是 Observer。组件实例会根据计算属性、监听属性、render 方法创建一个 render watcher、多个 user warcher、多个 lazy watcher，并将这些 watcher 添加到对应的数据属性的 deps 类别中。当数据属性发生变化时，通知 deps 中的 watcher 去执行 run 方法来更新。
+
+        react 是通过 setState 触发更新。
+
+    - vnode tree 处理的过程不同
+
+        vue 是从发生更新的节点开发， react 是从根节点开始。
+
+    - vue 更新调度没有优先级的概念，而 react 有;
+
 
 
 #### react-router 相关
 
+- [x] **路由原理**
 
+    hash 模式: onhashchange + 修改 hash;
+
+    history 模式: popstate + pushState/replaceState
+
+    pushState/replaceState 并不会触发 popstate 事件。我们可以重写 pushState、replaceState， 自定义一个 popState 事件，然后通过 window.dispatch 主动触发。
+
+    history 模式需要服务端的支持，否则会返回 404。
 
 
 
 #### react 状态管理相关
 
+- [ ] **redux**
+
+    redux 的关键对象:
+    - state - 全局数据；
+    - store - 存储全局数据的地方，通过 store.getState() 获取数据；
+    - action - 调用 diapatch 修改 state 传入的对象；
+    - reducer - 纯函数，接受一个旧的 state 和 action， 返回一个新的 state；
+
+    使用 redux 的三大原则:
+    - 单一数据源， 一个 react 应用只有一个 store；
+    - state 是只读的，只能通过 dispatch 修改 state；
+    - reducer 是纯函数；
 
 
 
+- [x] **redux 的使用过程**
 
+    使用过程:
+    - 通过 createStore 方法，传入一个 reducer，返回一个 store 对象；
+    - 调用 store 的 dispatch 方法修改 state；
+
+    通过 dispatch 方法修改 state 时，会把所有的 reducer 执行一遍。
+
+    其他:
+    - applyMiddleware ??
+    - compose ??
+    - combineReducers??
+
+- [x] **redux 的使用原理**
+
+    redux 需要配合 react-redux 使用。
+
+    使用 react-redux 时，react-redux 会将包装我们的组件，生成一个 HOC。 HOC 的更新方法，会通过 store.subscribe 方法添加到 store 对象的 listeners 列表中。
+
+    当我们通过 dispatch 方法修改 state 时，会遍历 store 的 listeners 列表，触发 HOC 组价的更新方法。
+
+- [x] **mobx 的使用**
+
+    mobx 定义一个 store， store 里面有 state，和可以更改 state 的 action。
+
+    mobx-react 用于将 react 组件包装为一个 HOC， react 组件内部使用 store 的 state 时，会将 hoc 的更新方法收集到 state 的依赖列表中。
+
+    当 state 发生变化时，依次触发依赖列表中 hoc 的更新方法。
 
 #### react 优化相关
 
@@ -353,6 +525,7 @@
 #### 其他
 
 - [ ] 为什么 react hooks 不能出现在 if 等逻辑块中?
+- [ ] vue 和 react 的对比？
 
 
 
