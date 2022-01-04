@@ -74,7 +74,7 @@
   - **封装自定义 hook**
 
 
-- [ ] 类组件生命周期方法使用
+- [x] 类组件生命周期方法使用
 
     **mount** 阶段的生命周期方法:
     - **constructor**
@@ -134,45 +134,105 @@
 
 
 
-- [ ] csr & ssr
+- [x] csr & ssr
+
+    csr，客户端渲染，使用 ReactDOM.render 方法； ssr, 服务端渲染，使用 ReactDOM.hydrate 方法。
+
+    render 和 hydrate 方法的区别: render 方法会把容器节点的所有子节点移除；而 hydreate 方法会保留容器节点的所有子节点，然后在协调阶段判断 dom 节点是否可以使用。
+
+    ssr 服务端需要用到的几个方法:
+    - renderToString - 将 react 元素渲染为一个 html 字符串；
 
 
 
+- [x] context
+  
+    使用 context 可以进行跨组件通信。
 
-- [ ] context
+    context 的用法：
+    - 使用 createContext 方法定义一个 Context；
+    - 使用 Context.Provider 包裹使用 context 的组件， value 为供子组件使用的值；
+    - 子组件可以通过 contextType、useContext、Context.Consumer 的方式使用 Context。
 
-  context 的用法
-
-  context 的原理
+    context 的原理:
+    - 在父组件中，通过 setState 的方式修改 Context.value，触发更新；
+    - Context.Provider 更新，找到使用 Context 的子组件，标记更新；
+    - 子组件更新；
 
   
-
-- [ ] refs
+- [x] refs
 
   父组件获取子组件 dom 节点的方式:
+
   - 子组件是类组件：
     - 父组件获取子组件实例，再通过子组件实例获取子组件的 dom 节点；
     - ref callback - 将父组件给 ref callback 通过 props 传递给子组件，让子组件 dom 节点的 ref 属性值为 ref callback；
-- 子组件是函数组件(不能给函数组件添加 ref 属性):
-  - ref callback；
-  - forwardRef;
-  - 
+  
+  - 子组件是函数组件(不能给函数组件添加 ref 属性):
+    - ref callback；
+    - forwardRef;
+    - forwardRef + useImperativeHandler；
+
+
+  > 注意哦，不能给函数添加 ref 属性。
 
 
 
+- [x] 高阶组件
+
+    高阶组件，实质是一个纯函数，传入一个组件， 返回一个新组件，不改变传入的组件。
+    
+    使用高阶组件时， 应该注意以下关键点:
+    
+    1. 高阶组件是一个纯函数，不要对传入的组件进行修改。应该提供一个容器组件包裹传入的组件，在容器组件上做对应的修改。
+    
+    2. 如果传入的源组件有静态方法， 应将源组件的静态方法复制到容器组件。
+    
+    3. 不要在 render 方法和函数式组件方法中使用 HOC。
+    
+        在 render 或者函数式组件方法中使用 HOC， 父组件每次更新时，会先卸载更新前的 HOC， 删除对应的 dom 节点， 然后挂载新的 HOC，将对应的 dom 节点添加到 dom 树中，而不是对子组件做局部更新， 还造成不必要的子组件重新渲染。
+        
+        可以这么理解，在 render 方法中使用 HOC， 父组件每次更新时， HOC 组件的 componentWillUnmount、 componentDidMount 都会触发， componentDidUpdate 永远不会触发。
+        
+    4. 通过 refs 转发和 props 将 HOC 上的 ref 传递到源组件。
+    
+        方式如下:
+        ```
+        function HocComponent(Component) {
+            class Component1 extends React.Component {
+                ...
+                render() {
+                    return <Component ref={props.forwardRef} />
+                }
+            }
+            return React.forwardRef ((props, ref) => {
+                return <Component1 forwardRef= {ref} />
+            })
+        }
+        ```
+        传递方式为: 先通过 refs 转发将 HOC 组件标签上的 ref 传递给容器组件，然后容器组件通过 props 将 ref 传递给 源组件。
+
+- [x] 严格模式 
+
+    严格模式的意义：
+    - 检查不安全的、过时的 api；
+    - 帮助我们检查副作用： 严格模式下通过重复执行函数体、类组件生命周期方法等来帮我们检查代码是否有副作用(只适用于开发模式);
 
 
 
-- [ ] 高阶组件
+- [x] 受控组件&非受控组件 
+
+    区别在于获取表单元素的值的方式。
+
+    受控组件: 表单元素的值和 state 关联，通过 state 获取表单元素的值。
+
+    非受控组件: 表单元素的值和 state 不关联，通过表单元素获取表单元素的值。非受控组件一般配合 ref 使用。
 
 
+- [x] 懒加载
 
-- [ ] 严格模式 
+    React.lazy + React.Suspense
 
-
-- [ ] 受控组件&非受控组件 
-
-- [ ] 懒加载
 
 - [x] 组件强制更新的方式
 
@@ -182,9 +242,14 @@
     - shouldComponentUpdate 返回 ture(多此一举)；
     - React.memo 返回 ture(多此一举)；
 
-- [ ] 其他
+- [x] 既然有了类组件，为什么还要给函数组件提供 hook？
 
-    既然有了类组件，为什么还要给函数组件提供 hook？
+    使用类组件实现 HOC 比较麻烦。要写 constructor、生命周期方法等。
+
+    类组件测试不方便？
+
+    类组件还需要 babel-loader 转义？
+
 
 
 
@@ -231,6 +296,8 @@
     - **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
 
 - [ ] react 工作原理
+
+    虚拟节点树的链表化，是得协调过程可以随时打断。
 
 
 - [ ] legacy 模式和 concurrent 模式
@@ -284,6 +351,8 @@
 
 
 #### 其他
+
+- [ ] 为什么 react hooks 不能出现在 if 等逻辑块中?
 
 
 
