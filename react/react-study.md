@@ -2,16 +2,16 @@
 
 涉及 react api 使用、react 原理、 react-router、redux、 mobx、react 优化等知识；
 
-
-
 #### react 基础知识
 
-- [ ] hooks api 的使用
+- [x] hooks api 的使用
 
   常用的 hooks
   - **useState**: 
   
-    通过 useState 可以给函数组件添加状态 state 以及用于修改 state 的 setState。 state 更新时，不会像类组件一样做合并操作，只会进行替换操作。
+    通过 useState 可以给函数组件添加状态 state 以及用于修改 state 的 setState。 
+    
+    state 更新时，不会像类组件一样做合并操作，只会进行替换操作。
 
     如果 state 更新依赖于之前的 state，可以在使用 setState 时传入一个 function callback。 该 function callback 触发时，入参为上一个 state。此时，我们就可以根据上一次的 state 返回新的 state。
 
@@ -19,7 +19,7 @@
 
     如果一个函数组件中存在多个 state，我们可以通过 useReducer 将多个 state 合并为一个。
 
-    使用 useReducer 时要注意传入的 reducer 是一个纯函数，不要修改入参，否则在 strict 模式或者 concurrent 模式下，可能会出现不期望的副作用。
+    使用 useReducer 时要注意传入的 reducer 是一个纯函数，最好不要修改入参，否则在 strict 模式或者 concurrent 模式下，可能会出现不期望的副作用。
     
   - **useEffect**
 
@@ -28,6 +28,8 @@
     条件 effect - 做浅比较。
 
     useEffect 的 callback 执行时会返回一个 destory 方法，供函数组件下一次触发 useEffect 时触发。
+
+    > 本质上可以这样理解， useState 的出现，使我们可以为函数组件添加 state， useEffect、useLayoutEffect 则给我们提供了处理由 props、state 状态变化引发的自定义副作用的机会。
 
 
   - **useLayoutEffect**
@@ -69,8 +71,7 @@
 
     React18 新定义的 hook，使用时可以开启 concurrent 模式。
 
-  - **自定义 hook** 
-
+  - **封装自定义 hook**
 
 
 - [ ] 类组件生命周期方法使用
@@ -127,6 +128,10 @@
     - shouldComponentUpdate 返回 ture(多此一举)；
     - React.memo 返回 ture(多此一举)；
 
+- [ ] 其他
+
+    既然有了类组件，为什么还要给函数组件提供 hook？
+
 
 
 
@@ -170,6 +175,8 @@
     - **Reconciler(协调器)**：更新 fiber tree，找出变化的 fiber node，并收集 fiber node 变化导致的副作用(对应 react 更新的 render 阶段)；
   
     - **Renderer(渲染器)**：处理 Reconciler 工作过程中收集的副作用，更新 dom 节点并处理组件生命周期方法(对应 react 更新的 commit 阶段)；
+
+- [ ] react 工作原理
 
 
 - [ ] legacy 模式和 concurrent 模式
