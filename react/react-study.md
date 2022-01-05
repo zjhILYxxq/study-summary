@@ -459,6 +459,14 @@
 
     history 模式需要服务端的支持，否则会返回 404。
 
+- [x] **使用 react-router 如何实现路由拦截**
+
+    整个应用级的路由拦截：重写 pushState、replace 方法，传入一个 callback， 根据 callback 的返回值做页面跳转；
+
+    页面级的路由拦截: 最外层组件使用错误边界，子组件在 render 方法执行之前通过 componentWillUpdate、componentWillMount 方法识别当前路由，然后通过抛出异常的方式中断当前渲染，然后在父组件中根据错误信息重新跳转页面；
+
+
+
 
 
 #### react 状态管理相关
@@ -509,15 +517,11 @@
 
 #### react 优化相关
 
-- [ ] react 项目全链路优化
+- [x] react 项目全链路优化
 
-
-
-- [ ] 常用的优化手段
-
-    类组件 - shouldComponentUpdate
-
-    函数组件 - React.memo
+    - webpack 构建优化：优化打包速度、体积；
+    - 路由优化，懒加载；
+    - react 组件优化: React.memo、shouldComponentUpdate、PureComponent、组件的更新渲染不要引起不相关的组件的渲染；
 
 
 

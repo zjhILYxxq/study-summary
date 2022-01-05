@@ -347,23 +347,31 @@ React SSR
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
-    这个 App 组件有什么用？？
+    这个 App 组件有什么用
+
 
 
 
 33. 页面是否有 middleware ？？ 
 
+34. 如何实现 404
+
+    自己实现一个 404 页面。
+
+    通过中间件，读取 route-manifest.json 文件，判断当前路由是否有页面。没有的话重定向到 404 页面。
 
 
-34. 几个关键的 manifest.json 
+
+
+35. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
     build-manifest.json
 
-    routes-manifest.json
+    routes-manifest.json 用于获取路由信息
 
-35. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+36. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
@@ -373,7 +381,7 @@ React SSR
 
 
 
-36. SEO
+37. SEO
 
     SEO, 搜索引擎优化。 SEO 的目标是创建一种策略，以提高您在搜索引擎结果中的排名位置。
 
@@ -404,7 +412,7 @@ React SSR
 
 
 
-37. 测量网页内容加载速度的指标
+38. 测量网页内容加载速度的指标
 
     load
 
@@ -429,10 +437,10 @@ React SSR
     - 优化 js(缩小体积、懒加载等);
   
     
-38. SWR
+39. SWR
 
 
-39. next/image、next/font、 next/script
+40. next/image、next/font、 next/script
 
 
 
