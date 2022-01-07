@@ -521,7 +521,22 @@
 
     - webpack 构建优化：优化打包速度、体积；
     - 路由优化，懒加载；
-    - react 组件优化: React.memo、shouldComponentUpdate、PureComponent、组件的更新渲染不要引起不相关的组件的渲染；
+    - react 组件优化: 
+      - React.memo、shouldComponentUpdate、PureComponent、组件的更新渲染不要引起不相关的组件的渲染；
+      - useMemo、useCallback 重复计算等；
+      - 增量渲染，防止由于节点太多，导致 fiber tree 协调、 浏览器渲染时间过长，可以采用 setTimeout 时间分片，也可以使用 requestAnimationFrame(浏览器渲染时间占大头)；
+      - 虚拟列表；
+    - 网络优化: CDN、浏览器缓存策略、preload、prefetch、子应用资源年预加载、图片压缩、文件压缩等；
+    - 部署优化(k8s、rancher 优化 等);  
+    - 其他： 数据缓存等；
+
+    虚拟列表的关键:
+    - 给虚拟列表容器定义一个初始高度, 内部使用一个很高的元素，使得容器有滚动条；
+    - 添加一个列表容器，绝对定位， top 为 0；
+    - 根据容器的高度，列表元素的高度，计算可渲染的数量，再加上一些缓存数量；
+    - 给容器元素绑定 onScroll 事件；
+    - 滚动，计算虚拟列表容器元素的 scrollTop，根据 scrollTop，计算当前的起始元素和终止元素，并设置列表容器的 top；
+
 
 
 
@@ -709,49 +724,7 @@ Suspense 消除 race condition
 
 
 
-#### 类组件的某些声明周期方法为什么是不安全的
 
-
-#### 类组件 & 函数组件
-
-
-#### 为什么要引入 hooks
-
-
-#### hooks 是怎么设计的
-
-
-#### Context
-
-
-#### ref
-
-
-#### 事件合成
-
-
-#### portal
-
-
-#### React 的最佳实践
-
-
-#### mobx
-
-
-#### redux
-
-#### concurrent 模式下 setTimeout 中的更新是批量的更新吗
-
-#### react-router
-
-
-
-#### react 渲染过程是否可以使用 增量渲染 ？？
-
-增量渲染， 将浏览器渲染过程拆分 ？？
-
-react 协调过程是否可以放在 web worker 中 ？？
 
 
 
