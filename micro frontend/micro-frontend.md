@@ -121,7 +121,9 @@
 
 - [x] **saas 关于微前端的最佳实践** 
 
-    目前 saas 中微前端的实现方案: ssr + qiankun + module federation。
+    原来的项目中实现微前端的方式: SSR, 每次切换子应用时通过 a 标签 href 的方式切换应用，每次都需要重新加载页面，体验很差。
+
+    目前 SaaS 中微前端的实现方案: ssr + qiankun + module federation。
 
     其中，主应用采用 ssr 的方式渲染；子应用采用 csr + qiankun 的方式渲染；子应用之间交互采用 module federation。
 
