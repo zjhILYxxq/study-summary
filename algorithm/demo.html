@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        let list = [1, 3, 7, 2, 5, 10, 12, 6, 4, 9];
+
+        function downAdjust(nums, parentIndex, length) {
+            debugger
+            let temp = nums[parentIndex];
+            let childIndex = 2 * parentIndex + 1;
+            while(childIndex <= length) {
+                if (childIndex + 1 < length && nums[childIndex + 1] > nums[childIndex]) {
+                    childIndex++
+                }
+                if (temp >= nums[childIndex]) {
+                    break;
+                }
+                nums[parentIndex] = nums[childIndex];
+                parentIndex = childIndex;
+                childIndex = childIndex * 2 + 1;
+            }
+            nums[parentIndex] = temp;
+        }
+
+        function heapSort(nums) {
+            for(let i = nums.length / 2; i >= 0; i--) {
+                console.log(i);
+                downAdjust(nums, i, nums.length - 1);
+                console.log(nums);
+            }
+            // for(let i = nums.length - 1; i > 0; i--) {
+            //     let temp = nums[i];
+            //     nums[i] = nums[0];
+            //     nums[0] = temp;
+            //     downAdjust(nums, 0, i);
+            // }
+        }
+    
+    </script>
+</body>
+</html>
