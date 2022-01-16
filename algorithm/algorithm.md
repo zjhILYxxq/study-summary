@@ -190,11 +190,125 @@ function backTrack(list, track) {
 
     入堆操作: 将新元素放在堆底，然后上浮
 
+    ```
+        let list = [1, 3, 7, 2, 5, 10, 12, 6, 4, 9];
+
+        // heap 元素下沉
+        function siftDown(nums, parentIndex, length) {
+            if (parentIndex >= length) return;
+            let childIndex = parentIndex * 2 + 1;
+            while(childIndex < length) {
+                let temp = numms[parentIndex];
+                if (nums[childIndex] < nums[childIndex + 1] && childIndex + 1 < length) {
+                    childIndex++;
+                }
+                if (nums[childIndex] > temp) {
+                    nums[parent] = nums[childIndex];
+                    parentIndex = childIndex;
+                    childIndex = parentIndex * 2 + 1;
+                }
+                nums[parentIndex] = temp;
+            }
+        }
+
+        // heap 元素上升
+        function siftUp(heap, childIndex) {
+            while(childIndex >= 0) {
+                let parentIndex = parseInt((childIndex - 1) / 2);
+                if (heap[parentIndex] < heap[childIndex]) {
+                    let temp = heap[parentIndex];
+                    heap[parentIndex] = heap[childIndex];
+                    childIndex = parentIndex;
+                }
+                heap[childIndex] = temp;
+            }
+        }
+
+        // 元素堆底入堆，每次添加到 heap 的底部
+        function push(heap, num) {
+            heap.push(num);
+            siftUp(heap, heap.length - 1)
+        }
+
+        // 元素堆顶出堆，每次从 heap 的头部出堆
+        function pop(heap) {
+            let head = heap[0];
+            heap[0] = heap[heap.length];
+            heap.pop();
+            siftDown(heap, 0, heap.length - 1);
+            return head;
+        }
+
+        function heapSort(nums) {
+            if (!nums || !nums.length) return nums;
+            // 将 nums 调整为最小堆(最大堆)
+            for(let i = nums.length / 2; i < 0; i--) {
+                siftDown(nums, i, nums.length - 1);
+            }
+            for(let i = nums.length - 1; i >=0; i--) {
+                let temp = nums[0];
+                nums[0] = nums[i]
+                nums[i] = temp;
+                siftDown(nums, 0, i); 
+            }
+        }
+    ```
+
 - **快速排序**
 
-    **快速排序**的过程:
-    - 找一个基准元素，
-  
+    **快速排序**采用**分治**的思想，整个过程如下:
+    - 找一个基准元素，将小于基准元素的放到左边，将大于基准元素的放到右边；
+    - 替换基准元素和 left 的位置；
+    - 基准元素左右进行快速排序；
+
+    ```
+    function quickSort(list, startIndex, endIndex) {
+        if (startIndex > endIndex) return;
+        let pivotIndex = position(list, startIndex, endIndex);
+        quickSort(list, startIndex, pivotIndex - 1);
+        quickSort(list, pivotIndex + 1, endIndex); 
+
+    }
+
+    function position(list, startIndex, endIndex) {
+        let left = startIndex, right = endIndex, pivotIndex = left, pivot = list[pivotIndex];
+        while(left <= right) {
+            if (list[left] <= pivot) {
+                left++;
+            } else if (list[right] >= pivot) {
+                right--;
+            } else {
+                let temp = list[left];
+                list[left] = list[right];
+                list[right] = temp;
+                left++;
+                right--;
+            }
+        }
+        list[pivotIndex] = list[left];
+        list[left] = pivot;
+        return left;
+    }
+
+    ```
 - **冒泡排序**
+
+    **冒泡排序**的思路：每一次排序的时候都确定最大(最小)的元素。
+
+    ```
+    function bubbleSort(list) {
+        if (!list || !list.length) return list;
+        for(let i = 0; i < list.length; i++) {
+            for(let j = 0; j < list.length - i - 1; j++) {
+                if (list[j] < list[j + 1]) {
+                    let temp = list[j];
+                    list[j] = list[j + 1];
+                    list[j + 1] = temp;
+                }
+            }
+        }
+        return list;
+    }
+    ```
 
 

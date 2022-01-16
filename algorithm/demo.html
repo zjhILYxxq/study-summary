@@ -13,7 +13,7 @@
             debugger
             let temp = nums[parentIndex];
             let childIndex = 2 * parentIndex + 1;
-            while(childIndex <= length) {
+            while(childIndex < length) {
                 if (childIndex + 1 < length && nums[childIndex + 1] > nums[childIndex]) {
                     childIndex++
                 }
