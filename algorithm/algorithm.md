@@ -152,6 +152,7 @@ function backTrack(list, track) {
     ```
 
     最后比较一下序列化的结果就好。
+
 - **使岛屿分离的最小天数**
 
 #### 股票问题
@@ -167,6 +168,39 @@ function backTrack(list, track) {
 
 #### n 数之和问题
 
+**n 数之和**问题的关键: **先排序**。
+
+- **二数之和问题**: 先**排序**，然后使用**左右指针**，找到满足条件的两个数字；
+- **三数之和问题**: 先**排序**，然后确定一个数，再使用二数之后的求解过程，找到满足条件的三个数字；
+
+    ```
+    function threeSum(nums) {
+        let result = [];
+        if (!nums || !nums.length || nums.length < 3) return result;
+        let start = 0, end = nums.length - 1;
+        if (nums[start] <= 0 && nums[end] >= 0) {
+            while(start < end) {
+                let a = nums[start], j = start + 1, k = end;
+                while( j < k) {
+                    let b = nums[j], c = nums[k];
+                    let res = a + b + c;
+                    if (res === 0) result.push([a, b, c]);
+                    if (res <= 0) {
+                        while(nums[j] === b && j++ < k) {}
+                    }
+                    if (res >= 0) {
+                        while(nums[k] === c && j < k--) {}
+                    }
+                }
+                while(nums[start] === a && start++ < end) {}
+
+            }
+        }
+        return result;
+    }
+    ```
+
+- **四数之和问题**: 先**排序**， 先确定一个数，然后在使用三数之和的方法，求解满足题意的四个数。
 
 
 
