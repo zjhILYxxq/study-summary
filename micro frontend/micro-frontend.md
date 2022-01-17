@@ -19,8 +19,8 @@
     - 缺点： 每次切换应用，需要重新加载页面，用户体验不好； UI 不同步，dom 结构不共享； 子应用之间通信、交互非常复杂；对 SEO 不友好；
 
     ssr
-    - 优点：能实现单页应用的用户体验；不需要对应有应用改造；子应用之间技术栈无关；多个子应用可以并存；对 seo 友好；不需要对现有子应用做改造；
-    - 缺点: 实现复杂，需要对 node 有了解；子应用之间会相互影响；子应用之间通信、交互比较复杂；
+    - 优点：不需要对应有应用改造；子应用之间技术栈无关；多个子应用可以并存；对 seo 友好；不需要对现有子应用做改造；
+    - 缺点: 用户体验不好，子应用切换的时候需要刷新页面，重新走 SSR；实现复杂，需要对 node 有了解；子应用之间会相互影响；子应用之间通信、交互比较复杂；
 
     single-spa
     - 优点: 能实现单页应用的用户体验；子应用之间技术栈无关；多个子应用可以共存；生态丰富；
@@ -55,7 +55,7 @@
     - application 模式：子应用的切换由修改路由触发，整个切换过程由框架控制；应用场景：多个子应用聚合；
     - parcel 模式： 子应用/组件的挂载和卸载，由开发人员手动触发；应用场景：跨框架使用组件；
 
-    不管是 appliation 模式还是 parcel 模式，生命周期方法执行时，都要放回一个 promise 对象。 promise 状态变为 resolved，才真正mount/unmount。
+    不管是 appliation 模式还是 parcel 模式，生命周期方法执行时，都要放回一个 promise 对象。 promise 状态变为 resolved，才真正 mount/unmount。
 
     application 模式下子应用切换的原理:
     - pushState/replace/popstate,  hash/hashchange;
@@ -101,6 +101,12 @@
 
     css 隔离：
     - 严格隔离 - 基于 web component 的 shadow dom 实现；
+
+        ```
+        const shadow = element.createShadowRoot();
+
+        const shadow = element.attachShadow({ mode: true });
+        ```
     - scoped 样式隔离 - 给样式添加属性选择器；
   
     动态添加的 script、style，也会做隔离，原因是 qinakun 对 appendChild 方法做了拦截，重写了 appendChild 方法，然后对 js、css 做隔离。
@@ -123,7 +129,7 @@
 
     原来的项目中实现微前端的方式: SSR, 每次切换子应用时通过 a 标签 href 的方式切换应用，每次都需要重新加载页面，体验很差。
 
-    目前 SaaS 中微前端的实现方案: ssr + qiankun + module federation。
+    目前 SaaS 中微前端的实现方案: ssr + qiankun + module federation, 整个应用看起来就想一个 spa 应用。
 
     其中，主应用采用 ssr 的方式渲染；子应用采用 csr + qiankun 的方式渲染；子应用之间交互采用 module federation。
 
