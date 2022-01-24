@@ -1,6 +1,6 @@
 #### webpack 相关
 
-- [x] 常用的配置手段
+- [x] **常用的配置手段**
   
     entry
 
@@ -8,13 +8,11 @@
 
     resolve
 
-    module
-
     optimization： splitChunks、minimize、usedExports、sideEffect 等；
 
     module
 
-    plugin： miniCssExtractPlugin 等；
+    plugins： miniCssExtractPlugin 等；
 
 - [x] webpack 工作过程原理
 
@@ -71,6 +69,31 @@
     '[name].[hash].js' 中的 hash 使用的是 compilation hash，所有的 bundle 都一样；
 
     开发模式的热更新依赖 - websocket。
+
+- [x] 热更新
+
+    热更新的触发的条件:
+    - devServer.hot 配置项为 true；
+    - 启用 inline 模式；
+    - 必须声明 module.hot.accept(url, callback);
+
+    热更新的工作过程:
+    - 浏览器 构建 webSocket 对象， 注册 message 事件；
+    - 服务端 监听到文件发生变化， 生成更新以后的 chunk 文件， chunk 文件中包含更新的 modules，然后通过 webSocket 通知 浏览器 更新；
+    - 浏览器 构建的 webSocket 对象触发 message 事件，会收到一个 hash 值和一个 ‘ok’ 信息， 然后通过 动态添加 script 元素， 加载 新的 chunk 文件；
+    - 根据 module id 在 应用缓存(installedModuled) 中 找到之前缓存的 module。 然后以找到的 module 为基础， 递归遍历 module.parent 属性， 查找定义 module.hot.accept 的 parent module。
+
+        如果没有找到， 则 hmr 不起作用， 只能通过 重新加载页面 来显示更新。 在 递归过程 中， 我们会把遇到的 module id 存储起来。
+
+    - 找到定义 module.hot.accept 的 parent module 之后， 根据第四步收集的 module id， 将 installedModules 中将对应的 module 清除， 然后根据 module.hot.accept(url, callback) 中的 url， 重新安装关联的modules
+
+    - 执行我们注册的 callback；
+
+- [x] source-map
+
+    eval、cheap(只能映射到行，不能映射到列)、source-map(只能追踪到转换转换之前，比如压缩前的代码)、moudle(配合 source-map，可追踪到源代码)
+
+    一般为 **module-cheap-source-map**
 
 - [x] tree shaking 
 
@@ -148,6 +171,8 @@
     - tree shaking；
     - externals；
     - 压缩图片；
+  
+
 
 - [x] module federation 工作原理
 
@@ -163,7 +188,7 @@
     - remotes：使用别的应用暴露的组件，一般是加载别的应用提供的 remoteEntry 文件，格式为 obj@url；
     - shared: 配置多个应用之间的依赖共享；
 
-    module federatio 的工作原理：
+    module federation 的工作原理：
     1. webpack 根据应用的 exposes、filename、shared 配置项打包生成一个 remoteEntry 入口文件、包含 exposes 组件的 js 文件、包含 shared 依赖的 js 文件；
     2. host 应用启动，初始化一个 sharedScope 对象，包含 host 应用可与别的应用共享的模块；
     3. host 应用加载 remote 应用的 remoteEntry，拿到 remoteEntry.js 暴露的变量，该变量包含一个 init 方法和一个 get 方法；
