@@ -170,4 +170,28 @@
     - 对每一个页面组件都需要改造；
     - 对打包构建需要改造；
 
+
+    SaaS 子应用 csr to ssr 的改造过程(涉及子应用和主应用的改造)
+    - 子应用的改造过程(需要考虑的点-每个页面都需要单独单独打包成一个独立的 chunk(和懒加载分离的 chunk 不一样哦)、自动加载、版本回滚)：
+      - 子应用 app.js 渲染时提供两种模式: render 和 hydrate;
+      - 需要一个多入口的打包脚本， entry 为页面的 name， output 的 library 也为页面的 name， libraryTarget 为 umd；
+      - 每个页面需要做简单改造：无数据时的页面呈现；有数据时的页面呈现；如果使用了 contextType， 还需要对页面组件包装一下，传入一个空的 context；
+      - 打包以后的文件， 根据 asset-manifest，拿到页面名称和对应的静态资源连接的映射关系，deploy 的时候写入数据库(这样写入数据库的就两份：单入口文件打包和多入口文件打包；)；
+      - 将打包好的文件上传 CDN；
+  
+    - 主应用的改造过程；
+      - 读取数据库，拿到当前版本的静态文件；
+      - 根据路由，找到当前路由匹配的子应用以及子应用的具体页面；
+      - 拿到子应用的入口文件、css 样式文件，以及子应用具体页面的对应的 js 文件；
+      - 通过 fetch 拿到子应用页面的 js 脚本，通过 eval 方式执行，拿到子应用页面对应的组件；
+      - 执行组件方法，拿到组件对应的 react element；
+      - 执行 react.renderToString 方法，将 react element 转化为 html string;
+      - 将 html string 通过一个 application/json 类型的 script 标签添加到返回给客户端的 html 页面中；
+      - 主应用 hydrate 完成以后，将子应用页面的 html string 添加到子应用的容器节点下面；
+      - 子应用渲染时，判断是否走 ssr。如果走 ssr，调用 hydrate 方法；如果不走 render 方法，调用 render 方法；
+
+    SaaS 首屏渲染优化:
+    - 子应用需要需要的通用数据，放到 ssr 中先执行，然后注入到 window 对象中；
+    - 主应用和子应用都走 ssr；
+    - 解析要要加载的子应用时，preload 子应用需要的入口文件及样式文件(这个要试一下， prefetch 和 preload 有什么区别);
         
