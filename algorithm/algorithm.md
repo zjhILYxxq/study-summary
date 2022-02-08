@@ -2,18 +2,22 @@
 
 常见的问题类型、解题思路、典型问题:
 - **求最值**问题：**动态规划**，解题思路为**子问题的最优解得到原问题的最值**，典型题有**斐波那契数列**、**跳楼梯**、**股票**；
-- **列出所有情况**的问题：**回溯算法**，解题思路为**将问题转化为多叉树的深度优先遍历**，典型题有 [全排列](https://leetcode-cn.com/problems/permutations/)、**皇后问题**
-- **最短路径**的问题: **BFS - 广度优先遍历**，典型题有**二叉树的最小高度**、**走迷宫**、**密码锁问题**等；
+- **列出所有情况**的问题：**回溯算法**，解题思路为**将问题转化为多叉树的深度优先遍历**，典型题有 [全排列](https://leetcode-cn.com/problems/permutations/)、**皇后问题**；
+- **最短路径**的问题: **BFS - 广度优先遍历**，典型题有**二叉树的最小高度**、**走迷宫**、**密码锁问题**， 一般需要配合 **queue** 使用；
 - **链表问题**: 常用的解题方法有**双指针**、**快慢指针**、**正常遍历**、**配合其他数据结构使用如堆**，典型题有**合并两个链表**、**合并多个链表(配合堆使用)**、**寻找倒数第 k 个节点(双指针)**、**找到链表的中间节点(快慢指针)**、**判断链表有环(快慢指针)**、**判断链表相交(双链表)**；
+
+    由于链表天然具有递归的性质，所以链表类型的题目，也可以考虑使用递归的算法。
+    
 - **数组、字符串反转问题**: 常用的解题方法有**左右指针**；
 - **字符串寻找满足题意的子字符串**: 常用的解题方法有**滑动窗口**，最关键的地方是找到**缩小窗口的时机**，典型题有**最小覆盖子串**、**无重复字符的最长子串**、**找到字符串中所有字母异位词**；
 - **岛屿问题**: 常用的解题方法 **DFS**，典型题有**统计岛屿数量**、**统计封闭岛屿的数量**、**统计飞地的数量**等；
-- **二分查找问题**:
-- **字符串问题**:
-- **数组问题**: 
-- **排序问题**
+- **二分查找问题**: 
+- **字符串问题**: 常用的解题方法为**滑动窗口**；
+- **数组问题**: 常用解题方法为**排序** + **左右指针**；
+- **排序问题**: **快速排序**、**堆排序**；
 - **抢红包**: 解题方法为**二倍均值法**；
 - **n 数之和问题**: 解题思路是**先排序**，然后使用**左右指针**；
+- **回文字符串**: 解题思路是**遍历字符串**，找到以某个字符为中心的**最大回文字符串**；
 
 
 
@@ -40,10 +44,12 @@
 - **自底而上** - dp 数组；
 
 常见的动态规划问题的解题过程:
-- 斐波那契数列
-- 跳楼梯
-- 硬币
-- 股票
+- **斐波那契数列**
+- **跳楼梯**： 最简单的动态回归问题，确定 dp 数组， index 为 楼梯的阶数， value 为跳上该台阶的步数；确定 base case；
+- **零钱兑换问题**： 确定 dp 数组，dp 数组的 index 为 amount， value 为选择硬币的数量或者硬币的组合数；
+- **股票**: 状态有天数、做多允许交易的次数、当天的操作情况。
+- **背包问题**
+- **打家劫舍问题**
 
 
 #### 回溯算法 - DFS(深度优先遍历算法)
@@ -276,7 +282,7 @@ function backTrack(list, track) {
         function heapSort(nums) {
             if (!nums || !nums.length) return nums;
             // 将 nums 调整为最小堆(最大堆)
-            for(let i = nums.length / 2; i < 0; i--) {
+            for(let i = nums.length / 2; i > 0; i--) {
                 siftDown(nums, i, nums.length - 1);
             }
             for(let i = nums.length - 1; i >=0; i--) {
@@ -297,7 +303,7 @@ function backTrack(list, track) {
 
     ```
     function quickSort(list, startIndex, endIndex) {
-        if (startIndex > endIndex) return;
+        if (startIndex >= endIndex) return;
         let pivotIndex = position(list, startIndex, endIndex);
         quickSort(list, startIndex, pivotIndex - 1);
         quickSort(list, pivotIndex + 1, endIndex); 
@@ -306,17 +312,13 @@ function backTrack(list, track) {
 
     function position(list, startIndex, endIndex) {
         let left = startIndex, right = endIndex, pivotIndex = left, pivot = list[pivotIndex];
-        while(left <= right) {
-            if (list[left] <= pivot) {
-                left++;
-            } else if (list[right] >= pivot) {
-                right--;
-            } else {
+        while(left != right) {
+            while(left < right && list[left] <= pivot) { left++ }
+            while(left < right && list[right] >= pivot) { right++ }
+            if (left < right) {
                 let temp = list[left];
                 list[left] = list[right];
                 list[right] = temp;
-                left++;
-                right--;
             }
         }
         list[pivotIndex] = list[left];
@@ -344,5 +346,18 @@ function backTrack(list, track) {
         return list;
     }
     ```
+
+#### 递归
+
+**递归**算法的关键:
+- 问题能分解为子问题；
+- 找到 base case；
+
+常见的递归解法:
+- **反转链表**
+- **有序链表合并**
+- 
+
+
 
 
