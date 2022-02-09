@@ -154,11 +154,12 @@
     - 使用 Context.Provider 包裹使用 context 的组件， value 为供子组件使用的值；
     - 子组件可以通过 contextType、useContext、Context.Consumer 的方式使用 Context。
 
-    context 的原理:
+    **context** 的原理也是采用了**观察-订阅**模式:
     - 在父组件中，通过 setState 的方式修改 Context.value，触发更新；
     - Context.Provider 更新，找到使用 Context 的子组件，标记更新；
     - 子组件更新；
 
+- [x] 函数组件闭包问题的解决方式: 通过 useRef，定义一个在函数组件生命周期中一直存在的变量，通过 current 属性访问需要的值。
   
 - [x] refs
 
@@ -443,6 +444,8 @@
 
         vue 是从发生更新的节点开发， react 是从根节点开始。
 
+        为什么要从根节点上开始：设计上的简化；
+
     - vue 更新调度没有优先级的概念，而 react 有;
 
 
@@ -520,14 +523,14 @@
 - [x] react 项目全链路优化
 
     - webpack 构建优化：优化打包速度、体积；
+    - 部署优化(k8s、rancher 优化 等);  
+    - 网络优化: CDN、浏览器缓存策略、preload、prefetch、子应用资源年预加载、图片压缩、文件压缩等；
     - 路由优化，懒加载；
     - react 组件优化: 
       - React.memo、shouldComponentUpdate、PureComponent、组件的更新渲染不要引起不相关的组件的渲染；
       - useMemo、useCallback 重复计算等；
       - 增量渲染，防止由于节点太多，导致 fiber tree 协调、 浏览器渲染时间过长，可以采用 setTimeout 时间分片，也可以使用 requestAnimationFrame(浏览器渲染时间占大头)；
       - 虚拟列表；
-    - 网络优化: CDN、浏览器缓存策略、preload、prefetch、子应用资源年预加载、图片压缩、文件压缩等；
-    - 部署优化(k8s、rancher 优化 等);  
     - 其他： 数据缓存等；
 
     虚拟列表的关键:
