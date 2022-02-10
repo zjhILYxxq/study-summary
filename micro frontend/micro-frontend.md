@@ -194,4 +194,23 @@
     - 子应用需要需要的通用数据，放到 ssr 中先执行，然后注入到 window 对象中；
     - 主应用和子应用都走 ssr；
     - 解析要要加载的子应用时，preload 子应用需要的入口文件及样式文件(这个要试一下， prefetch 和 preload 有什么区别);
+
+
+    SaaS 性能优化:
+    - FCP: First Contentful Paint, 从页面开始加载到页面内容呈现在屏幕上的时间，优化策略： 主应用采用 SSR
+    - SI: Speed Index， 页面内容的可填充速度，主要是要考虑渲染过程有没有被阻塞；
+    - LCP: Largest Contentful Paint, 渲染出最大文本、图片的时间, 优化策略: 子应用采用 SSR；
+    - TTI: 可交互时间
+    - TBT: 总的阻塞时间
+    - CLS: Cumulative Layout Shift， 累计位移偏移，优化策略: 给元素固定 width、height，主要是图片；
         
+    
+    在 js 中测量上述指标 - 使用原生的 performance API：
+
+    ```
+    new PerformanceObserver((entryList) => {
+        for (const entry of entryList.getEntries()) {
+            console.log('LCP candidate:', entry.startTime, entry);
+        }
+    }).observe({type: 'largest-contentful-paint', buffered: true});
+    ```
