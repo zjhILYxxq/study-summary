@@ -285,34 +285,26 @@
 
     **AST** 是对源码的抽象，节点的类型包括**字面量**、**标识符**、**表达式**、**函数**、**模块语法**、**class** 语法等；
 
-    plugin、preset、babel api 的关系： babel 在做 transform 操作时提供了一些列的 api，将这些 api 做封装就成了 plugin；再对 plugin 做封装，就成了 preset；
+    **plugin**、**preset**、**babel api** 的关系： **babel** 在做 **transform** 操作时提供了一系列的 **api**，将这些 **api** 做封装就成了 **plugin**；再对 **plugin** 做封装，就成了 **preset**；
 
-    plugin：一些函数，在 babel 做 transform 时使用。
+    **plugin**：一些函数，在 **babel** 做 **transform** 时使用。
 
-    preset：对 plugin 的封装，项目初始化的时候，会根据 prest 安装 plugin。
+    **preset**：对 **plugin** 的封装，项目初始化的时候，会根据 **prest** 安装 **plugin**。
 
-    presets:
-    - @babel/preset-env
-    - @babel/preset-react
-    - @babel/preset-typescript
-    - @babel/preset-flow
+    **plugin**、**preset** 执行顺序:
+    - **plugin** 从左到右执行；
+    - **preset** 从右到左执行；
+    - 先执行 **plugin**， 再执行 **preset**；
 
-    内置包：
-    - @babel/cli
-    - @babel/polyfill
-    - @babel/plugin-transform-runtime
-    - @babel/register
-    - @babel/standlone
+    **plugin**、**preset** 默认是一个字符串，如果需要添加配置项，那么就提供一个数组。数组的第一个元素为 plugin、preset 的名称，第二个参数是对应的配置项。
 
-    工具包：
-    - @babel/parser
-    - @babel/core
-    - @babel/generator
-    - @babel/code-fame
-    - @babel/runtime
-    - @babel/template
-    - @babel/traverse
-    - @babel/types
+    **presets**:
+    - **@babel/preset-env**, 用于编译 **es2015** 语法；
+    - **@babel/preset-react**， 用于编译 **reat**；
+    - **@babel/preset-jsx**, 用于编译 **jsx**；
+    - **@babel/preset-typescript**， 用于编译 **ts**；
+    - **@babel/preset-flow**， 用于编译 **flow**；
+
 
 - [x] 懒加载使用 prefetch
 
