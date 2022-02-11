@@ -270,3 +270,49 @@
         }
     ```
 
+
+- [ ] **babel**
+
+    **babel** 用途:
+    - **转义**, 将 es6、ts、flow 等到目标环境支持的 js；
+    - **特殊的代码转换**，如埋点代码、自动国际化 等；
+    - **代码的静态分析**，eslint、 api 文档自动生成工具、ts 检查、代码压缩混淆；
+
+    **babel** 是 **source** 到 **source** 的转换，整体编译流程分为三步:
+    - **parse**, 通过 parse 将源码转化为 AST，即抽象语法树；
+    - **transform**， 遍历 AST，对 AST 各个节点做增删改；
+    - **generate**，根据转换以后的 AST 生成目标代码，并生成对一个的 sourcemap;
+
+    **AST** 是对源码的抽象，节点的类型包括**字面量**、**标识符**、**表达式**、**函数**、**模块语法**、**class** 语法等；
+
+    plugin、preset、babel api 的关系： babel 在做 transform 操作时提供了一些列的 api，将这些 api 做封装就成了 plugin；再对 plugin 做封装，就成了 preset；
+
+    plugin：一些函数，在 babel 做 transform 时使用。
+
+    preset：对 plugin 的封装，项目初始化的时候，会根据 prest 安装 plugin。
+
+    presets:
+    - @babel/preset-env
+    - @babel/preset-react
+    - @babel/preset-typescript
+    - @babel/preset-flow
+
+    内置包：
+    - @babel/cli
+    - @babel/polyfill
+    - @babel/plugin-transform-runtime
+    - @babel/register
+    - @babel/standlone
+
+    工具包：
+    - @babel/parser
+    - @babel/core
+    - @babel/generator
+    - @babel/code-fame
+    - @babel/runtime
+    - @babel/template
+    - @babel/traverse
+    - @babel/types
+
+- [x] 懒加载使用 prefetch
+
