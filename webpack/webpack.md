@@ -273,6 +273,7 @@
 
 - [ ] **babel**
 
+    babel 做了什么： 语法转换和 api 的 polyfill
     **babel** 用途:
     - **转义**, 将 es6、ts、flow 等到目标环境支持的 js；
     - **特殊的代码转换**，如埋点代码、自动国际化 等；
@@ -289,6 +290,11 @@
 
     **plugin**：一些函数，在 **babel** 做 **transform** 时使用。
 
+    **babel(7)** 内置的 **plugin** 类型:
+    - **syntax plugin**， **语法类型的 plugin**， 使得 parse 可以正确的将语法解析成 AST；
+    - **transform plugin**，转换类型的 **plugin**， 用于转换 AST；
+    - **proposal plugin**， 未加入语言标准特性的 AST 转换， 也是 **transform plugin**；
+
     **preset**：对 **plugin** 的封装，项目初始化的时候，会根据 **prest** 安装 **plugin**。
 
     **plugin**、**preset** 执行顺序:
@@ -304,6 +310,34 @@
     - **@babel/preset-jsx**, 用于编译 **jsx**；
     - **@babel/preset-typescript**， 用于编译 **ts**；
     - **@babel/preset-flow**， 用于编译 **flow**；
+
+    **babel helpers**： 用于 **bable plugin** 逻辑复用的一些工具函数， 分为用于注入 **runtime** 代码的 **helper** 和用于简化 **AST** 操作的 **helper** 两种。
+
+    babel runtime 里面放运行时加载的模块，会被打包工具打包到产物中。
+
+    babel7： 通过 @babel/preset-env + plugin-proposal-xxx, 指定目标环境，做精确转换。
+
+    babel-compat-table 提供了 es6 每个特性在不同版本中的支持版本；通过 browserslist query 可以查找满足条件的环境的版本。
+
+    @babel/preset-env 的 配置项：
+    - targets，指定环境版本；
+    - modules，以特定的模块化来输出代码；
+    - corejs， babel7 所使用的 polyfill， 版本 3 才支持；
+    - useBuiltIns， 使用 polyfill 的方式：
+      - entry，在入口处全部引入；
+      - useage，在每个文件中引入用到的 polyfill， 不是全部引入；
+      - false， 不引入；
+
+    AST 实际能做的事情：
+    - 自动埋点；
+    - 自动国际化；
+    - 自动生成 API 文档；
+    - 类型检查；
+    - eslint 检查；
+    - 代码压缩混淆；
+    - ...
+  
+    
 
 
 - [x] 懒加载使用 prefetch
