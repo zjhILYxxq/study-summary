@@ -271,9 +271,10 @@
     ```
 
 
-- [ ] **babel**
+- [x] **babel**
 
-    babel 做了什么： 语法转换和 api 的 polyfill
+    **babel** 做了什么： **语法转换**和 **api** 的 **polyfill**
+
     **babel** 用途:
     - **转义**, 将 es6、ts、flow 等到目标环境支持的 js；
     - **特殊的代码转换**，如埋点代码、自动国际化 等；
@@ -319,7 +320,7 @@
 
     babel-compat-table 提供了 es6 每个特性在不同版本中的支持版本；通过 browserslist query 可以查找满足条件的环境的版本。
 
-    @babel/preset-env 的 配置项：
+    **@babel/preset-env** 的 配置项：
     - targets，指定环境版本；
     - modules，以特定的模块化来输出代码；
     - corejs， babel7 所使用的 polyfill， 版本 3 才支持；
@@ -328,7 +329,7 @@
       - useage，在每个文件中引入用到的 polyfill， 不是全部引入；
       - false， 不引入；
 
-    AST 实际能做的事情：
+    **AST** 实际能做的事情：
     - 自动埋点；
     - 自动国际化；
     - 自动生成 API 文档；
@@ -336,9 +337,6 @@
     - eslint 检查；
     - 代码压缩混淆；
     - ...
-  
-    
 
-
-- [x] 懒加载使用 prefetch
+- [x] 懒加载使用 **prefetch**
 
