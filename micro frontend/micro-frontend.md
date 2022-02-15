@@ -214,3 +214,36 @@
         }
     }).observe({type: 'largest-contentful-paint', buffered: true});
     ```
+
+- [x] **子项目一键接入 sentry**
+
+    接入过程：
+    - 收集项目名称、dsn、静态资源位置、路径前缀；
+    - 创建 .sentryclirc 文件；
+    - 创建一个 hoc；
+    - 更新 package.json 的 script 脚本，添加上传 source-map 的命令，并整合到 build 命令下；
+    - 安装依赖；
+  
+- [x] aicc 业务
+
+    AI 语音三大算法：
+    - ASR 语音识别, 将人的语音转化为文字；
+    - NLP 语义理解，自然语言处理技术；
+    - TTS 语音合成, 文本转语音技术；
+    
+    **aicc** 通用业务流程:
+    - 创建一个话术，配置决策树，训练 (TTS)；
+    - 创建外呼任务: 话术配置、线路配置；
+    - 发起外呼任务；
+    - 语音对话交互(ASR、NLP、TTS、坐席监听、通话监听、AI 转人工)；
+    - 数据分析统计
+
+    rtp: 实时传送协议
+
+    FreeSwitch、Sip、引擎端、客户端之间的关系
+
+    FreeSwitch: 跨平台的开源电话交换平台
+
+    Sip: 协议；
+
+    WebRTC: 网页实时通信技术；
