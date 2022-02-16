@@ -61,7 +61,31 @@
 
 #### 本地媒体
 
-**轨道**，**MediaStreamTrack** 是 **WebRTC** 中的**基本媒体单元**。
+**轨道**，**MediaStreamTrack** 是 **WebRTC** 中的**基本媒体单元**。**MediaStramTrack** 在 **User Agent** 中表示一段媒体源，比如音轨或者视频。
+
+
+
+
+
+#### MediaDevices API - 媒体设备
+
+- **navigator.mediaDevices.enumerateDevices**： 返回一个可用的**媒体输入/输出设备**的列表
+
+    关键信息：
+    - **媒体输入/输出设备**，包括麦克风、耳机、摄像头等。设备的类型分为三种，**audioinput** - 麦克风； **audiooutput** - 耳机、扬声器； **videoinput** - 摄像头；
+    - **可用**，意味着麦克风、摄像头的权限控制为允许；
+
+
+    **enumerateDevices** 返回的是一个 **MediaDeviceInfo - 设备描述对象**的列表。
+
+- **navigator.mediaDevices.getUserMedia**： 返回可以使用的**媒体输入 - mediaStream**， 里面包含了**请求的媒体类型的轨道 - mediaStramTrack**。
+
+    **mediaStramTrack** 表示单一的**媒体流**，可以是**音频**，也可以是**视频**，但只能是两者中的一种。如果是**音频**，称为 **audio track - 音轨**；如果是视频，称为 **video track - 视频轨**。
+
+    **mediaStream** 用于将多个 **mediaStreamTrack** 打包到一起。一个 **mediaStram** 可包含多个 **mediaStreamTrack**。
+
+    通过 **mediaStream.getTrack()** 方法可以获取 **mediaStream** 内部包含的 **mediaStreamTrack**。
+
 
 
 
