@@ -165,7 +165,24 @@ NAT ？？ 防火墙？？  STUN？？  TURN？？
 
 **WebRTC 对等连接**并不是连接？？，至少不是 **TCP** 意义上的那种连接。实际上，它是一组**路径建立进程(ICE)**以及**一个可确定应建立哪些媒体和数据路径的协商器**。 
 
-**WebRTC 对等连接**是一个**协商器** ？？
+**WebRTC 对等连接**是一个**协商器**
+
+
+
+
+
+
+#### 建立 WebRTC 对等连接的过程以及涉及的关键 API
+
+1. **A** 和 **B** 都和**信令服务**器建立 **ws** 连接；
+2. **A**、**B** 都通过 **RTCPeerConnection** 建立对等连接实例 - pc
+3. **A** 通过 **navigator.mediaDevices.getUserMedia** 获取本地音频/视频流 - **stream**，并通过 **pc.addStream** 方法将 **stream** 作为**本地音频/视频源**；
+4. **A** 通过 **pc.createOffer** 建立一个**会话描述对象 - offer sdp**，并通过 **ws** 连接传递给 **B**；
+5. **A** 通过 **pc.setLocalDescription**, 设置**对等连接**的**本地描述**。这一步结束以后， **A** 端开始打洞，收集**候选人信息(ice)**。**打洞**成功以后，会触发 **pc.onicecandidate** 事件。在 **onicecandidate** 的 **callback** 中，通过 ws 连接将 ice 信息传递给 B；
+6. 
+
+
+WebRTC 涉及的协议
 
 
 
