@@ -12,6 +12,7 @@
 
 
 **WebRTC** 相关协议:
+
 - **应用层协议**:
   - **HTTP**: 超文本传输协议，Hyper-Text Transport Protocol;
   - **WebSocket**；
@@ -21,12 +22,14 @@
   - **ICE**: 交互式连接建立协议， Interactive Connectivity Establishment，打洞？
   - **STUN**: NAT 会话穿透使用工具协议， Session Traversal Utilities for NAT
   - **TURN**: STUN 协议的扩展，用于在 ICE 打洞失败时提供媒体中继？？
+  
 - **传输层协议**:
   - **TLS**: 传输层安全协议， Transport Layer Security；
   - **TCP**: 传输控制协议，Transmission Control Security；
   - **DTLS**: 基于 UDP 运行的 TLS；
   - **UDP**: 用户数据报协议， User Datagram Protocol;
   - **SCTP**: 流控制传输协议， Stream Control Transport Protocol；
+  
 - **网络层协议**:
   - **IP**: 网络协议， Internet Protocol;
 
@@ -186,7 +189,7 @@ NAT ？？ 防火墙？？  STUN？？  TURN？？
 10. **A** 和 **B** 开始**视频/音频通话**。 此时会触发 **pc.ontrack** 事件。在 **callback** 中可以获取**远端的媒体流**，然后赋值给 **video / audio** 组件。
 
 
-WebRTC 涉及的协议
+WebRTC 涉及的协议： RTP、 UDP 协议；
 
 
 

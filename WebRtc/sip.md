@@ -9,7 +9,7 @@
 通过 **SimpleUser** 类， 我们可以创建一个 **SimpleUser** 实例。通过这个 **SimplerUser** 实例，我们可以建立 **WebRTC 对等连接 - RTCPeerConnection**，在对等端之间传送**视频/音频/数据**。
 
 **SimpleUser** 构建实例时的配置项 **options**:
-- aor??
+- **aor??**
 - **delegate: SimpleUser 代理配置项**
   
     **SimpleUser 代理配置项**，需要开发人员提供 **hooks**，在对等连接各个过程中触发。
@@ -30,10 +30,10 @@
     }
     ```
 
-- media: SimpleUser 媒体配置项
-- reconnectionAttempts: 重连次数
-- reconnectionDelay: 两次重连之间的延迟时间；
-- userAgentOptions: 用户代理配置项；
+- **media: SimpleUser 媒体配置项**
+- **reconnectionAttempts: 重连次数**
+- **reconnectionDelay: 两次重连之间的延迟时间**；
+- **userAgentOptions: 用户代理配置项**；
 
 
 **SimplerUser** 实例方法:
