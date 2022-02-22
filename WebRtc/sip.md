@@ -10,6 +10,7 @@
 
 **SimpleUser** 构建实例时的配置项 **options**:
 - **aor??**
+  
 - **delegate: SimpleUser 代理配置项**
   
     **SimpleUser 代理配置项**，需要开发人员提供 **hooks**，在对等连接各个过程中触发。
@@ -31,8 +32,11 @@
     ```
 
 - **media: SimpleUser 媒体配置项**
+  
 - **reconnectionAttempts: 重连次数**
+  
 - **reconnectionDelay: 两次重连之间的延迟时间**；
+  
 - **userAgentOptions: 用户代理配置项**；
 
 
