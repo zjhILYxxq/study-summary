@@ -215,6 +215,10 @@
     }).observe({type: 'largest-contentful-paint', buffered: true});
     ```
 
+    **如何计算 LCP**: 浏览器会在绘制第一帧后立即分发一个 **largest-contentful-paint** 类型的 **PerformanceEntry**，用于识别**最大内容元素**。但是，在渲染后续帧之后，浏览器会在最大内容元素发生变化时分发另一个 **PerformanceEntry**。
+
+
+
 - [x] **子项目一键接入 sentry**
 
     接入过程：
