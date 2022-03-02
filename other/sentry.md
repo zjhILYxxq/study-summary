@@ -11,3 +11,45 @@
 - 告警通知: webhook + 微信机器人；(需要根据异常信息，确定异常的优先级，通知的指定人员)；
 - 告警处理结果: 后续接入工作台，统计异常处理情况
 
+
+
+#### 整个 sentry 接入
+
+SaaS 项目 sentry 的接入总共分为三个阶段：
+- **子项目 sentry 配置初始化**
+
+    子项目需要做两件事情:
+    - 上传 source-map；
+    - 添加错误边界，主动上报异常；
+  
+    这里可以通过脚手架 byai-cli 中的 sentry-init 命令给每个子项目做 sentry 配置的初始化
+    - 创建 .sentryrc 文件(token、url、projectName) 等；
+    - 创建一个 HOC， 包装 App，HOC 内部设置错误边界；
+    - 修改 package.json 的 script 脚本；
+    - 安装 sentry 依赖；
+
+- **微前端异常上报**
+
+    这里做的事情： 魔改 sentry.js， 拦截最后一步异常上报的接口请求操作，拿到要上报的异常信息，根据异常信息追踪栈，找到对应的子应用，将异常信息上报给对应的子应用的 sentry 项目。
+
+    关键:
+    - 主应用中接入 sentry，调用 Sentry 的 init 方法；
+    - 根据异常信息找到对应的子应用，重新拼装 url，然后通过原生的 fetch 方法上报异常；
+  
+- **上报异常处理**
+
+    关键: 
+    - 有一个 node 服务，用于将 sentry 的异常信息通过企业微信机器人，通知对应的负责人进行处理；
+    - 配置 sentry 子项目的 webhook(通过内部服务)
+
+
+#### sentry 上报异常 source map 不生效:
+
+qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
+会在首行添加 ;(function(window, self, globalThis){with(window){，导致 err stack 内的 1231:1 含有 qiankun 的代码， 与 sourcemap 的 1231:1 不符。
+
+解决方法是 webpack.BannerPlugin插件在开头加一行注释，这样sourcemap会从第二行开始。
+
+
+
+
