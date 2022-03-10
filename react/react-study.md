@@ -474,6 +474,36 @@
 
     - vue 更新调度没有优先级的概念，而 react 有;
 
+- [ ] react hooks 的理解
+
+  在 react hooks 出现之前，函数组件只是作为展示组件使用，没有状态。如果需要使用状态，则必须使用类组件。
+
+  为了能给函数组件也提供状态变化以及处理状态变化的副作用，react 在 16.8 版本以后提供了 react hook。
+
+  由于函数组件无法像类组件那样通过组件实例来存储 state 以及通过生命周期方法来处理状态变化引发的副作用，所系需要找到一个对象去存储 state。
+
+  react 给组件对应的 fier node 创建 hook 对象来存储 state。
+
+  挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node。 
+
+  调用 setState 时，更新 state， 然后在 fiber node 更新的时候，再次执行 useState 方法， 从 hook 对象读取新的 state。
+
+  这块儿需要再看看源码，理解一下。
+
+  useState 的工作原理
+
+  useEffect 的工作原理
+
+  useMemo、useCallback 的原理
+
+  useRef 的原理
+
+- [ ] react hooks 为什么不能放在 if 语句块里面
+
+- [ ] react 版本 17 和 16 在事件合成上的区别
+
+- [ ] react 16 版本和之前版本的区别
+
 
 
 #### react-router 相关
