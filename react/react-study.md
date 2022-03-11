@@ -474,7 +474,7 @@
 
     - vue 更新调度没有优先级的概念，而 react 有;
 
-- [ ] react hooks 的理解
+- [x] react hooks 的理解
 
   在 react hooks 出现之前，函数组件只是作为展示组件使用，没有状态。如果需要使用状态，则必须使用类组件。
 
@@ -500,9 +500,49 @@
 
 - [ ] react hooks 为什么不能放在 if 语句块里面
 
-- [ ] react 版本 17 和 16 在事件合成上的区别
 
-- [ ] react 16 版本和之前版本的区别
+- [x] react 各个版本
+
+    react 15 架构可以分为两层：协调器 Reconciler + 渲染器 Renderer。其中，协调器负责找出变化的节点，渲染器负责把变化的组件渲染到页面上。协调器工作过程中，整个协调是递归进行的。更新一旦开始，中途就无法中断。如果协调的时间过长，就会出现卡顿。
+
+    react 16 架构分为三层: 调度器 Scheduler + 协调器 Reconciler + 渲染器 Renderer。其中， Scheduler 负责更新任务的调度，高优先级的更新优先开始进入 Reconciler；协调器负责找出变化的节点；渲染器负责把变化的组件渲染到页面上。整个协调过程，由原来不可中断的递归变成了可中断的循环过程。通过事件循环 eventLoop、任务调度循环 workLoop、协调循环 workConcurrentLoop 实现了可中断的协调过程。
+
+    react17 版本的变化：
+    - 事件委托的变更， 由 document 变为 react 应用的容器节点；
+    - 移除事件池复用机制。 
+
+      因为在 React16 采取了一个事件池的概念，每次我们用的事件源对象，在事件函数执行之后，可以通过releaseTopLevelCallbackBookKeeping等方法将事件源对象释放到事件池中，这样的好处每次我们不必再创建事件源对象，可以从事件池中取出一个事件源对象进行复用。在事件处理函数执行完毕后,会释放事件源到事件池中，清空属性，这就是setTimeout中打印为什么是null的原因了
+      
+      事件池复用机制会导致事件内同步异步表现不一致。需要额外的调用 event.persist 方法。
+
+
+
+    react 18 版本的变化:
+    - 使用 createRoot api 代替 render， 默认采用 legacy 模式。 如果 setState 的上下文为 useTransition、Suspense、offscreen， 则采用 concurrent 模式。
+    - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
+    - useTransition 开启 concurrent 模式；
+    - 服务端支持 suspense 组件；
+
+
+
+
+- [x] react 版本 17 和 16 在事件合成上的区别
+
+  合成事件的目的：
+  - 抹平不同浏览器事件的差异，使得开发过程中不需要关注事件的差异性；
+  - 通过事件代理的方式，减少内存消耗，优化性能；
+  - 提供了跨平台的机制；
+  - 根据事件的类型，可以确定更新的优先级；
+
+  React 16 是将事件代理到 document 上， 而 React 17 是将事件代理到容器节点上。
+
+  考虑这样的场景， 在一个 react 应用中，再放置另一个 react 应用。如果使用 react 16， 里面的 react 应用的事件会冒泡到外面的 react 应用。 而使用 react 17， 事件只会冒泡到当前应用的容器节点。
+
+
+
+
+
+
 
 
 
