@@ -480,21 +480,39 @@
 
   为了能给函数组件也提供状态变化以及处理状态变化的副作用，react 在 16.8 版本以后提供了 react hook。
 
-  由于函数组件无法像类组件那样通过组件实例来存储 state 以及通过生命周期方法来处理状态变化引发的副作用，所以就需要找到一个对象去存储 state。
+  由于函数组件无法像类组件那样通过组件实例来存储 state 以及通过生命周期方法来处理状态变化引发的副作用，所以就需要找到一个对象去存储 state、effect 等。
 
   react 给组件对应的 fier node 创建 hook 对象来存储 state、effect、ref、callback 等。
 
-  挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node，这个 hook 对象会提供一个 queue 列表，收集 setState 生成的 update 对象；
+  - **useState 的工作原理**：
+  
+      挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node，这个 hook 对象会提供一个 queue 列表，收集 setState 生成的 update 对象；
 
-  调用 setState 时，构建 update 对象，并为 update 对象分配代表优先级的 lane，安排 react 异步调度任务；
+      调用 setState 时，构建 update 对象，并为 update 对象分配代表优先级的 lane，安排 react 异步调度任务；
 
-  更新阶段，调用 useState 方法，从 fiber node 上拿到 hook 对象，处理 hook 对象收集的 update 对象，拿到更新以后的 state。
+      更新阶段，调用 useState 方法，从 fiber node 上拿到 hook 对象，处理 hook 对象收集的 update 对象，拿到更新以后的 state。
 
-  这块儿需要再看看源码，理解一下。
+  - **useEffect 的工作原理**:
 
-  useState 的工作原理
+      挂载阶段，调用 useEffect 方法的时候，创建一个 hook 对象，收集到 fiber node 专门用来存储 hook 对象的 queue 中。
 
-  useEffect 的工作原理
+      update 阶段，调用 useEffect 方法的时候，读取原来的 hook 对象，比较前后的 deps 有没有变化。如果没有变化，该 effect 在 commit 阶段就不会被处理； 如果有变化，该 effect 在 commit 阶段就会被处理。
+
+      关于 effect， 函数组件的 fiber node 会通过一个 queue 来收集本次更新要处理的 effect。 在 mount 时，effect 会直接添加到 queue 中；update 时，会先比较 deps，deps 不同， effect 才会添加到 queue中。在 commit 阶段， queue 中的 effect 会一次被处理。即执行上一次 effect 的 destory，本次 effect 的 create。
+
+  - **useMemo 的工作原理**:
+
+
+  - **useRef 的工作原理**:
+
+      挂载阶段，调用 useRef 方法创建一个 hook 对象。useRef 入参会构建一个带 current 属性的 ref 对象保存到 hook 对象中。这个对象会一直存在，直到组件卸载，然后返回 ref 对象
+
+      更新阶段， useRef 没有做任何特殊操作，只是从 hook 对象中读取 ref 对象返回。
+
+  - **useContext 的工作原理**:
+  - **useTransition 的工作原理**:
+
+
 
   useMemo、useCallback 的原理
 
@@ -528,8 +546,8 @@
     react 18 版本的变化:
     - 使用 createRoot api 代替 render， 默认采用 legacy 模式。 如果 setState 的上下文为 useTransition、Suspense、offscreen， 则采用 concurrent 模式。
     - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
-    - 新增的 hooks
     - 服务端支持 suspense 组件；
+    - 新增的 hooks：
 
 
 
