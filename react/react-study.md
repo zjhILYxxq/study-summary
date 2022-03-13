@@ -561,10 +561,11 @@
 
 
     react 18 版本的变化:
-    - 使用 createRoot api 代替 render， 默认采用 legacy 模式。 如果 setState 的上下文为 useTransition、Suspense、offscreen， 则采用 concurrent 模式。
+    - 使用 createRoot api 代替 render， 根据 setState 的上下文来决定协调采用什么模式。如果上下文为直接上下文如 click 事件、 componentDidMount，用户阻塞上下文如 mousemove 事件，网络请求、setTimeout 等，采用 legacy 模式即协调不可中断；如果上下文为 useTransition、Suspense、offscreen 等，则 采用 concurrent 模式，协调可中断；
     - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
     - 服务端支持 suspense 组件；
     - 新增的 hooks - useId、useInsertionEffect、useSyncExternalStore；
+
 
 
 
