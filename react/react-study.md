@@ -488,7 +488,7 @@
   
       挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node，这个 hook 对象会提供一个 queue 列表，收集 setState 生成的 update 对象；
 
-      调用 setState 时，构建 update 对象，并为 update 对象分配代表优先级的 lane，安排 react 异步调度任务；
+      调用 setState 时，构建 update 对象，并为 update 对象分配代表优先级的 lane，update 对象会收集到 hook 对象的 queue 中，然后安排 react 异步调度任务；
 
       更新阶段，调用 useState 方法，从 fiber node 上拿到 hook 对象，处理 hook 对象收集的 update 对象，拿到更新以后的 state。
 
@@ -682,14 +682,6 @@
     - 给容器元素绑定 onScroll 事件；
     - 滚动，计算虚拟列表容器元素的 scrollTop，根据 scrollTop，计算当前的起始元素和终止元素，并设置列表容器的 top；
 
-
-
-
-
-#### 其他
-
-- [ ] 为什么 react hooks 不能出现在 if 等逻辑块中?
-- [ ] vue 和 react 的对比？
 
 
 
