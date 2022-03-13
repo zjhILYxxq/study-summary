@@ -480,13 +480,15 @@
 
   为了能给函数组件也提供状态变化以及处理状态变化的副作用，react 在 16.8 版本以后提供了 react hook。
 
-  由于函数组件无法像类组件那样通过组件实例来存储 state 以及通过生命周期方法来处理状态变化引发的副作用，所系需要找到一个对象去存储 state。
+  由于函数组件无法像类组件那样通过组件实例来存储 state 以及通过生命周期方法来处理状态变化引发的副作用，所以就需要找到一个对象去存储 state。
 
-  react 给组件对应的 fier node 创建 hook 对象来存储 state。
+  react 给组件对应的 fier node 创建 hook 对象来存储 state、effect、ref、callback 等。
 
-  挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node。 
+  挂载阶段，调用 useState 方法的时候，构建一个 hook 对象，存到 fiber node，这个 hook 对象会提供一个 queue 列表，收集 setState 生成的 update 对象；
 
-  调用 setState 时，更新 state， 然后在 fiber node 更新的时候，再次执行 useState 方法， 从 hook 对象读取新的 state。
+  调用 setState 时，构建 update 对象，并为 update 对象分配代表优先级的 lane，安排 react 异步调度任务；
+
+  更新阶段，调用 useState 方法，从 fiber node 上拿到 hook 对象，处理 hook 对象收集的 update 对象，拿到更新以后的 state。
 
   这块儿需要再看看源码，理解一下。
 
@@ -498,7 +500,13 @@
 
   useRef 的原理
 
-- [ ] react hooks 为什么不能放在 if 语句块里面
+- [x] react hooks 为什么不能放在 if 语句块里面
+
+    由于函数组件没有对应的实例对象来存储 state、effect，所以 react 就在组件对应的 fiber node 存储了一个 hook 对象来存储函数组件的 state、effect、ref 等。 在挂载阶段，执行 useXXX 方法创建一个 hook 对象；在更新阶段，执行 useXXX 方法，使用已经创建的 hook。
+
+    fiber node 是通过一个单向链表来收集 hook 对象，实现比较简单。 为了能保证 update 阶段读取的 hook，是 mount 阶段构建的 hook 对象，那我们就必须保证 mount 阶段和 update 阶段的 useXXX 执行顺序是完全一致的。这就使得 useXXX 不能出现在 if 语句块中，因为这样就不能保证 hook 的时序性。
+
+    最后总结一下，hooks，只要生成 hook， 就必须放在函数组件的最外层语句块中，如 useState、useEffect 等；反之则不需要放在最外层语句块中，如 useTransition。
 
 
 - [x] react 各个版本
@@ -520,7 +528,7 @@
     react 18 版本的变化:
     - 使用 createRoot api 代替 render， 默认采用 legacy 模式。 如果 setState 的上下文为 useTransition、Suspense、offscreen， 则采用 concurrent 模式。
     - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
-    - useTransition 开启 concurrent 模式；
+    - 新增的 hooks
     - 服务端支持 suspense 组件；
 
 
