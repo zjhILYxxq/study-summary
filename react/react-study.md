@@ -492,7 +492,7 @@
 
       更新阶段，调用 useState 方法，从 fiber node 上拿到 hook 对象，处理 hook 对象收集的 update 对象，拿到更新以后的 state。
 
-  - **useEffect 的工作原理**:
+  - **useEffect(useLayoutEffect) 的工作原理**:
 
       挂载阶段，调用 useEffect 方法的时候，创建一个 hook 对象，收集到 fiber node 专门用来存储 hook 对象的 queue 中。
 
@@ -502,6 +502,17 @@
 
   - **useMemo 的工作原理**:
 
+      挂载阶段, 调用 useMemo 方法的时候，创建一个 hook 对象。 hook 对象会收集计算属性的值以及依赖。useMemo 最后返回计算属性的值。
+
+      update 阶段，调用 useMemo 方法，获取 hook 对象。比较 deps 依赖是否发生变化。如果发生变化，重新计算计算属性的值，并保存到 hook 对象中。
+
+      > 依赖比较是浅比较。
+
+  - **useCallback 的工作原理**：
+
+        挂载阶段， 调用 useCallback 方法，会创建一个 hook 独享。 hook 对象会收集 callback 和依赖。 useCallback 会返回 callback。
+
+        update 阶段， 调用 useCallback， 获取 hook 对象。 比较 deps 依赖是否发生变化。如果发生变化，返回新的 callback。
 
   - **useRef 的工作原理**:
 
@@ -510,13 +521,18 @@
       更新阶段， useRef 没有做任何特殊操作，只是从 hook 对象中读取 ref 对象返回。
 
   - **useContext 的工作原理**:
+
+      useContext 比较特殊，它没有在创建 hook 对象。 useContext 只是获取 context 的 value 值，并添加到 context 的 dependencies 列表中。当 context 的 value 值发生变化时，通知组件强制更新。
+
   - **useTransition 的工作原理**:
 
+      挂载阶段，调用 useTransition 方法，会创建一个 hook 对象。在 useTransition 内部，会创建一个 isPending 的 state 和 startTransition 方法。 startTransition 方法会保存在 hook 对象上。
+
+      更新阶段，调用 useTransition 方法，会直接从 hook 对象上读取 startTransition 方法，并从 isPending 对应的 hook 上读取 state 值。
+     
 
 
-  useMemo、useCallback 的原理
 
-  useRef 的原理
 
 - [x] react hooks 为什么不能放在 if 语句块里面
 
@@ -524,7 +540,8 @@
 
     fiber node 是通过一个单向链表来收集 hook 对象，实现比较简单。 为了能保证 update 阶段读取的 hook，是 mount 阶段构建的 hook 对象，那我们就必须保证 mount 阶段和 update 阶段的 useXXX 执行顺序是完全一致的。这就使得 useXXX 不能出现在 if 语句块中，因为这样就不能保证 hook 的时序性。
 
-    最后总结一下，hooks，只要生成 hook， 就必须放在函数组件的最外层语句块中，如 useState、useEffect 等；反之则不需要放在最外层语句块中，如 useTransition。
+    > useContext 并没有生成 hook，但是也不能放在 if 语句块中。
+
 
 
 - [x] react 各个版本
@@ -547,7 +564,7 @@
     - 使用 createRoot api 代替 render， 默认采用 legacy 模式。 如果 setState 的上下文为 useTransition、Suspense、offscreen， 则采用 concurrent 模式。
     - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
     - 服务端支持 suspense 组件；
-    - 新增的 hooks：
+    - 新增的 hooks - useId、useInsertionEffect、useSyncExternalStore；
 
 
 
