@@ -369,7 +369,7 @@
     声明语句 - 特殊的语句，声明变量、函数、class、import、export 等；
 
 
-    AST 节点的公共属性:
+    **AST** 节点的公共属性:
     - type, AST 节点的类型；
     - start、end、loc 源码字符串的结束和开始、行列号；
     - 其他节点
