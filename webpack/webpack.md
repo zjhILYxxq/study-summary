@@ -341,5 +341,42 @@
     babel 是通过 @babel/preset-env 来做按需 polyfill 和转换的，原理是通过 browserslist 来查询出目标浏览器版本，然后根据 @babel/compat-data 的数据库来过滤出这些浏览器版本里哪些特性不支持，之后引入对应的插件处理
 
 
-- [x] 懒加载使用 **prefetch**
+- [x] **懒加载使用 prefetch**
+
+- [x] **AST 相关**
+
+    以 **babel** 为例，babel 编译代码是 **source to source** 的转换， 整个过程分为三步:
+    - **parser**，通过解析器进行词法分析，将源码转化为 AST 对象；
+    - **transform**， 遍历 AST， 对 AST 进行增删改查；
+    - **generate**，生成器，将 AST 转化为目标代码，并生成 source-map；
+
+
+    **AST** 是对源码的抽象，字面量、标识符、表达式、语句、class、模块语法都有自己的 AST。
+
+    AST 节点的类型:
+    - **字面量**， **literal**， 具体可分为 stringLiteral、numberLiteral、booleanLiteral、RegExpLiteral 等；
+    - **标识符**， Identifier， 表示变量名、属性名、参数名等各种声明和引用的名字；
+    - **语句**， statement，代码中可独立执行的语句，如 break、if、forIn、while 等，具体可以分为：BreakStatement、ReturnStatement、BlockStatement、TryStatement、forInStatement、fowStatement、WhileStatement、DoWhileStatement、SwitchStatement、WiehStatement、IfStatement 等；
+    - **声明语句**， Declaration， 是一种特殊的语句，表示声明一个变量、函数、class、import、export 等，具体可以分为： VariableDeclaration、FunctionDeclaration、ClassDeclaration、ImportDeclararion、ExportDeclaration 等；
+    - **表达式**， Expression，执行完以后有表达式，常见的 Expression 有 ExpressionStatement、ArrayExpression、AssignmentExpression、FunctionExpression、ClassExpression、CallExpression 等；
+    - **Programe**, 代表整个源码的节点， body 属性代表程序体；
+    - **Directive**， 代码中的指令部分；
+    - **Comment**, 注释节点；
+
+
+    表达式 - 有返回值，有的表达式可单独作为语句使用；
+    语句 - 可单独执行；
+    声明语句 - 特殊的语句，声明变量、函数、class、import、export 等；
+
+
+    AST 节点的公共属性:
+    - type, AST 节点的类型；
+    - start、end、loc 源码字符串的结束和开始、行列号；
+    - 其他节点
+
+
+    AST 结构是如何遍历的？
+
+
+
 
