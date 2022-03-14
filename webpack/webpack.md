@@ -378,5 +378,23 @@
     AST 结构是如何遍历的？
 
 
+    一个日常的源代码文件对应的 AST 结构:
+    - 最外层是一个 Programe 节点， body 属性代表程序体；
+    - body 内部第一层一般为声明语句，如 ImportDeclaration、ExportDeclarction、ClassDelaration、FunctionDelaration、VarliableDelarction，如果有语句执行，还会有 IfStatement、WhileStatement、ExpressionStatement；
+    - 接下来就是各个 AST 节点内部的结构；
+  
+        AST 常见的节点的结构:
+        - Programe
+        - VariableDeclaration
+        - ImportDeclararion
+        - ExportDeclaration
+        - FunctionDeclaration
+        - IfStatement
+        - ForIfStatement
+        - WhileStatment
+        - ExpressionStatament
+        - 对象
+
+
 
 
