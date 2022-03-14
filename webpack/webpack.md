@@ -346,12 +346,12 @@
 - [x] **AST 相关**
 
     以 **babel** 为例，babel 编译代码是 **source to source** 的转换， 整个过程分为三步:
-    - **parser**，通过解析器进行词法分析，将源码转化为 AST 对象；
-    - **transform**， 遍历 AST， 对 AST 进行增删改查；
-    - **generate**，生成器，将 AST 转化为目标代码，并生成 source-map；
+    - **parser**，通过解析器进行词法分析，将**源码**转化为 **AST** 对象；
+    - **transform**， 遍历 **AST**， 对 **AST** 进行增删改查；
+    - **generate**，生成器，将 **AST** 转化为目标代码，并生成 **source-map**;
 
 
-    **AST** 是对源码的抽象，字面量、标识符、表达式、语句、class、模块语法都有自己的 AST。
+    **AST** 是对**源码**的抽象，**字面量**、**标识符**、**表达式**、**语句**、**class**、**module**都有自己的 **AST**。
 
     AST 节点的类型:
     - **字面量**， **literal**， 具体可分为 stringLiteral、numberLiteral、booleanLiteral、RegExpLiteral 等；
@@ -370,30 +370,18 @@
 
 
     **AST** 节点的公共属性:
-    - type, AST 节点的类型；
-    - start、end、loc 源码字符串的结束和开始、行列号；
+    - **type**, **AST** 节点的类型；
+    - **start**、**end**、**loc** 源码字符串的**开始**、**结束**、**行列号**；
     - 其他节点
 
 
     AST 结构是如何遍历的？
 
 
-    一个日常的源代码文件对应的 AST 结构:
-    - 最外层是一个 Programe 节点， body 属性代表程序体；
-    - body 内部第一层一般为声明语句，如 ImportDeclaration、ExportDeclarction、ClassDelaration、FunctionDelaration、VarliableDelarction，如果有语句执行，还会有 IfStatement、WhileStatement、ExpressionStatement；
+    一个日常的源代码文件对应的 **AST** 结构:
+    - 最外层是一个 **Programe** 节点， **body** 属性代表程序体；
+    - **body** 内部第一层一般为**声明语句**，如 **ImportDeclaration**、**ExportDeclarction**、**ClassDelaration**、**FunctionDelaration**、**VarliableDelarction**，如果有语句执行，还会有 **IfStatement**、**WhileStatement**、**ExpressionStatement**；
     - 接下来就是各个 AST 节点内部的结构；
-  
-        AST 常见的节点的结构:
-        - Programe
-        - VariableDeclaration
-        - ImportDeclararion
-        - ExportDeclaration
-        - FunctionDeclaration
-        - IfStatement
-        - ForIfStatement
-        - WhileStatment
-        - ExpressionStatament
-        - 对象
 
 
 
