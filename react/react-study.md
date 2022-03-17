@@ -583,6 +583,14 @@
   考虑这样的场景， 在一个 react 应用中，再放置另一个 react 应用。如果使用 react 16， 里面的 react 应用的事件会冒泡到外面的 react 应用。 而使用 react 17， 事件只会冒泡到当前应用的容器节点。
 
 
+- [x] fiber tree 的理解
+
+  1. fiber tree 是作为 react 框架的虚拟节点树， 通过 setState 方法触发更新时，需要更新 fiber tree，通过 diff 算法找到变化的 fiber node，然后对 dom tree 做更新；
+  2. react 16 之前的版本，虚拟节点树的协调过程是递归不可中断的； react 16 以后，虚拟节点树采用 fiber 结构，整个协调过程采用一个 while 循环，可中断；
+  3. fiber tree 中， 父节点通过 child 指针指向子节点，子节点通过 sibling 指针指向兄弟节点，并通过 return 指针指向父节点。这样通过任意一个节点，可找到这个节点的子节点、父节点、兄弟节点，为可中断的协调提供了基础；
+  4. 协调时，存在两颗 fiber tree， current fiber tree 和 workInProgress fiber tree，两颗 fiber tree 的存在，为高优先级更新中断低优先级更新提供了基础； 
+
+
 
 
 
