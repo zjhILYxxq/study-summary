@@ -38,6 +38,7 @@ React SSR
 #### next.js 知识点
 
 1. 在 **next.js** 中， **pages** 目录下每一个 **react 组件**都相当于都是一个**页面**；
+
 2. **页面**与基于**路径名**的**路由**关联;
 
     页面 '/pages/index' 对应的路由为 '/';
@@ -127,36 +128,47 @@ React SSR
 
 7. nextjs 会根据 pages 目录下每一个组件文件，会打包生成一个 js 文件和 对应的 html 文件；
 
-8. 通过 next/router 切换页面时，都是懒加载，会根据路径，去 window.__BUILD_MANIFEST 变量中查找路径对应的 js 文件；
+8. SSR 同构
 
-9.  nextjs 项目在构建的时候，会生成一个 _buildManifest.js 文件， 该文件会在客户端页面加载的时候执行，给 window 对象注入 __BUILD_MANIFEST 变量。
+    代码同构
+
+    数据同构
+
+    路由同构
+
+
+
+
+9.  通过 next/router 切换页面时，都是懒加载，会根据路径，去 window.__BUILD_MANIFEST 变量中查找路径对应的 js 文件；
+
+10. nextjs 项目在构建的时候，会生成一个 _buildManifest.js 文件， 该文件会在客户端页面加载的时候执行，给 window 对象注入 __BUILD_MANIFEST 变量。
 
     __BUILD_MANIFEST 变量包含路由和对应的 js 文件的映射关系；
 
-10. next/dist/client/next.js 是 nextjs 应用客户端的入口文件。 应用启动以后，渲染首屏，会采用 ReactDOM.hydrate 方法；跳转页面，采用 React.render 渲染；
+11. next/dist/client/next.js 是 nextjs 应用客户端的入口文件。 应用启动以后，渲染首屏，会采用 ReactDOM.hydrate 方法；跳转页面，采用 React.render 渲染；
 
     每次切换路由时，都会通过 React.render 从根节点开始渲染。
 
-11. next/dist/pages/_app.js 会返回一个 App 组件，该 App 组件会作为 react 应用的根组件;
+12. next/dist/pages/_app.js 会返回一个 App 组件，该 App 组件会作为 react 应用的根组件;
 
     _app.js 就是打包 chunk 文件中的 _app 文件，在 mian.js 文件之后执行；
 
-12. 组件脱水 & 注水
+13. 组件脱水 & 注水
 
     利用 react-dom-server  提供的 renderToString、 renderToNodeStream 方法可以给 react 组件脱水，将 react 组件转化为转化为实际的 dom 结构，不绑定时间，不触发组件的 componentDidMount、effect；
 
     组件注水，就是使用 react-dom 提供的 hydreate 方法，给组件对应的 dom 节点绑定事件，并触发生命周期方法；
 
-13. 动态路由 ？
+14. 动态路由 ？
     
-14. pre-rendering 预渲染
+15. pre-rendering 预渲染
 
     预渲染有两类:
     - 静态生成，即 nextjs 应用在 build 阶段就生成路由对应的 html 页面，所有的请求都对应一个页面，可以被 cdn 缓存；
     - 服务端渲染，服务端应用启动以后，根据客户端发起的请求，动态生成页面; 
   
   
-15. 渲染策略：客户端渲染 - CSR、静态生成 - SSG、增量静态再生 - ISR、服务端渲染 - SSR；
+16. 渲染策略：客户端渲染 - CSR、静态生成 - SSG、增量静态再生 - ISR、服务端渲染 - SSR；
 
     CSR - client side render, 客户端渲染；
 
@@ -167,7 +179,7 @@ React SSR
     ISR - Incremental Static Regeneration， 增量静态再生；
 
     
-16. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
+17. 数据获取方法 - getStaticProps、getStaticPaths、getServerSideProps
 
     getStaticProps: 用于 SSG， 在构建时获取数据, 获取的数据将用于组件的脱水；
 
@@ -177,7 +189,7 @@ React SSR
 
 
 
-17. getStaticProps 是如何工作的？
+18. getStaticProps 是如何工作的？
 
     在 build 阶段， next.js 调用 renderToString 方法将组件变为字符串之前，会执行组件定义的 getStaticProps 方法，将 getStaticProps 方法返回的结果作为组件的 props 传递给组件。
 
@@ -187,11 +199,11 @@ React SSR
     - notFound，boolean，可选，如果为 true，会返回 404；
     - redirect，object，设置重定向；
 
-    当用户再次访问预渲染页面时，会想服务端请求一个 json 文件，内部包含 getStaticProps 的结果。
+    当用户再次访问预渲染页面时，会向服务端请求一个 json 文件，内部包含 getStaticProps 的结果。
   
     
 
-18. ISR - 增量静态再生(Incremental Static Regeneration)
+19. ISR - 增量静态再生(Incremental Static Regeneration)
 
     有时候，我们可能有大量的页面，而在 build 阶段你生成所有的页面是不可能的。
     
@@ -212,7 +224,7 @@ React SSR
     注意，上面的请求不是通过 next/router 请求，而是要向服务端发送请求。
 
 
-19. getStaticPaths 是如何工作的？
+20. getStaticPaths 是如何工作的？
 
     如果需要预渲染使用动态路由的页面，这应该使用 getStaticPaths。
 
@@ -229,7 +241,7 @@ React SSR
     fallback 为 'blocking', 和 SSR 相同，给客户端返回包含数据的页面；
 
 
-20. getServerSideProps 是如何工作的? 
+21. getServerSideProps 是如何工作的? 
 
     (猜测，待验证)！
 
@@ -239,7 +251,7 @@ React SSR
 
 
 
-21. getStaticProps 和 getServerSideProps 的区别
+22. getStaticProps 和 getServerSideProps 的区别
 
     两者之间的区别:
     1. getStaticProps 用于 SSG， getServerSideProps 用于 SSR；
@@ -251,30 +263,28 @@ React SSR
 
 
 
-
-
-22. SSG & 动态路由
+23. SSG & 动态路由
     
     如果是动态路由，且定义了 getStaticProps，则必须定义 getStaticPaths，否则会抛出异常(这个比较好理解，如果定义了 getStaticProps，说明需要走 SSG，如果此时不定义 getStaticPaths，拿不到完整的路径，就无法走 SSG 了);
 
     如果不是动态路由，但定义了 getStaticPaths，也会抛出异常(这是一个没有意义的操作，当然要报错了！！)
 
-    如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。(动态路由，默认走的是 SSR。定义 getStaticParhs，说明想走 SSG，此时不定义 getStaticProps,那当然报错了)
+    如果没有定义 getStaticProps， 只定义了 getStaticPaths, 也会抛出异常。(动态路由，默认走的是 SSR。定义 getStaticPaths，说明想走 SSG，此时不定义 getStaticProps,那当然报错了)
 
 
-23. getStaticProps、getServerSideProps 返回的结果如何在 client 获取？
+24. getStaticProps、getServerSideProps 返回的结果如何在 client 获取？
 
     首次加载页面时，getStaticProps、getServerSideProps 返回的结果会通过一个 id 为 __NEXT_DATA__， 类型为 application/json 的 script 标签诸如到 html 页面中。 
 
     当客户端首屏渲染时，会通过 document.getElementById('__NEXT_DATA__').textContent 的方式读取 getStaticProps、getServerSideProps 的结果，然后通过 props 诸如到组件中。
 
     
-24. SSR & 动态路由 
+25. SSR & 动态路由 
 
 
 
 
-25. 动态路由的工作机制 
+26. 动态路由的工作机制 
 
     在 nextjs 中，我们可以通过将 [] 添加到 pages 下页面的文件名中，来定义动态路由， 如 pages 目录下文件的文件名为 [pid].js
 
@@ -293,13 +303,13 @@ React SSR
 
     如果动态路由使用了 getServerSideProps, 那么在 build 阶段，动态路由不会生成一个 html 文件，只会生成一个 js 文件。当站点启动后，根据客户端访问的路径，找到对应的 js 文件，先执行 getServerSideProps 方法，再对组件脱水，生成一个 html 字符串返回给客户端。给组件脱水的时候，动态路由参数也会被解析。
     
-26. nextjs 路由匹配的的先后顺序
+27. nextjs 路由匹配的的先后顺序
 
     预定义静态路由 > 动态路由 > 捕获所有路由
 
 
 
-27. 浅层路由
+28. 浅层路由
 
     浅层路由，是指导航到同一页面但不调用 getStaticProps、getServerSideProps 方法。
 
@@ -311,7 +321,7 @@ React SSR
 
 
 
-28. server router 是什么东东？？ client 端路由？ server 端路由？
+29. server router 是什么东东？？ client 端路由？ server 端路由？
     
 
 
@@ -319,14 +329,6 @@ React SSR
 
 
 
-29. 在不配置 getStaticProps、getStaticPaths、getServerSideProps 的情况下，为什么 pages 目录下的 index 文件不会生成静态文件，而其他却会 ?
-
-
-30. RSC、SSG、SSP 是什么东东？？
-
-    SSG 对应 getStaticProps ？
-
-    SSP 对应 getServerSideProps ？
 
 
 
@@ -336,14 +338,7 @@ React SSR
 
 
 
-31. getInitialProps 有什么用？ 
-
-    getInitiaProps 是 nextjs 9.3 版本之前使用的 api，现在已经被 getStaticProps、getServerSideProps 替换。
-
-
-
-
-32. next.js 内置的 _app.tsx 组件
+30. next.js 内置的 _app.tsx 组件
 
     在 next.js 项目中，我们在 pages 中定义的每一个组件，在 build 阶段，外面都会包裹一个内置的组件 App
 
@@ -352,18 +347,16 @@ React SSR
 
 
 
-33. 页面是否有 middleware ？？ 
+31. 页面是否有 middleware ？？ 
 
-34. 如何实现 404
+32. 如何实现 404
 
     自己实现一个 404 页面。
 
     通过中间件，读取 route-manifest.json 文件，判断当前路由是否有页面。没有的话重定向到 404 页面。
 
 
-
-
-35. 几个关键的 manifest.json 
+33. 几个关键的 manifest.json 
 
     server/pages-manifest.json
 
@@ -371,17 +364,16 @@ React SSR
 
     routes-manifest.json 用于获取路由信息
 
-36. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
+34. nextjs 项目构建的时候，分为 client 端构建和 server 端构建
 
     client 构建是采用 webpack， 是一个多入口文件打包， 入口文件为 pages 文件夹下的目录，打包以后的内容会输出到 /static/chunks/pages 目录下，一个页面对应一个 js 文件；
 
     server 端构建的话，会采用 SSG 和 SSR；
 
-    server 端构建的详细步骤，这里需要整理一个流程图出来!!
 
 
 
-37. SEO
+35. SEO
 
     SEO, 搜索引擎优化。 SEO 的目标是创建一种策略，以提高您在搜索引擎结果中的排名位置。
 
@@ -412,7 +404,7 @@ React SSR
 
 
 
-38. 测量网页内容加载速度的指标
+36. 测量网页内容加载速度的指标
 
     load
 
@@ -437,10 +429,10 @@ React SSR
     - 优化 js(缩小体积、懒加载等);
   
     
-39. SWR
+37. SWR
 
 
-40. next/image、next/font、 next/script
+38. next/image、next/font、 next/script
 
 
 
