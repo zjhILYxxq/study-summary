@@ -51,5 +51,18 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 解决方法是 webpack.BannerPlugin插件在开头加一行注释，这样sourcemap会从第二行开始。
 
 
+#### sentry 监控原理
+
+每当代码在 **runtime** 时发生错误时，**JavaScript** 引擎就会抛出一个 **Error** 对象，并且触发 **window.onerror** 函数。
+
+**Sentry** 对 **window.onerror** 函数进行了改写，在这里实现了错误监控的逻辑，添加了很多运行时信息帮助进行错误定位，对错误处理进行跨浏览器的兼容等等。
+
+在我们使用 **Promise** 的时候，如果发生错误而我们没有去 **catch** 的话，**window.onerror** 是不能监控到这个错误的。但是这个时候，**JavaScript** 引擎会触发 **unhandledrejection** 事件，只要我们监听这个事件，那么就能够监控到Promise产生的错误。
+
+对于跨域的 JS 资源，**window.onerror** 拿不到详细的信息，需要往资源的请求添加额外的头部。为了拿到详细信息，需要做两件事情：一是跨域脚本的服务器必须通过 **Access-Control-Allow-Origin** 头信息允许当前域名可以获取错误信息，二是网页里的 **script** 标签也必须指明 **src** 属性指定的地址是支持跨域的地址，也就是 **crossorigin** 属性。有了这两个条件，就可以获取跨域脚本的错误信息。
+
+
+
+
 
 
