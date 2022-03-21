@@ -587,8 +587,20 @@
 
   1. fiber tree 是作为 react 框架的虚拟节点树， 通过 setState 方法触发更新时，需要更新 fiber tree，通过 diff 算法找到变化的 fiber node，然后对 dom tree 做更新；
   2. react 16 之前的版本，虚拟节点树的协调过程是递归不可中断的； react 16 以后，虚拟节点树采用 fiber 结构，整个协调过程采用一个 while 循环，可中断；
-  3. fiber tree 中， 父节点通过 child 指针指向子节点，子节点通过 sibling 指针指向兄弟节点，并通过 return 指针指向父节点。这样通过任意一个节点，可找到这个节点的子节点、父节点、兄弟节点，为可中断的协调提供了基础；
+  3. fiber tree 中， 父节点通过 child 指针指向子节点，子节点通过 sibling 指针指向兄弟节点，并通过 return 指针指向父节点。通过这样一个树形链表结构，任意一个节点，可找到这个节点的子节点、父节点、兄弟节点，为可中断的协调提供了基础；
   4. 协调时，存在两颗 fiber tree， current fiber tree 和 workInProgress fiber tree，两颗 fiber tree 的存在，为高优先级更新中断低优先级更新提供了基础； 
+
+- [x] requestAnimationFrame & requestIdleCallback
+
+    **requestIdleCallback**，在浏览器空闲时被调用，即每一帧有空闲时间时，可触发。 通过 callback 入参的 timeRemaining 方法，可以获取到还有的剩余时间。
+
+    **requestAnimationFrame**，该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行。
+
+    **react** 为什么不使用 **requestIdleCallback**：
+    - 浏览器兼容性
+    - 触发频率不稳定，收很多因素影响；
+
+
 
 
 
