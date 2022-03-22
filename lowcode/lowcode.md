@@ -52,9 +52,14 @@ LowCode 和 Pro Code 如何实现 ？？
 
     画布组件找到对应的 json: 组件本身有 onclick 事件。渲染组件时，绑定 onclick 事件，确定组件对应的 json 数据的 id；
 
-    组件编辑: 
-
     事件实现: 事件委托、代理 ?
+
+
+8. lowcode 生成的页面怎么用
+
+    lowcode 生成的页面使用方式有两种:
+    - json 数据存在数据库里面，使用的时候通过接口请求 json，然后根据 json 渲染页面( json -> createElement 的形式);
+    - 输出静态资源文件。（json -> react 组件 -> js 文件 -> 编译打包);
 
 
 

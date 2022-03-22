@@ -351,14 +351,14 @@
     - **generate**，生成器，将 **AST** 转化为目标代码，并生成 **source-map**;
 
 
-    **AST** 是对**源码**的抽象，**字面量**、**标识符**、**表达式**、**语句**、**class**、**module**都有自己的 **AST**。
+    **AST** 是对**源码**的抽象，**字面量**、**标识符**、**表达式**、**语句**、**class**、**module** 都有自己的 **AST**。
 
     AST 节点的类型:
     - **字面量**， **literal**， 具体可分为 stringLiteral、numberLiteral、booleanLiteral、RegExpLiteral 等；
-    - **标识符**， Identifier， 表示变量名、属性名、参数名等各种声明和引用的名字；
-    - **语句**， statement，代码中可独立执行的语句，如 break、if、forIn、while 等，具体可以分为：BreakStatement、ReturnStatement、BlockStatement、TryStatement、forInStatement、fowStatement、WhileStatement、DoWhileStatement、SwitchStatement、WiehStatement、IfStatement 等；
-    - **声明语句**， Declaration， 是一种特殊的语句，表示声明一个变量、函数、class、import、export 等，具体可以分为： VariableDeclaration、FunctionDeclaration、ClassDeclaration、ImportDeclararion、ExportDeclaration 等；
-    - **表达式**， Expression，执行完以后有表达式，常见的 Expression 有 ExpressionStatement、ArrayExpression、AssignmentExpression、FunctionExpression、ClassExpression、CallExpression 等；
+    - **标识符**， **Identifier**， 表示变量名、属性名、参数名等各种声明和引用的名字；
+    - **语句**， **statement**，代码中可独立执行的语句，如 break、if、forIn、while 等，具体可以分为：BreakStatement、ReturnStatement、BlockStatement、TryStatement、forInStatement、fowStatement、WhileStatement、DoWhileStatement、SwitchStatement、WiehStatement、IfStatement 等；
+    - **声明语句**， **Declaration**， 是一种特殊的语句，表示声明一个变量、函数、class、import、export 等，具体可以分为： VariableDeclaration、FunctionDeclaration、ClassDeclaration、ImportDeclararion、ExportDeclaration 等；
+    - **表达式**， **Expression**，执行完以后有表达式，常见的 Expression 有 ExpressionStatement、ArrayExpression、AssignmentExpression、FunctionExpression、ClassExpression、CallExpression 等；
     - **Programe**, 代表整个源码的节点， body 属性代表程序体；
     - **Directive**， 代码中的指令部分；
     - **Comment**, 注释节点；
