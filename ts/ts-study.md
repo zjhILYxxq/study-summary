@@ -122,6 +122,8 @@ js 是弱类型语言， 无法在编译阶段知道变量是什么类型
 
   let list: Array<string> = ['a', 'b', 'c'];
   ```
+
+  
 - **Tuple - 元祖类型**
   
    **Tuple - 元祖**类型表示一个已知**元素数量**和**类型**的数组，各个元素的类型不必相同。
@@ -1212,3 +1214,8 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 
 #### 21. ts 中的小技巧
 - 如何判断一个属性是否可选？
+
+
+#### never 类型有什么用
+
+一个简单的使用，我们定义了一个联合类型，然后在 switch 语句中做类型收敛，default 为 never 类型。这样当别人修改了联合类型，却没有修改 switch 语句块中的逻辑时，default 为新增的类型，无法赋给 never 类型，编译器会提示报错。
