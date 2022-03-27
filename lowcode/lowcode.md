@@ -58,8 +58,8 @@ LowCode 和 Pro Code 如何实现 ？？
 8. lowcode 生成的页面怎么用
 
     lowcode 生成的页面使用方式有两种:
-    - json 数据存在数据库里面，使用的时候通过接口请求 json，然后根据 json 渲染页面( json -> createElement 的形式);
-    - 输出静态资源文件。（json -> react 组件 -> js 文件 -> 编译打包);
+    - json 数据存在数据库里面，使用的时候通过接口请求 json，然后根据 json 渲染页面( json -> createElement 的形式)，需要借助低代码引擎;
+    - 输出静态资源文件。（json -> react 组件 -> js 文件 -> 编译打包)，不需要借助低代码引擎;
 
 
 
