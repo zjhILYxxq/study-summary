@@ -47,6 +47,8 @@
 
     - **资源类型 - resource**，包括**接口请求**、**静态资源获取**、**DNS 域名解析** 等，可获取**开始时间**、**耗时时间**、**请求资源大小** 等；
     - **渲染类型 - paint**, 包括 **FP**、**FCP**、**LCP** 等。
+    - **长任务类型 - longtask**， 可以获取长任务(超过 50 ms) 的**开始时间**、**耗时时间**；
+    - 
 
     通过 **performance.getEntriesByType()**、**performance.getEntriesByName()** 可以获取指定类型的 **PerformanceEntry**。
   
@@ -64,11 +66,32 @@
 
 #### 几个关键指标的计算
 
-- FP
+- **FP** - **First Paint**，页面在导航后首次呈现出不同于导航前内容的时间点，通过 **performance.getEntriesByName('first-paint')** 可以获取 FP 的时间；
 
-- FCP
+- **FCP** - **First Contentful Paint**，首次绘制任何文本、图像、非空白 canvas 或者 SVG 的时间点，通过 **performance.getEntriesByName('first-contentful-paint')** 可以获取 FCP 的时间；
 
-- LCP
+- **LCP** - **Largest Contentful Paint**，最大内容绘制，通过 **PerformanceObserver** 监听 **largest-contentful-paint** 可以获取 **LCP** 时间；
+
+- **FID** - **First Input Delay**， 首次输入延迟，用于测量从用户第一次与页面交互到浏览器对交互做出响应，并且开始处理事件处理程序所经过的时间，通过 PerformanceObserver 监听 **first-input** 可以获取 LCP 时间；
+
+- **TTFB** - **首字节时间**， 可以用过 **responseStart - fetchStart** 获取；
+  
+- **TTI** - **time to interactive**, 可交互时间，计算方式： 安静窗口期之前最后一个长任务的结束时间，如果没有长任务，则为 FCP；
+
+    长任务监听： performanceObserver 监听 longtast；
+
+    安静窗口期：没有长任务且不超过两个正在处理的网络 get 请求(通过拦截 xhr、fetch、mutationObserver 监听)；
+
+    计算方式： 建立一个缓存池，启动的请求添加到缓存池中，结束的请求移除缓存池。当缓存池中的中请求小于 3 且没有长任务时，建立一个 5s 的定时器。5s 之后，如果请求还是 2 且没有长任务，那么就找到了安静窗口，然后再找到安静窗口之前的最后一个长任务。
+
+- **TBT** -  **FCP** 和 **TTI** 之间的总时间；
+  
+- **CLS** - **累积布局偏移**， 通过 **PerformanceObserver** 监听 **layout-shift** 可以获取；
+
+
+#### 几个关键指标的优化方式
+
+
 
 
 
