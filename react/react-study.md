@@ -684,7 +684,7 @@
 
 - [x] **mobx 和 redux 的对比**
 
-    redux 的设计是以几个原则为优先的 - 要让状态的变化可以追踪、可以重复、可以维护。为了打到这个目的，才会有 action、dispatch、reducer、middleware 这几个概念。
+    redux 的设计是以几个原则为优先的 - 要让状态的变化可以追踪、可以重复、可以维护。为了达到这个目的，才会有 action、dispatch、reducer、middleware 这几个概念。
 
     redux 的优点:
     - 流程规范，可追踪性强，很容易追踪 bug 产生的原因(正是因为其规范的流程，导致使用起来有些繁琐)；

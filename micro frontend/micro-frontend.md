@@ -300,6 +300,13 @@
     - 子应用内部菜单切换，需要通信，通知 iframe 去做更新；
     - 用户体验不好，通信复杂，改造成本比对接 qiankun 的成本还大；
 
+- [x] 子应用使用 module federation， remote 应用的代码变了怎么办？
+
+    remote 应用的 expose 的代码上传到 cdn，对应的地址要存到数据库中。
+
+    host 应用本地启动或者生产环境 build 时，要先从数据库中读 remote 应用 expose 代码的地址，然后更新 webpack 中的 remote 配置项。
+
+
 
 - [x] 前端可以做的事情
 
@@ -355,7 +362,8 @@
     - 自上而下拆分；
     - 业务支撑、效能提升(基础建设)、团队建设、个人成长；
     - OKR 评审；
-    - OKR 结果审查；
+    - OKR 回顾；
+    - OKR 结果审查
 
 - [x] 为什么开发组件的时候要 commonjs 和 esmodule 两种
 
