@@ -258,6 +258,18 @@
 
     React.lazy + React.Suspense
 
+- [ ] react effect 收集顺序和处理顺序
+
+    react effect 收集顺序是：先收集子节点的 effect，再收集父节点的。
+
+    componentDidMount、effect 的执行顺序，先子组件，后父组件。
+
+    componentWillUnmount、destory 的执行顺序，先父组件，后子组件。
+
+    为什么 unmount 是先父后子？
+
+    收集 delete 类型的 effect 时，只能收集到父节点(父节点标记 delete，意味着子节点都会被 delete，就不需要对子节点做 diff，也不会收集子节点的 effect)。处理 delete 类型的 effect，先处理父节点的，如果有子组件，还要处理子组件的 delete 类型的 effect。
+
 
 - [x] 组件强制更新的方式
 
@@ -405,6 +417,11 @@
 - [x] **diff 算法**
 
     在协调过程中，如果组件节点的 render 方法被触发，返回新的 react element，那么就需要将组件节点原来的子节点和 react element 做对比，判断原来的子节点哪些可以复用，哪些需要新增，哪些需要新增。
+
+    diff 算法的核心思想:
+    - 已匹配的父节点的子节点比较，不能跨子节点比较；
+    - 通过 key、type 来判断节点是否可复用；
+    - 同一父节点的所有子节点，要保证 key 值的唯一性；
 
     diff 算法实际上就是按序遍历 currrent fiber node list 和 new react element list，比较 key 和 type，判断 current fiber node 可不可用：
     - current fiber node list vs react element
