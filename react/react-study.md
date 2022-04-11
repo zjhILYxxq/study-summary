@@ -258,7 +258,7 @@
 
     React.lazy + React.Suspense
 
-- [ ] react effect 收集顺序和处理顺序
+- [x] react effect 收集顺序和处理顺序
 
     react effect 收集顺序是：先收集子节点的 effect，再收集父节点的。
 
