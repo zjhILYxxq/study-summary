@@ -139,6 +139,19 @@
     qiankun 的问题： 子应用首次加载时 preload、prefetch 会失效，解决方式:
     - 主应用通过 ssr 对子应用的入口资源进行预加载；
     - 修改 qiankun 的源码，解析 html 收集 scripts 时，要将预加载的 script 脚本收集起来，先通过 fetch 方法去预加载。等到真正去 fetch 的时候，可以从缓存中直接拿。
+  
+- [x] **使用 Web Component 实现微前端**
+
+    依赖的技术:
+    - 自定义元素 - custom element；
+    - shadow dom；
+    - template；
+
+    过程:
+    - 定义一个自定义的元素类，继承自 HTMLElement；
+    - 使用 window.customElements.define('xx', xxx), 将自定义元素和元素类关联；
+    - 使用自定义元素；
+    - 执行自定义元素的构造函数，通过 shadow 加载子应用，隔离 js、css；
 
 
 - [x] **saas 关于微前端的最佳实践** 
@@ -233,6 +246,12 @@
 
     **如何计算 LCP**: 浏览器会在绘制第一帧后立即分发一个 **largest-contentful-paint** 类型的 **PerformanceEntry**，用于识别**最大内容元素**。但是，在渲染后续帧之后，浏览器会在最大内容元素发生变化时分发另一个 **PerformanceEntry**。
 
+- [x] **SaaS 为什么要采用 SSR 架构**
+
+    采用 SSR 结构的三个原因：
+    - 首屏性能优化，主应用可以直出 html 页面；借助 SSR，子应用也可以直出 html 页面，还可以预加载；
+    - 实现一个简单的 BFF 层，可以实现权限控制、版本控制、接入到第三方应用时的鉴权控制、接口聚合、接口缓存、承接复杂业务等；
+    - 尝试不同的可能；
 
 
 - [x] **子项目一键接入 sentry**
