@@ -366,5 +366,13 @@ function backTrack(list, track) {
 - [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/);
 
 
+#### 链表题目
+- [相交链表](https://leetcode-cn.com/problems/3u1WK4/submissions/);
+
+
+#### 双指针
+- [最多删除一个字符得到回文](https://leetcode-cn.com/problems/RQku0D/)
+
+
 
 
