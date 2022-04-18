@@ -13,7 +13,7 @@
 - [x] qiankun 是如何实现 css 隔离的；
 - [x] qiankun 是如何实现子应用通信的？
 - [x] qiankun 是如何处理副作用的？
-- [ ] qiankun 存在的问题
+- [x] qiankun 存在的问题
 - [ ] qiankun 是如何处理 styled-component 样式的？
 - [x] 使用 Web Component 实现微前端？
 - [x] SaaS 如何落地微前端；
@@ -23,10 +23,18 @@
 - [x] lego 是怎么工作的
 - [x] SaaS 首屏性能优化
 
+#### 首屏性能优化
+- [x] performance 关键 api；
+- [x] 首屏性能指标；
+- [x] 首屏性能指标如何计算；
+- [x] 首屏性能指标如何优化；
+
+
 #### react 相关
+- [ ] MVVM 框架
 - [x] react hook - 常用 api、对 hooks 的理解；
 - [x] 逻辑复用
-- [x] 自定义 hook；
+- [x] 自定义 hook(注意要 use 开头)；
 - [x] 类组件生命周期方法
 - [x] 类组件不安全的生命周期方法
 - [x] csr & ssr
@@ -49,6 +57,7 @@
 - [x] lane
 - [x] diff 算法
 - [x] diff 算法如何判断节点是否发生了移动
+- [x] effect 收集和处理顺序
 - [x] 调度器
 - [x] 渲染器
 - [x] 如何移动 dom 节点
@@ -66,6 +75,7 @@
 
 
 #### webpack 相关
+- [ ] 环境变量注入？？
 - [x] webpack 常用配置项
 - [x] webpack 工作过程
 - [x] 模块依赖图
@@ -84,9 +94,11 @@
 - [x] 编写 webpack 插件；
 - [x] babel-loader;
 - [x] babel(ast) 可以做的事情 - 代码压缩混淆、代码检查、自动埋点、国际化、api 文档自动生成 等；
+- [x] babel runtime 
 
 #### next.js 相关
 - [x] CSR、SSR、SSG、ISG;
+- [x] SSR 涉及的代码同构、数据同构、路由同构；
 - [x] next.js 工作原理
 - [x] next.js 的 build 阶段
 - [x] ISG 的工作原理
@@ -165,6 +177,7 @@
 
 
 #### 基础知识
+- [ ] CROS 跨域
 - [x] 盒模型、标准盒模型、IE 盒模型；
 - [x] BFC
 - [x] 浮动元素的影响及消除
@@ -182,7 +195,7 @@
 - [x] 宏任务 & 微任务
 - [x] requestAnimationFrame
 - [x] 作用域 & 作用域链
-- [x] 闭包
+- [x] 闭包的表现形式、原因
 - [x] 数组常用方法以及改变数组本身的方法
 - [x] slice 和 splice 的区别
 - [x] call、apply、bind
