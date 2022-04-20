@@ -31,7 +31,7 @@
 
 
 #### react 相关
-- [ ] MVVM 框架
+- [x] MVVM 框架 - view(视图层)、mode(数据层)、view-mode(视图数据层)；
 - [x] react hook - 常用 api、对 hooks 的理解；
 - [x] 逻辑复用
 - [x] 自定义 hook(注意要 use 开头)；
@@ -177,7 +177,7 @@
 
 
 #### 基础知识
-- [ ] CROS 跨域
+- [x] CROS 跨域, request 携带 origin 字段，response 携带 Access-Control-Allow-Origin 字段；
 - [x] 盒模型、标准盒模型、IE 盒模型；
 - [x] BFC
 - [x] 浮动元素的影响及消除
