@@ -75,7 +75,7 @@
 
 
 #### webpack 相关
-- [ ] 环境变量注入？？
+- [x] 环境变量( node: 启动命令时传入 NODE_ENV; 浏览器：通过 DefinePlugin 注入全局变量)??
 - [x] webpack 常用配置项
 - [x] webpack 工作过程
 - [x] 模块依赖图
