@@ -346,7 +346,7 @@
     3. 依次遍历 taskQueue 中的任务，开始 react 协调；
     4. 开始协调时，要确定本次协调要处理的更新优先级(根据 lane 处理)；
     5. 从根节点开始遍历 fiber tree，不需要协调的 fiber node 直接跳过，需要协调的 fiber node，则执行对应组件的 render 方法；
-    6. 将 fiber node 的子节点和 render 方法返回的 react element 做 diff 算法比较，确定子节点是否需要更新已经更新产生的副作用‘
+    6. 将 fiber node 的子节点和 render 方法返回的 react element 做 diff 算法比较，确定子节点是否需要更新已经更新产生的副作用；
     7. fiber tree 协调结束，进入 commit 阶段，处理协调 fiber tree 产生的副作用；
     8. 副作用处理完毕，浏览器开始渲染更新以后的 fiber tree；
 

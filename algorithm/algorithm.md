@@ -374,5 +374,9 @@ function backTrack(list, track) {
 - [最多删除一个字符得到回文](https://leetcode-cn.com/problems/RQku0D/)
 
 
+#### 动态规划
+- [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
+
+
 
 
