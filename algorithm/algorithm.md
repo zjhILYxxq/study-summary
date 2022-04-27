@@ -385,9 +385,14 @@ function backTrack(list, track) {
 
 #### 二分查找
 - [山峰数组的顶部](https://leetcode-cn.com/problems/B1IidL/)
+- [求平方根](https://leetcode-cn.com/problems/jJ0w9p/)
 
 
 二分查找的核心：如何使用 middle 去替换 left 或者 right，缩小查找范围。
+
+
+#### 坐标轴发
+- [二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/submissions/)
 
 
 
