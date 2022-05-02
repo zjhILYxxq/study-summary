@@ -387,6 +387,7 @@ function backTrack(list, track) {
 #### 二分查找
 - [山峰数组的顶部](https://leetcode-cn.com/problems/B1IidL/)
 - [求平方根](https://leetcode-cn.com/problems/jJ0w9p/)
+- [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 这个题很有意思，是二分法的巧妙使用，需要重点关注一下；
 
 
 二分查找的核心：如何使用 middle 去替换 left 或者 right，缩小查找范围。
@@ -405,5 +406,10 @@ function backTrack(list, track) {
 #### 二叉树
 - [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/) - 利用前序遍历和中序遍历重建二叉树，这道题很有意思！！
 - [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/) - 判断一颗树是否是另一颗树的子树，层级遍历 + 递归判断两颗树是否一样；
+
+
+#### 有限状态自动机
+- [表示数值的字符串](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/), 这个题目前第一次看到，后面如果再碰到类似的题，或者有时间，可以再重点看一下；
+- 
 
 
