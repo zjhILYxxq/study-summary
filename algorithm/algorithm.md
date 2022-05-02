@@ -404,5 +404,6 @@ function backTrack(list, track) {
 
 #### 二叉树
 - [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/) - 利用前序遍历和中序遍历重建二叉树，这道题很有意思！！
+- [树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/) - 判断一颗树是否是另一颗树的子树，层级遍历 + 递归判断两颗树是否一样；
 
 
