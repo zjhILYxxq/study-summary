@@ -376,6 +376,7 @@ function backTrack(list, track) {
 
 #### 动态规划
 - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
+- [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
 
 
 
@@ -397,5 +398,11 @@ function backTrack(list, track) {
 
 #### 回溯
 - [矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/) - 这一道题完全是自己独立做出来的，点赞！
+- [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/);
+- []
+
+
+#### 二叉树
+- [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/) - 利用前序遍历和中序遍历重建二叉树，这道题很有意思！！
 
 
