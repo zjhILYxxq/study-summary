@@ -396,7 +396,7 @@ function backTrack(list, track) {
 二分查找的核心：如何使用 middle 去替换 left 或者 right，缩小查找范围。
 
 
-#### 坐标轴发
+#### 坐标轴方法
 - [二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/submissions/)
 
 
@@ -413,6 +413,9 @@ function backTrack(list, track) {
 
 #### 有限状态自动机
 - [表示数值的字符串](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/), 这个题目前第一次看到，后面如果再碰到类似的题，或者有时间，可以再重点看一下；
-- 
+
+
+#### 栈
+- [栈的压入、弹出系列](https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)
 
 
