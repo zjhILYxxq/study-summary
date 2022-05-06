@@ -365,6 +365,7 @@ function backTrack(list, track) {
 - [二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/);
 - [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/);
 - [二叉搜索树转双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/), 这道题不错！
+- [二叉搜索树的后序遍历序列](https://leetcode.cn/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/), 这道题也不错！
 
 
 #### 链表题目
@@ -403,7 +404,7 @@ function backTrack(list, track) {
 #### 回溯
 - [矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/) - 这一道题完全是自己独立做出来的，点赞！
 - [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/);
-- []
+- [字符串的列表](https://leetcode.cn/problems/zi-fu-chuan-de-pai-lie-lcof/) - 这一道题，类似的题比较多，要注意一下哈
 
 
 #### 二叉树
