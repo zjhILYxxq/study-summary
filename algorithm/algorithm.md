@@ -367,7 +367,6 @@ function backTrack(list, track) {
 - [二叉搜索树转双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/), 这道题不错！
 - [二叉搜索树的后序遍历序列](https://leetcode.cn/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/), 这道题也不错！
 
-
 #### 链表题目
 - [相交链表](https://leetcode-cn.com/problems/3u1WK4/submissions/);
 - [复杂链表的复制](https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/);
@@ -418,5 +417,9 @@ function backTrack(list, track) {
 
 #### 栈
 - [栈的压入、弹出系列](https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)
+
+
+#### 先找到数学规律
+- [数字序列中某一位的数字](https://leetcode.cn/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/) - 回来再看看！！
 
 
