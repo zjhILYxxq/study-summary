@@ -424,3 +424,9 @@ function backTrack(list, track) {
 - [数字序列中某一位的数字](https://leetcode.cn/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/) - 回来再看看！！
 
 
+#### 位运算
+- [数组中数字出现的次数-1](https://leetcode.cn/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)??
+- [数组中数字出现的次数-2](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) ??
+- [数组中数字出现的次数-3](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/)
+
+
