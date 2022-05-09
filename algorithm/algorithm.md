@@ -404,6 +404,7 @@ function backTrack(list, track) {
 - [矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/) - 这一道题完全是自己独立做出来的，点赞！
 - [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/);
 - [字符串的列表](https://leetcode.cn/problems/zi-fu-chuan-de-pai-lie-lcof/) - 这一道题，类似的题比较多，要注意一下哈
+- [二叉树中和为某一值的路径](https://leetcode.cn/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
 
 
 #### 二叉树
