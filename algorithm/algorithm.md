@@ -385,6 +385,8 @@ function backTrack(list, track) {
 
 #### 排序
 - [数据流的第 K 大数值](https://leetcode-cn.com/problems/jBjn9C/) - 采用堆排序？？
+- [把数组排成最小的字符串](https://leetcode.cn/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/) - 解题过程很巧妙
+！！
 
 
 #### 二分查找
