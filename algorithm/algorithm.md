@@ -426,8 +426,8 @@ function backTrack(list, track) {
 
 #### 位运算
 - [数组中数字出现的次数-1](https://leetcode.cn/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)??
-- [数组中数字出现的次数-2](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) ??
-- [数组中数字出现的次数-3](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/)
+- [数组中数字出现的次数-2](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) - 回来再看看
+- [数组中数字出现的次数-3](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/) - 回来再看看
 
 位运算：**按位与 - &**、**按位或 - |**、**按位异或 - ^**、**按位取反 - ~**、**左移 - <<**、**带符号右移 - >>**、**无符号右移 - >>>**
 
