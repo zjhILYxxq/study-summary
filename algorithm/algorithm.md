@@ -380,6 +380,7 @@ function backTrack(list, track) {
 - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
 - [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
 - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
+- [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
 
 
 
