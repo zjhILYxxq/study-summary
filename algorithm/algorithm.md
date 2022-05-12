@@ -359,6 +359,10 @@ function backTrack(list, track) {
 - **有序链表合并**
 
 
+#### 递归
+
+- [求1+2+…+n](https://leetcode.cn/problems/qiu-12n-lcof/) - 递归 + 逻辑运算符(一般人想不到)；
+
 
 
 #### 二叉树题目
