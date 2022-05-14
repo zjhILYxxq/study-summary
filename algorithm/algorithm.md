@@ -412,7 +412,10 @@ function backTrack(list, track) {
 - [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/);
 - [字符串的列表](https://leetcode.cn/problems/zi-fu-chuan-de-pai-lie-lcof/) - 这一道题，类似的题比较多，要注意一下哈
 - [二叉树中和为某一值的路径](https://leetcode.cn/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
-- [允许重复选择元素的组合](https://leetcode.cn/problems/Ygoe9J/)
+- [允许重复选择元素的组合](https://leetcode.cn/problems/Ygoe9J/), 元素可以重复使用;
+- [含有重复元素集合的组合](https://leetcode.cn/problems/4sjJUc/), 每个元素只能使用一次;
+- [没有重复元素集合的全排列](https://leetcode.cn/problems/VvJkup/), 这道题比较简单;
+- [含有重复元素集合的全排列](https://leetcode.cn/problems/7p8L0Z/), 这个是好题，要注意！！
 
 
 #### 二叉树
