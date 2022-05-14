@@ -432,6 +432,9 @@ function backTrack(list, track) {
 #### 栈
 - [栈的压入、弹出系列](https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)
 
+#### 滑动窗口
+-[最长不含重复字符的子字符串](https://leetcode.cn/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/)
+
 
 #### 先找到数学规律
 - [数字序列中某一位的数字](https://leetcode.cn/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/) - 回来再看看！！
