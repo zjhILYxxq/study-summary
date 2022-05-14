@@ -417,6 +417,8 @@ function backTrack(list, track) {
 - [没有重复元素集合的全排列](https://leetcode.cn/problems/VvJkup/), 这道题比较简单;
 - [含有重复元素集合的全排列](https://leetcode.cn/problems/7p8L0Z/), 这个是好题，要注意！！
 
+> 注意：遇到含有重复元素的题，要将给定的列表先排序，然后将重复的元素去除掉！！
+
 
 #### 二叉树
 - [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/) - 利用前序遍历和中序遍历重建二叉树，这道题很有意思！！
