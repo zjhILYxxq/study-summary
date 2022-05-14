@@ -28,15 +28,41 @@
 
 9. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
 
-10. 
+10. vite 本地服务启动以后使用到的几个中间件
 
-11. HMR 
+    中间件列表如下(按照执行的先后顺序):
+    - corsMiddleware
+    - proxyMiddleware
+    - viteBaseMiddleware,
+    - servePublicMiddleware
+    - transformMiddleware
+    - serveRawFsMiddleware
+    - serveStaticMiddleware
+    - spaFallbackMiddleware
+    - indexHtmlMiddleware
+    - vite404Middleware
+    - errorMiddleware
 
-12. SSR  
+11. vite 中 index.html、 js、 css 文件是怎么处理的？
 
-13. 如何自动打开浏览器？？
+12. HMR 
 
-14. node 的进程管理
+13. SSR  
+
+14. 为什么 vite 会快
+
+15. client 的模块缓存机制是怎么样子的？ 
+    
+    client 的模块缓存是浏览器自己实现的。
+
+    相同的模块，client 只请求一次。
+
+
+
+
+16. 如何自动打开浏览器？？
+
+17. node 的进程管理
 
 pm2 ??
 
