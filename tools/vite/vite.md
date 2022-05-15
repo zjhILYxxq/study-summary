@@ -92,17 +92,33 @@
 
     热更新的时候，没有修改的文件会重新 transform 吗？
 
-    vite 在对 html 做 transform 操作时，会给 html 添加一个 @vite/client 的请求。
-    
-    当执行 @vite/client 代码时，会建立一个 ws 连接。
+    HMR 工作分为两个部分： client 和 server 端。
 
-    更新策略: 全量更新、局部更新
+    - client
 
-    局部更新 -> 通知 react 的 fiberNode 重新更新；
+        vite 在对 html 做 transform 操作时，会给 html 添加一个 @vite/client 的请求。
+        
+        当执行 @vite/client 代码时，会建立一个 ws 连接。
 
-    全量更新 -> window.location.reload
+        更新策略: 全量更新、局部更新
 
-    css 更新： 移除原来的 style 标签，重新添加新的 style 标签
+        局部更新 -> 通知 react 的 fiberNode 重新更新；
+
+        全量更新 -> window.location.reload
+
+        css 更新： 移除原来的 style 标签，重新添加新的 style 标签
+
+    - server
+
+        需要一个 wsServer 和 watcher，其中 wsServer 用于推送消息， watcher 用于监听文件变化。
+
+        不同的文件，处理策略也不相同:
+        - index.html， 全量更新，window.location.reload();
+        - main.tsx，全量更新， window.location.reload();
+        - 页面、组件，局部更新，直接更新发生变化的页面、组件；
+        - 样式，局部更新，直接更新发生变化的样式文件；
+        - 工具方法，找到使用工具方法的组件，更新
+        - 图片， 局部更新，找到使用图片的组件，更新
 
 16. SSR  
 
