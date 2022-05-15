@@ -49,7 +49,7 @@
 
 12. vite 中 index.html、 js、 css 文件是怎么处理的？
 
-    先去请求 index.html 文件。html 文件的处理：添加 @vite/client、/@react-refresh， 其中 @vite/client 主要用于建立 ws 连接。
+    先去请求 index.html 文件。html 文件的处理：添加 @vite/client、/@react-refresh， 其中 @vite/client 主要用于建立 ws 连接，@react-refresh 用于热更新。
 
     下一步，请求 @vite/client、@react-refresh、/src/main.tsx。其中 main.tsx 是应用指定的入口文件，作为 js 文件。
 
@@ -97,6 +97,12 @@
     当执行 @vite/client 代码时，会建立一个 ws 连接。
 
     更新策略: 全量更新、局部更新
+
+    局部更新 -> 通知 react 的 fiberNode 重新更新；
+
+    全量更新 -> window.location.reload
+
+    css 更新： 移除原来的 style 标签，重新添加新的 style 标签
 
 16. SSR  
 
