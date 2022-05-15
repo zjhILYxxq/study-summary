@@ -444,6 +444,7 @@ function backTrack(list, track) {
 - [数组中数字出现的次数-1](https://leetcode.cn/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)??
 - [数组中数字出现的次数-2](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) - 回来再看看
 - [数组中数字出现的次数-3](https://leetcode.cn/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/) - 回来再看看
+- [数组中只出现一次的数字](https://leetcode.cn/problems/WGki4K/) - 有负数
 
 位运算：**按位与 - &**、**按位或 - |**、**按位异或 - ^**、**按位取反 - ~**、**左移 - <<**、**带符号右移 - >>**、**无符号右移 - >>>**
 
@@ -461,5 +462,7 @@ function backTrack(list, track) {
 - 一个数和它本身做异或运算返回 0： a ^ a = 0;
 - 一个数和 0 做异或运算返回本身: a ^ 0 = a;
 - 统计二进制中 1 的个数: 循环进行  **n & (n - 1)**, 直到 n 为 0 为止；
+- 正整数循环向右移动一位，最后会变为 0； 负整数循环向右移动一位，最后会变为 -1， 这一点要注意哈！！；
+- 
 
 
