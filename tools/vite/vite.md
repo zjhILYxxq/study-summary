@@ -130,7 +130,23 @@
         - 图片， 局部更新，找到使用图片的组件，更新
 
 
-    vite 在处理每个组件的时候，会给每个组件添加一个 import.meta.hot.accept() 的方法，意味着每个组件都有热更新处理逻辑。当组件发生变换时
+    vite 在处理每个组件的时候，会给每个组件添加一个 import.meta.hot.accept() 的方法，意味着每个组件都有热更新处理逻辑。客户端获取的组件对应的 js 代码以后，会执行 import.meta.hot.accept 方法，
+
+    vite 在处理每个组件的时候，会给每个组件添加如下逻辑代码：
+    - 添加 createHotContext 方法，创建一个 hot 对象；
+    - 添加  RefreshRuntime.register 逻辑，注册需要热更新的组件；
+    - 添加 import.meta.hot.accept() 逻辑，给每个 hot 对象添加依赖(如果依赖发生变化，就要热更新)；
+    - 添加 RefreshRuntime.performReactRefresh() 逻辑，开始进行热更新；
+
+
+    
+
+
+
+
+
+    react 热更新的相关逻辑
+
 
 
 
