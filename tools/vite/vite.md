@@ -139,6 +139,44 @@
     - 添加 RefreshRuntime.performReactRefresh() 逻辑，开始进行热更新；
 
 
+    vite 热更新的过程分为两个阶段：
+    - 应用加载阶段
+
+        应用加载阶段，涉及的过程如下：
+        - 建立 ws 连接，注册 onmessage 事件；(这一段逻辑有 @vite/client 提供)
+        - 获取每个组件对应的 js 文件，并执行。
+         
+            在执行 js 的过程中，会先执行 createHotContext 方法，创建一个 hot 对象。创建好的 hot 对象会添加到模块的 import.meta 属性上。每个 esm 模块都有自己的 import.meta 属性，都有自己的 hot 对象。通过 hot 对象提供的 accept 方法，可以收集依赖。
+
+            然后执行 @react/refresh 提供的 register 方法。 register 即注册的意思， @react/refresh 会提供一个全局的 map 存储每一个模块的 id 和对应的 export。应用初次加载的时候，map 中会收集加载过程中的个个模块。当某个模块发生热更新时，会重新加载对应的 js 文件，重新执行 register 方法。这个时候，由于 map 中已经存在对应的 id。基于这个，我们就可以判断该模块是热更新的模块，需要重新渲染。
+
+            借着，执行 import.meta.hot.accept 方法，收集依赖。 accept 一般接受两个参数，第一个参数 deps 是一个数组，第二个参数是一个 callback。当 deps 中的文件发生变化时，当前模块需要热更新，需要重新获取 js 文件，然后重新渲染。 vite 处理以后的 react 组件使用 accept 方法时，没有入参，意味着 deps 是自己。执行 accept 方法，对创建一个 mod 对象，收集到 map 中。
+
+            最后执行 RefreshRuntime.performReactRefresh() 方法。由于是应用加载，不需要重新渲染，所以 performReactRefresh 什么也没有做。
+
+
+
+    - 文件修改阶段
+
+        当 server 端某个文件发生变化时，触发 watcher 监听，此时 server 端的操作：
+        - 遍历模块依赖图，找到变化文件以及对应的边界(path 为边界文件的路径、acceptedPath 为发生变化的文件的路径)；
+        - 根据发生变化的文件，确定 clienet 是局部热更新还是全局加载。
+            
+            如果边界文件是 main.tsx，通知 client 通过 window.location.reload 的方式更新；
+
+            如果边界文件是某个组件，通过 client 进行热更新。
+
+            sever 端会通过 wsServer 向 client 推送消息。
+
+        - client 收到局部更新的消息以后，会根据 path 从 map 中找对应的 mod。如果 mod 的 deps 匹配 acceptedPath，那么就会触发当前 mod 的热更新。
+
+            模块热更新时，会先 fetch 最新的 js 文件，然后执行，重新 register，最后执行 performReactRefresh 方法。 performReactRefresh 方法就是通过调用 react 提供的 scheduleRefresh 方法来触发 react 更新。在协调过程中，react 会将发生更新的模块对应的 fiberNode 的组件方法替换成最新的组件方法，然后更新页面。
+
+        
+        简单来说，就是应用启动阶段，每个组件都会构建一个 hot 对象和 mod 对象，mod 对象会收集依赖。server 端文件发生变化以后，会确定变化文件对应的边界文件，然后通知边界文件去做热更新。边界文件的模块收到消息以后，重新去加载 js 文件拿到最新的组件函数方法，然后触发 react 更新。在 react 更新过程中，模块对应的 fibeNode 会使用返回的新的组件函数方法。
+
+
+
     
 
 
