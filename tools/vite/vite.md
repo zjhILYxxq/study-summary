@@ -199,10 +199,50 @@
 
 
 
+
+
 20. 如何自动打开浏览器？？
 
+21. 常见的打包工具对比
 
-21. node 的进程管理
+    目前前端比较常见的打包工具： webpack、parcel、vite、esbuild、rollup 等
+
+    parcel：
+    - 特性：零配置，支持 js/jsx/tsx、css、html、vue、图片等文件类型，支持 code splitting、tree shaking、压缩、devServer、 hmr、hash 等；
+    - 优点：零配置；在 js、css 的转译上使用了 Rust，效率提升；
+    - 缺点：扩展性不强，不太适合有大量定制化需求的项目；
+
+    rollup:
+    - 特性: 
+    - 优点：
+    - 缺点:
+
+    vite：
+    - 特性：
+    - 优点：
+    - 缺点
+
+    parcel:
+    - 特性:
+    - 优点:
+    - 缺点
+
+    esbuild：
+    - 特性:
+    - 优点：
+    - 缺点:
+
+    
+
+
+
+
+
+
+
+
+
+22. node 的进程管理
 
 pm2 ??
 
@@ -211,4 +251,12 @@ pm2 ??
 1. vite.config.js 中使用 es6 语法报错问题处理；
 
 2. 路径无法解析问题 - 没有使用别名，也没有使用相对路径
+
+    在项目开发过程中，我们 import 文件会存在以下几种形式:
+    - import header from '../components/header.tsx', 相对路径， 这种情况下 vite 会自动将相对路径解析为绝对路径；
+    - import header from '@/components/header.tsx'，路径别名， 其中 @ 为 src 的别名，这种情况下 vite 会通过 resolve.alias 配置项将 path 解析为绝对路径；
+    - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；
+
+
+
 
