@@ -6,7 +6,13 @@
 
 
 
-3. vite 插件机制是怎么样的？
+3. vite 插件机制
+
+    插件容器、插件类型、插件机制
+
+    如何编写一个 vite 插件
+
+    vite 插件需要的配置该如何传进来？？
 
 4. 预编译构建过程是怎么样的?
 
@@ -232,7 +238,7 @@
     - 优点：
     - 缺点:
 
-    
+
 
 
 
@@ -256,6 +262,10 @@ pm2 ??
     - import header from '../components/header.tsx', 相对路径， 这种情况下 vite 会自动将相对路径解析为绝对路径；
     - import header from '@/components/header.tsx'，路径别名， 其中 @ 为 src 的别名，这种情况下 vite 会通过 resolve.alias 配置项将 path 解析为绝对路径；
     - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；
+
+3. qiankun 下怎么对接 vite 项目？
+
+    https://github.com/tengmaoqing/vite-plugin-qiankun/blob/master/src/index.ts
 
 
 
