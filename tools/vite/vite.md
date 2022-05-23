@@ -261,7 +261,8 @@ pm2 ??
     在项目开发过程中，我们 import 文件会存在以下几种形式:
     - import header from '../components/header.tsx', 相对路径， 这种情况下 vite 会自动将相对路径解析为绝对路径；
     - import header from '@/components/header.tsx'，路径别名， 其中 @ 为 src 的别名，这种情况下 vite 会通过 resolve.alias 配置项将 path 解析为绝对路径；
-    - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；
+    - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；这种情况下，可以通过一个自定义 vite 插件来解析该路径
+  
 
 3. qiankun 下怎么对接 vite 项目？
 
