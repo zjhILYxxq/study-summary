@@ -14,6 +14,19 @@
 
     vite 插件需要的配置该如何传进来？？
 
+    vite 中的插件根据执行顺序，可以分为三类： pre 类型、normal 类型、post 类型。 三种类型的插件的执行顺序为 pre、normal、post。
+
+    通过 enforce 属性可以指定插件的执行顺序。如果未指定，默认为 normal。
+
+    一个 vite 插件，常见的 hook 有哪些:
+    - config， 可用于修改 vite config；
+    - 
+
+    一个 Rollup 插件，常见的 hook 有:
+    -
+
+
+
 4. 预编译构建过程是怎么样的?
 
 5. 预构建的时候模块的依赖关系是怎么样获取到的？ 
