@@ -30,17 +30,15 @@
 
     vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
 
-    vite 使用中间件的姿势： server.middlewares.use('/xx/xx/', someMiddleware(server));
+    vite 使用中间件的姿势： server.middlewares.use(someMiddleware(server));
 
     server.middlewares 其实一个 app 实例(对照 express ？？)
 
     其中， someMiddleware 会返回一个 callback。
 
-    server 内部会维护一个 url 和 callbackList 的 map，middleware 返回的 callback 会在 use 方法执行是添加到 url 对应的 callbackList 中。
+    server 内部会维护一个 callback 的 list，当 client 发起请求时， callbackList 中收集的 callback 会按序触发。callback 在执行过程中，会根据 req 的 url 信息，做对应的逻辑判断操作。如果 url 不匹配，该 callback 会直接 return 结束掉。
 
-    当 client 发起请求时，app 会找到匹配的 url 对应的 callbackList，然后按序执行。
-
-    中间件其实是一系列函数，当 server 根据 req 匹配到某个 url 时，执行这个 url 对应的中间件函数，做自己的逻辑判断，最终返回最后的结果。
+    中间件其实是一系列函数。
 
     在实际应用中，会通过 http.createServer(callback) 创建一个 server 实例，然后执行 server.listen(port)。当 client 访问某个 url 时，触发 callback 的执行，然后根据 req 找到匹配的 url 的中间件，返回最终需要的结果。
 
@@ -49,7 +47,7 @@
 
     我们可以通过给一个自定义插件定义 configureServer hook，来给 devServer 添加自定义 middleware。
 
-    在 vite config 解析完成以后，vite 会遍历 plugins 列表，依次执行 plugin 的 configureServer hook。执行 configureServer 时，入参是 server。通过 server.middlewares.use('/xx/xxx', (req, res, next) => { ... }), 即可给 devServer 添加自定义 middleware。
+    在 vite config 解析完成以后，vite 会遍历 plugins 列表，依次执行 plugin 的 configureServer hook。执行 configureServer 时，入参是 server。通过 server.middlewares.use((req, res, next) => { ... }), 即可给 devServer 添加自定义 middleware。
 
     configureServer hook 的格式:
 
@@ -58,7 +56,7 @@
         name: 'xxx',
         configureServer: (server) => {
             return () => {
-                server.middlewares.use('xxx', (req, res, next) => {
+                server.middlewares.use((req, res, next) => {
                     ...
                 })
             }
