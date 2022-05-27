@@ -28,7 +28,7 @@
 
 4. vite 中间件
 
-    vite 的中间件是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
+    vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
 
     vite 使用中间件的姿势： server.middlewares.use('/xx/xx/', someMiddleware(server));
 
@@ -45,9 +45,28 @@
     在实际应用中，会通过 http.createServer(callback) 创建一个 server 实例，然后执行 server.listen(port)。当 client 访问某个 url 时，触发 callback 的执行，然后根据 req 找到匹配的 url 的中间件，返回最终需要的结果。
 
 
-
-
 5. 如何给 devServer 添加自定义 middleware
+
+    我们可以通过给一个自定义插件定义 configureServer hook，来给 devServer 添加自定义 middleware。
+
+    在 vite config 解析完成以后，vite 会遍历 plugins 列表，依次执行 plugin 的 configureServer hook。执行 configureServer 时，入参是 server。通过 server.middlewares.use('/xx/xxx', (req, res, next) => { ... }), 即可给 devServer 添加自定义 middleware。
+
+    configureServer hook 的格式:
+
+    ```
+    {
+        name: 'xxx',
+        configureServer: (server) => {
+            return () => {
+                server.middlewares.use('xxx', (req, res, next) => {
+                    ...
+                })
+            }
+        }
+    }
+    ```
+
+    自定义 middleware 会在 http middleware 之前执行，这样我们就可以使用自定义内容替换掉 index.html。
 
 6. 预编译构建过程是怎么样的?
 
