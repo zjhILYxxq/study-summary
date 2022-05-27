@@ -24,8 +24,17 @@
     - configureServer， 用于开 dev server 添加自定义 middleware
 
     一个 Rollup 插件，常见的 hook 有:
-    -
 
+
+    开发阶段需要的插件(按先后顺序排列):
+    - vite:pre-alias plugin - 提供 resolvedId hook， ？？
+    - alias plugin - 提供 buildStart hook 和 resolvedId hook，用于解析静态依赖和动态依赖的 url；
+    - pre 类型的三方 plugin - 这一类型的 plugin 应该提供什么样的 hook ？？
+    - vite:modulepreload-polyfill
+    - 
+
+    自定义插件的 hooks 和 enforce 定义有什么讲究吗？
+    
 4. vite 中间件
 
     vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
