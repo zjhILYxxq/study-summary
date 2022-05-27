@@ -30,11 +30,26 @@
     - vite:pre-alias plugin - 提供 resolvedId hook， ？？
     - alias plugin - 提供 buildStart hook 和 resolvedId hook，用于解析静态依赖和动态依赖的 url；
     - pre 类型的三方 plugin - 这一类型的 plugin 应该提供什么样的 hook ？？
-    - vite:modulepreload-polyfill
-    - 
+    - vite:modulepreload-polyfill plugin - 提供 resolvedId hook 和 load hook， ？；
+    - vite:resolve plugin - 提供 resolvedId hook 和 load hook
+    - vite:optimized-deps plugin - 提供 load hook
+    - vite:html-inline-proxy plugin - 提供 resolveId hook 和 load hook；
+    - vite:css plugin, 提供 buildStart hook、transform hook；
+    - vite:esbuild plugin， 提供 buildEnd hook、 transform hook；
+    - vite:json plugin， 提供 transform hook；
+    - vite:wasm plugin， 提供 resolveId hook、load hook；
+    - vite:worker plugin， 提供 buildStart hook、load hook、transform hook、renderChunk hook
+    - vite:asset plugin， 提供 buildStart hook、load hook、renderChunk hook、 generateBundle hook
+    - normal 类型的三方 plugin
+    - vite:define plugin，提供 transform hook
+    - vite:css-post plugin， 提供 buildStart hook、load hook、renderChunk hook、 generateBundle hook
+    - vite:worker-import-meta-url plugin， 提供 transform hook
+    - post 类型的三方 plugin
+    - vite:client-inject plugin， 提供 transfrom hook
+    - vite:import-analysis plugin， 提供 transfrom hook
 
     自定义插件的 hooks 和 enforce 定义有什么讲究吗？
-    
+
 4. vite 中间件
 
     vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
