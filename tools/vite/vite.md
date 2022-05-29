@@ -90,17 +90,34 @@
 
     自定义 middleware 会在 http middleware 之前执行，这样我们就可以使用自定义内容替换掉 index.html。
 
-6. 预编译构建过程是怎么样的?
+6. devServer 阶段 middlewares 的情况
 
-7. 预构建的时候模块的依赖关系是怎么样获取到的？ 
+     中间件列表如下(按照执行的先后顺序):
+    - corsMiddleware
+    - proxyMiddleware
+    - viteBaseMiddleware,
+    - servePublicMiddleware
+    - transformMiddleware
+    - serveRawFsMiddleware
+    - serveStaticMiddleware
+    - spaFallbackMiddleware
+    - 三方插件 configureServer hook 中返回的 middlewares
+    - indexHtmlMiddleware
+    - vite404Middleware
+    - errorMiddleware
 
-8. esbuild 工作原理是咋样的? 
 
-9.  预构建主要是将依赖的三方库从 cjs 转化为 esm。 
+7. 预编译构建过程是怎么样的?
+
+8. 预构建的时候模块的依赖关系是怎么样获取到的？ 
+
+9.  esbuild 工作原理是咋样的? 
+
+10. 预构建主要是将依赖的三方库从 cjs 转化为 esm。 
 
     过程和 webpack 打包类似。根据指定的入口文件，做依赖分析？，提取类似 runtime、common 包，将 cjs 包内容外面包裹一层 es6 实现。？？
 
-10. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
+11. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
 
     vite 开发模式下，如果设置 server.force 为 true，那么每次启动的时候都会预构建。
 
@@ -110,28 +127,17 @@
 
     具体检查的过程: 通过 .lock 文件的内容和 vite.config.js 的内容，生成一个 md5 码。如果 .lock 文件的内容和 vite.cofig.js 的内容没有发生变化，md5 码也不会发生变化，原来的预构建内容就可以使用了。
 
-11. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
+12. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
 
-12. 项目中的业务代码是否支持 commonjs 写法 ？
+13. 项目中的业务代码是否支持 commonjs 写法 ？
 
     目前看是不支持的。预构建的时候也不会对 cjs 模块进行处理。
 
-13. vite 本地服务启动以后使用到的几个中间件
+14. vite 本地服务启动以后使用到的几个中间件
 
-    中间件列表如下(按照执行的先后顺序):
-    - corsMiddleware
-    - proxyMiddleware
-    - viteBaseMiddleware,
-    - servePublicMiddleware
-    - transformMiddleware
-    - serveRawFsMiddleware
-    - serveStaticMiddleware
-    - spaFallbackMiddleware
-    - indexHtmlMiddleware
-    - vite404Middleware
-    - errorMiddleware
+   
 
-14. vite 中 index.html、 js、 css 文件是怎么处理的？
+15. vite 中 index.html、 js、 css 文件是怎么处理的？
 
     先去请求 index.html 文件。html 文件的处理：添加 @vite/client、/@react-refresh， 其中 @vite/client 主要用于建立 ws 连接，@react-refresh 用于热更新。
 
@@ -152,7 +158,7 @@
     css 文件的处理过程和 webpack 也相同，即使用对应的 loader 先将 saas、less 写法转化为 css 写法，然后将样式文件转换成一段 js 代码。这一段 js 代码会执行 @vite/client 提供的 updateStyle 方法，通过动态添加 style 标签的方式添加到 html 页面中。
 
 
-15. 依赖后面的 v=xxx、t=xxx 是什么意思？
+16. 依赖后面的 v=xxx、t=xxx 是什么意思？
 
     使用 vite 时我们会发现，三方依赖，请求路径会添加一个 v=xxxx 的请求参数；内部依赖，请求路径会添加一个 t=xxx 的请求参数。
 
@@ -160,7 +166,7 @@
 
     如果不加请求参数，同样的请求 url， 浏览器只会请求一次；请求参数不同，浏览器会就会任务请求 url 不相同，这样就会再次请求。
 
-16. 静态依赖和动态依赖
+17. 静态依赖和动态依赖
 
     一个文件的依赖分为静态依赖和动态依赖。
 
@@ -173,7 +179,7 @@
     其实很好理解，如果我的动态依赖是放在 if 块中，那么如果这一段代码一直没有触发， 那么就不需要请求，也不需要 transform。
 
 
-17. import.meta
+18. import.meta
 
     import.meta 是一个给 javascript 模块暴露特定上下文的元数据属性的对象，它包含了这个模块的信息，如果这个模块的的 url。
 
@@ -181,7 +187,7 @@
 
     即每个 esm 模块都有一个 import.meta, 通过 import.meta 可以访问这个模块的元数据信息。
 
-18. HMR 的整个工作过程是咋样的？
+19. HMR 的整个工作过程是咋样的？
 
     热更新的时候，没有修改的文件会重新 transform 吗？
 
@@ -261,15 +267,15 @@
 
 
     
-19. SSR
+20. SSR
 
-20. 为什么 vite 会快
+21. 为什么 vite 会快
 
     和 webpack 对比，为什么 vite 的冷启动和热启动都会快？
 
-21. worker 配置项是什么东东？？
+22. worker 配置项是什么东东？？
 
-22. client 的模块缓存机制是怎么样子的？ 
+23. client 的模块缓存机制是怎么样子的？ 
     
     client 的模块缓存是浏览器自己实现的。
 
@@ -285,9 +291,9 @@
 
 
 
-23. 如何自动打开浏览器？？
+24. 如何自动打开浏览器？？
 
-24. 常见的打包工具对比
+25. 常见的打包工具对比
 
     目前前端比较常见的打包工具： webpack、parcel、vite、esbuild、rollup 等
 
@@ -326,7 +332,7 @@
 
 
 
-25. node 的进程管理
+26. node 的进程管理
 
 pm2 ??
 
