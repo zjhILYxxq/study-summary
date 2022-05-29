@@ -4,9 +4,18 @@
 
 2. vite 常用配置项了解
 
+3. rollup 插件学习
+   
+    rollup 插件的一些约定:
+    - 插件要有一个清晰的名称和 rollup-plugin-前缀；
+    - 在 package.json 中要包含 rollup-plugin 关键字？？
+    - 插件应该是被测试的
+    - 尽可能的使用异步方法
+    - 如果可能，请确保您的插件输出正确的源映射
+    - 如果您的插件使用“虚拟模块”（例如用于辅助功能），请在模块 ID 前加上\0. 这可以防止其他插件尝试处理它 ？？
 
 
-3. vite 插件机制
+4. vite 插件机制
 
     插件容器、插件类型、插件机制
 
@@ -23,7 +32,6 @@
     - resolvedConfig， 用于获取解析完毕的 config，在这个 hook 中不建议修改 config；
     - configureServer， 用于开 dev server 添加自定义 middleware
 
-    一个 Rollup 插件，常见的 hook 有:
 
 
     开发阶段需要的插件(按先后顺序排列):
@@ -50,7 +58,7 @@
 
     自定义插件的 hooks 和 enforce 定义有什么讲究吗？
 
-4. vite 中间件
+5. vite 中间件
 
     vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
 
@@ -67,7 +75,7 @@
     在实际应用中，会通过 http.createServer(callback) 创建一个 server 实例，然后执行 server.listen(port)。当 client 访问某个 url 时，触发 callback 的执行，然后根据 req 找到匹配的 url 的中间件，返回最终需要的结果。
 
 
-5. 如何给 devServer 添加自定义 middleware
+6. 如何给 devServer 添加自定义 middleware
 
     我们可以通过给一个自定义插件定义 configureServer hook，来给 devServer 添加自定义 middleware。
 
@@ -90,7 +98,7 @@
 
     自定义 middleware 会在 http middleware 之前执行，这样我们就可以使用自定义内容替换掉 index.html。
 
-6. devServer 阶段 middlewares 的情况
+7. devServer 阶段 middlewares 的情况
 
      中间件列表如下(按照执行的先后顺序):
     - corsMiddleware
@@ -107,17 +115,17 @@
     - errorMiddleware
 
 
-7. 预编译构建过程是怎么样的?
+8. 预编译构建过程是怎么样的?
 
-8. 预构建的时候模块的依赖关系是怎么样获取到的？ 
+9.  预构建的时候模块的依赖关系是怎么样获取到的？ 
 
-9.  esbuild 工作原理是咋样的? 
+10. esbuild 工作原理是咋样的? 
 
-10. 预构建主要是将依赖的三方库从 cjs 转化为 esm。 
+11. 预构建主要是将依赖的三方库从 cjs 转化为 esm。 
 
     过程和 webpack 打包类似。根据指定的入口文件，做依赖分析？，提取类似 runtime、common 包，将 cjs 包内容外面包裹一层 es6 实现。？？
 
-11. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
+12. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
 
     vite 开发模式下，如果设置 server.force 为 true，那么每次启动的时候都会预构建。
 
@@ -127,17 +135,17 @@
 
     具体检查的过程: 通过 .lock 文件的内容和 vite.config.js 的内容，生成一个 md5 码。如果 .lock 文件的内容和 vite.cofig.js 的内容没有发生变化，md5 码也不会发生变化，原来的预构建内容就可以使用了。
 
-12. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
+13. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
 
-13. 项目中的业务代码是否支持 commonjs 写法 ？
+14. 项目中的业务代码是否支持 commonjs 写法 ？
 
     目前看是不支持的。预构建的时候也不会对 cjs 模块进行处理。
 
-14. vite 本地服务启动以后使用到的几个中间件
+15. vite 本地服务启动以后使用到的几个中间件
 
    
 
-15. vite 中 index.html、 js、 css 文件是怎么处理的？
+16. vite 中 index.html、 js、 css 文件是怎么处理的？
 
     先去请求 index.html 文件。html 文件的处理：添加 @vite/client、/@react-refresh， 其中 @vite/client 主要用于建立 ws 连接，@react-refresh 用于热更新。
 
@@ -158,7 +166,7 @@
     css 文件的处理过程和 webpack 也相同，即使用对应的 loader 先将 saas、less 写法转化为 css 写法，然后将样式文件转换成一段 js 代码。这一段 js 代码会执行 @vite/client 提供的 updateStyle 方法，通过动态添加 style 标签的方式添加到 html 页面中。
 
 
-16. 依赖后面的 v=xxx、t=xxx 是什么意思？
+17. 依赖后面的 v=xxx、t=xxx 是什么意思？
 
     使用 vite 时我们会发现，三方依赖，请求路径会添加一个 v=xxxx 的请求参数；内部依赖，请求路径会添加一个 t=xxx 的请求参数。
 
@@ -166,7 +174,7 @@
 
     如果不加请求参数，同样的请求 url， 浏览器只会请求一次；请求参数不同，浏览器会就会任务请求 url 不相同，这样就会再次请求。
 
-17. 静态依赖和动态依赖
+18. 静态依赖和动态依赖
 
     一个文件的依赖分为静态依赖和动态依赖。
 
@@ -179,7 +187,7 @@
     其实很好理解，如果我的动态依赖是放在 if 块中，那么如果这一段代码一直没有触发， 那么就不需要请求，也不需要 transform。
 
 
-18. import.meta
+19. import.meta
 
     import.meta 是一个给 javascript 模块暴露特定上下文的元数据属性的对象，它包含了这个模块的信息，如果这个模块的的 url。
 
@@ -187,7 +195,7 @@
 
     即每个 esm 模块都有一个 import.meta, 通过 import.meta 可以访问这个模块的元数据信息。
 
-19. HMR 的整个工作过程是咋样的？
+20. HMR 的整个工作过程是咋样的？
 
     热更新的时候，没有修改的文件会重新 transform 吗？
 
@@ -267,15 +275,15 @@
 
 
     
-20. SSR
+21. SSR
 
-21. 为什么 vite 会快
+22. 为什么 vite 会快
 
     和 webpack 对比，为什么 vite 的冷启动和热启动都会快？
 
-22. worker 配置项是什么东东？？
+23. worker 配置项是什么东东？？
 
-23. client 的模块缓存机制是怎么样子的？ 
+24. client 的模块缓存机制是怎么样子的？ 
     
     client 的模块缓存是浏览器自己实现的。
 
@@ -291,9 +299,9 @@
 
 
 
-24. 如何自动打开浏览器？？
+25. 如何自动打开浏览器？？
 
-25. 常见的打包工具对比
+26. 常见的打包工具对比
 
     目前前端比较常见的打包工具： webpack、parcel、vite、esbuild、rollup 等
 
@@ -332,7 +340,7 @@
 
 
 
-26. node 的进程管理
+27. node 的进程管理
 
 pm2 ??
 
