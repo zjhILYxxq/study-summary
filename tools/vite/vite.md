@@ -14,13 +14,36 @@
     - 如果可能，请确保您的插件输出正确的源映射
     - 如果您的插件使用“虚拟模块”（例如用于辅助功能），请在模块 ID 前加上\0. 这可以防止其他插件尝试处理它 ？？
 
-    rollup hook 的类型：
+    rollup hook 根据执行的顺序类型：
     - async
     - first - 如果有多个 plugin 实现了这个 hook，这些 hook 会按序执行，直到一个 hook 返回不是 null 或者 undefined 的值；
     - sequential - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个 hook 是异步的，那么后续的 hook 会等待当前 hook 执行完毕才执行。
-    - parallel - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个一个 hook 是异步的，那么后续的 hook 将会并行执行，而不是等待当前的 hook
+    - parallel - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个一个 hook 是异步的，那么后续的 hook 将会并行执行，而不是等待当前的 hook。
 
-    
+
+    rollup hook 根据执行的阶段可以分为：
+    - **build hook**，构建阶段的 hook(按照执行顺序):
+      - **options - async、sequential**，构建阶段的第一个 hook，可用于修改或者替换配置项 options，唯一一个无法访问插件上下文的 hook；
+      - **buildStart - async、parallel**，
+      - **resolveId - async、first**，自定义解析器，用于解析模块的绝对路径；
+      - **resolveDynamicImport - async、first**，为动态导入定义自定义解析器
+      - **load - asnyc、first**，自定义加载器，根据 resolveId 返回的路径去加载模块；
+      - **transform - async、sequential**，对模块做转换操作，一般的操作是生成 AST，分析 AST，收集依赖，做代码转换等；
+      - **moduleParsed - async、parallel**，模块已经解析完毕，接下来需要解析静态依赖/动态依赖；
+      - **buildEnd - async、parallel**，rollup 完成 bundle 调用，即模块依赖图构建完成；
+  
+    - **output generation hook**，输出阶段的 hook(按照执行顺序)：
+      - **outputOptions - sync、sequential**，输出阶段的第一个 hook，可用于修改或者替换 output 配置项；
+      - **renderStart - async、parallel**；
+      - **banner / footer / intro / outro - async、parallel**， ？？
+      - **renderDynamicImport - async、parallel**
+      - **augmentChunkHash - sync、sequential**
+      - **resolveFileUrl / resolveImportMeta - sync、first**
+      - **renderChunk - async、sequential**
+      - **generateBundle - async、sequential**
+      - **writeBundle - async、parallel**
+      - **closeBundle - async、parallel**
+
 
     rollup hook:
     - 
