@@ -8,11 +8,22 @@
    
     rollup 插件的一些约定:
     - 插件要有一个清晰的名称和 rollup-plugin-前缀；
-    - 在 package.json 中要包含 rollup-plugin 关键字？？
+    - 在 package.json 中要包含 rollup-plugin 关键字 (这个是什么意思呢？？)
     - 插件应该是被测试的
     - 尽可能的使用异步方法
     - 如果可能，请确保您的插件输出正确的源映射
     - 如果您的插件使用“虚拟模块”（例如用于辅助功能），请在模块 ID 前加上\0. 这可以防止其他插件尝试处理它 ？？
+
+    rollup hook 的类型：
+    - async
+    - first - 如果有多个 plugin 实现了这个 hook，这些 hook 会按序执行，直到一个 hook 返回不是 null 或者 undefined 的值；
+    - sequential - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个 hook 是异步的，那么后续的 hook 会等待当前 hook 执行完毕才执行。
+    - parallel - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个一个 hook 是异步的，那么后续的 hook 将会并行执行，而不是等待当前的 hook
+
+    
+
+    rollup hook:
+    - 
 
 
 4. vite 插件机制
