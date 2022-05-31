@@ -45,10 +45,6 @@
       - **closeBundle - async、parallel**
 
 
-    rollup hook:
-    - 
-
-
 4. vite 插件机制
 
     插件容器、插件类型、插件机制
