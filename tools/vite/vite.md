@@ -24,7 +24,7 @@
     rollup hook 根据执行的阶段可以分为：
     - **build hook**，构建阶段的 hook(按照执行顺序):
       - **options - async、sequential**，构建阶段的第一个 hook，可用于修改或者替换配置项 options，唯一一个无法访问插件上下文的 hook；
-      - **buildStart - async、parallel**，
+      - **buildStart - async、parallel**，各个插件可以通过这个 hook 做一些准备工作，如初始化一些对象、清理一些缓存等；
       - **resolveId - async、first**，自定义解析器，用于解析模块的绝对路径；
       - **resolveDynamicImport - async、first**，为动态导入定义自定义解析器
       - **load - asnyc、first**，自定义加载器，根据 resolveId 返回的路径去加载模块；
