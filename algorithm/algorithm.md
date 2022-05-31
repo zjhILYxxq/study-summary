@@ -386,6 +386,9 @@ function backTrack(list, track) {
 - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
 - [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
 - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 这道题的解题思路可以参照硬币问题，不过不完全一样，使用 dfs 会超时；
+- [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导师会超时，使用 dp 数组。
+
+一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
 
 
 
