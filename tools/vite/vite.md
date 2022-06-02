@@ -90,7 +90,7 @@
 
     自定义插件的 hooks 和 enforce 定义有什么讲究吗？
 
-    在定义一个自定义 plugin 的 hooks 时，需要明确先知道你想要这个 plugin 在 vite 的哪个阶段执行，即需要定义哪些 hooks；然后再根据 hooks 的类型如 first、sequential、parallel 来决定 hook 的 enforce。
+    在定义一个自定义 plugin 的 hooks 时，需要明确先知道你想要这个 plugin 在 vite 的哪个阶段执行，即需要定义哪些 hooks；然后再根据 hooks 的类型如 first、sequential、parallel 来决定 hook 的 enforce。parallel 类型的 hook 之间互不影响，所以对 enforce 没有要求；first 类型的 hook，前面的 hook 结果会影响后面的 hook 到底需不需要执行，一般设置为 normal、post，尽量不要设置为 pre(主要是怕影响到 vite 内部插件的执行，除非你有把握)；sequential 类型的 hook，前面的 hook 返回的结果会影响后面的 hook 的结果，可以设置为 pre、normal、post(要有把握)
 
     一般经验: hook 的 enforce 一般设置为 normal(post 也可以)，尽量不要设置为 pre(除非你有绝对的把握)；
 
