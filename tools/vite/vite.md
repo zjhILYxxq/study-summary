@@ -164,9 +164,15 @@
 
     hash，是预构建的标识符，有项目的 vite.config 和 .lock 文件内容生成。如果项目的依赖项或者 vite 配置项发生了变化，hash 值就会变化。hash 值发生变化，就需要重新预构建。
 
+    browserHash 是根据 hash、依赖项、时间戳信息生成的。
+
+    那 browserHash 有什么用呢？？
+
 12. 用户发起请求时，如果预构建还没有完成，vite 是怎么处理的？ 
 
-13. esbuild 工作原理是咋样的? 
+13. esbuild 了解
+
+    
 
 14. 预构建主要是将依赖的三方库从 cjs 转化为 esm。 
 
