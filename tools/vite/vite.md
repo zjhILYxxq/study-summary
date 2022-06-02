@@ -94,6 +94,8 @@
 
     一般经验: hook 的 enforce 一般设置为 normal(post 也可以)，尽量不要设置为 pre(除非你有绝对的把握)；
 
+    first 类型的 hook 一定要注意，如 resolveId、load、resolveDynamicImport；
+
 6. vite 中间件
 
     vite 的中间件其实是一个函数，执行时会返回一个入参为 req、res、next 的 callback。
