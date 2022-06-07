@@ -67,6 +67,31 @@
 
         不支持自定义代码分离。
 
+    - **watch**，监听文件的变化，然后重新 esbuild；
+  
+    - **write**，用于配置 build 内容是直接写入文件系统还是写入内存缓存区 - buffers
+
+        默认为 ture，直接写入指定文件中。
+
+        如果配置为 false，则写入内存缓存区中，通过 js 代码可读取构建内容。
+
+    - **allowOverwrite**, 这个有啥用 ？？
+  
+    - **metafile**, 通过这个配置，可以获得输出的 bundle 内部包含的源文件及对应的依赖
+
+        vite 是通过 metafile 来分析依赖图中的三方依赖吗？？
+
+    - **assetNames**，静态资源的输出配置，和 entryNames 一样；
+  
+    - **chunkNames**，代码分离生成的 chunk 的输出配置，需要配合 splitting 一起使用；
+
+    - **conditions**，条件配置，在解析三方依赖包时用到
+
+        使用时，需配合三方依赖包 package.json 中的 exports 字段 ？？
+
+
+
+
     使用 transfrom、build 时都可传入的参数:
 
     - **define**, 用常量表达式替换指定全局标识符；
@@ -84,6 +109,10 @@
     - **minify**, 压缩代码
 
         使用 minify 压缩代码时要注意的？？
+
+    - **target**, 根据设定的目标环境，生成对应的 js、css 代码；
+  
+    - **banner**, 给生成的 js、css 代码头部添加指定字符串；
     
     
 
