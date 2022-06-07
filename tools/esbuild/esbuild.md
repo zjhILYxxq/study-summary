@@ -6,11 +6,11 @@
 
     esbuild 中两个主要的 api: transform 和 build。 根据字面意思，transfrom 用于内容转换，build 用于文件打包构建。
 
-    使用 transform 时可传入的参数:
+    使用 transform 时可传入的独有的参数:
     - 
 
-    使用 build 时可传入的参数:
-    
+    使用 build 时可传入的独有参数:
+
     - **entryPoints**, 指定打包构建的入口文件
 
         entryPoints 可以是一个数组，也可以是一个对象。
@@ -35,10 +35,60 @@
         当 bundle 设置为 true 时，如果依赖的 url 不是一个静态定义的字符串，而是运行时生成，那么该依赖不会内联到 entry file 中。
 
         即 bundle 是编译时操作，不是运行时操作。
+
+    - **external**, 构建时指定不内联到 entry file 中的依赖；
+    - **inject**，
+    - **outdir**, 指定构建内容的输出文件夹；
+    - **outfile**, 指定构建内容的输出名称，如果是多入口打包构建，则不能使用，此时必须是 outdir；
+    - **platform**, 默认情况下构建内容是为浏览器准备的，代码格式为 iife，也可指定为 node
+
+        什么情况下，为浏览器准备代码时，代码格式为 esm ？？
+    - **serve**，主要用于开发模式下修改文件以后，自动重新 build；
+
+        serve 是 esbuild 提供的一个新的 api。
+
+        具体使用？？
+
+    - **sourcemap**, 配置生成 sourcemap 文件，可选的值为 true、'linked'、'inline'、'external'、'both'；
+
+        'linked'，生成一个 .map 文件，在 bundle 中有一个 link 指向生成的 .map 文件；
+
+        'inline'， .map 文件的内容内联的 bundle 中；
+
+        'external'，生成 .map 文件，但是 bundle 中没有 link 指向生成的 .map 文件；
+
+        'both'， 'inline' 和 'external' 的聚合，生成一个独立的 .map 文件，bundle 中有自己内联的 .map 内容；
+
+        true，等同于 'linked';
+
+    - **splitting**， 代码分离；
+
+        esbuild 的代码拆分功能并不完善，目前仅支持将多入口文件的共同依赖、动态依赖拆分出来，而且 format 必须是 esm。
+
+        不支持自定义代码分离。
+
+    使用 transfrom、build 时都可传入的参数:
+
+    - **define**, 用常量表达式替换指定全局标识符；
+    
+    - **format**, bundle 输出文件的格式，有三种 iife、cjs、esm，即立即执行函数、commonjs、ESModule；
+
+        platform 为 browser 时， format 默认为 iife。
+
+        platform 为 node 时， format 默认为 cjs
+
+    - **loader**，用于配置指定类型文件的解释方式(对比 webpack 的 loader)
+
+        transform 只需要一个 loader ？？
+
+    - **minify**, 压缩代码
+
+        使用 minify 压缩代码时要注意的？？
+    
     
 
-2. esbuild 常用配置项
+2. esbuild loader
 
-3. esbuild 插件使用
+3. esbuild plugin 使用
 
 4. 自定义 esbuild 插件 
