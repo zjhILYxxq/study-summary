@@ -94,6 +94,30 @@
 
         使用时，需配合三方依赖包 package.json 中的 exports 字段 ？？
 
+    - **incremental**， 配置增量构建；
+
+        增量构建 ？？
+
+    - **keepName**, 需要配合 minify 一起使用，压缩的时候保留函数的 name；
+
+
+    - **mainFields**,
+
+
+    - **preserveSymlinks**
+  
+    - **publicPath**
+  
+    - **pure**
+  
+    - **resolveExtensions**，路径后缀名扩展；
+
+        在解析 url 时，如果 url 没有后缀名， esbuild 会默认使用 .ts、.tsx、.jsx、.js、.css、.js。
+
+        通过 resolveExtensions 可以添加 esbuild 没有的后缀名。
+
+        > 解析的时候，需要拿到文件的绝对路径去读取文件内容。如果 url 没有后缀名，我们就需要给 url 添加正确的后缀，才能争取读取文件。此时就需要我们通过 resolveExtensions 指定 esbuild 没有提供的后缀名。
+
 
 
 
@@ -118,7 +142,10 @@
     - **target**, 根据设定的目标环境，生成对应的 js、css 代码；
   
     - **banner**, 给生成的 js、css 代码头部添加指定的字符串；
+  
     - **footer**, 给生成的 js、css 代码底部添加指定的字符串；
+  
+    - **globalName**， 需配合 format: 'iife' 使用，将生成的 iife 代码的结果赋值给 globalName 指定的变量；
     
     
 
