@@ -118,6 +118,8 @@
 
         > 解析的时候，需要拿到文件的绝对路径去读取文件内容。如果 url 没有后缀名，我们就需要给 url 添加正确的后缀，才能争取读取文件。此时就需要我们通过 resolveExtensions 指定 esbuild 没有提供的后缀名。
 
+    - **treeShaking**
+
 
 
 
@@ -146,11 +148,36 @@
     - **footer**, 给生成的 js、css 代码底部添加指定的字符串；
   
     - **globalName**， 需配合 format: 'iife' 使用，将生成的 iife 代码的结果赋值给 globalName 指定的变量；
-    
-    
 
-2. esbuild loader
+2. build 和 transform 的对比    
 
-3. esbuild plugin 使用
+3. 自定义 esbuild plugin：
 
-4. 自定义 esbuild 插件 
+    自定义一个 esbuild plugin:
+
+    ``
+    {
+        name: 'xxx',
+        setup: (build) => {
+            build.onResolve({ filter: '', namespace: '' }, args => { ...});
+            build.onLoad({ filter: '', namespace: ''}, args => { ... });
+            build.onStart(() => { ... });
+            build.onEnd(() => { ... });
+        }
+    }
+    ```
+
+    plugin 的 hooks：
+    - **onResolve**
+    - **onLoad**
+    - **onStart**
+
+        每次 build 开始时都会触发，没有入参，因此不具有改变 build 的能力。
+
+        多个 plugin 的 onStart 并行执行。
+
+    - **onEnd**
+
+        每次 build 结束时会触发，
+
+4. esbuild plugin 的限制 
