@@ -149,7 +149,12 @@
   
     - **globalName**， 需配合 format: 'iife' 使用，将生成的 iife 代码的结果赋值给 globalName 指定的变量；
 
-2. build 和 transform 的对比    
+2. transform 和 build 的对比    
+
+    transfrom，即转换的意思，通过这个 api 可以将 ts、jsx、tsx 格式的内容转化为 js 格式的内容。 transfrom 只负责文件内容转换，并不会生成一个新的文件。
+
+    build，即构建的意思，根据指定的单个或者多个入口，分析依赖，并使用 loader 将不同格式的内容转化为 js 内容，生成一个 bundle 文件。 build 内部肯定使用了 transform。
+
 
 3. 自定义 esbuild plugin：
 
@@ -169,7 +174,18 @@
 
     plugin 的 hooks：
     - **onResolve**
+
+        解析 url 是调用，可自定义 url 如何解析。如果 callback 有返回 path，后面的 callback 将不会执行。
+
+        所有的 onResolve callback 将按照对应的 plugin 注册的顺序执行。
+
     - **onLoad**
+
+        加载模块时调用，可自定义模块如何架子啊。 如果 callback 有返回 contents，后面的 callback 将不会执行。
+
+        所有的 onLoad callback 将按照对应的 plugin 注册的顺序执行。
+
+
     - **onStart**
 
         每次 build 开始时都会触发，没有入参，因此不具有改变 build 的能力。
@@ -178,6 +194,20 @@
 
     - **onEnd**
 
-        每次 build 结束时会触发，
+        每次 build 结束时会触发，入参为 build 的结果，可对 result 做修改。
+
+        多个 plugin 的 onEnd 是按序执行的。
 
 4. esbuild plugin 的限制 
+
+    - 无法修改 ast，防止暴露过多的 api 而影响性能；
+  
+    - 不支持自定义代码拆分；
+  
+    - 产物无法降级到 es5 之下；
+
+5. 为什么 esbuild 快 
+
+    - Go 语言开发，可以多线程打包，代码直接编译成机器码(不用先解析为字节码)；
+    - 可充分利用多核 cpu 优势；
+    - 高效利用缓存？？
