@@ -185,13 +185,74 @@
 
     4. 对第三步找到需要预构建的文件，开始预构建
 
+        这一块儿， cjs 模块和 esm 模块是怎么处理的？
+
 
 
 
 
 11. 预构建的时候模块的依赖关系是怎么样获取到的？ 
 
-12. 预构建过程中的 hash 和 browserHash 是什么意思？
+12. esbuild 是怎么格式化 esm 模块的？
+
+    esbuild 会简单的对 esm 模块做处理
+
+    ```
+    // example.1.js
+    export const func1() {...}
+
+    export default func() { ...}
+
+    // 格式化为
+    const func1() {...}
+    const example_1_default() {...}
+    export {
+        func1,
+        example_1_default
+    } 
+    ```
+
+    ```
+    import func, { func1} from './example.1';
+
+    // 格式化为 
+    import { func1, example_1_default } from './example.1;
+    ```
+
+13. esbuild 是怎么将 cjs 模块格式化为 esm 模块的？
+
+    首先是 cjs 模块。
+
+    一个 cjs 模块，常见的格式为:
+
+    ```
+    const func = () => { console.log('func') };
+    
+    // 格式一
+    exports = func;
+
+    // 格式二
+    module.exports = func;
+    ```
+
+    将 cjs 模块，转化为 esm 模块的方式为给 cjs 模块代码变为一个函数，执行这个函数并将返回的结果通过 exports 导出，如下:
+    ```
+    functon require() {
+        let mod = { exports: {} };
+        (function(exports, mod) {
+            const func = () => { console.log('func') };
+            exports = func;
+        })(mod.exports, mod);
+        return mod;
+    }
+    export default require();
+    ```
+    这样一个 cjs 模块就被格式化为 esm 模块。
+
+
+    
+
+14. 预构建过程中的 hash 和 browserHash 是什么意思？
 
     hash，是预构建的标识符，有项目的 vite.config 和 .lock 文件内容生成。如果项目的依赖项或者 vite 配置项发生了变化，hash 值就会变化。hash 值发生变化，就需要重新预构建。
 
@@ -199,21 +260,21 @@
 
     那 browserHash 有什么用呢？？
 
-13. 用户发起请求时，如果预构建还没有完成，vite 是怎么处理的？ 
+15. 用户发起请求时，如果预构建还没有完成，vite 是怎么处理的？ 
 
-14. esbuild 了解
+16. esbuild 了解
 
-15. virtual module 是什么东东？？ 
+17. virtual module 是什么东东？？ 
 
-16. import.meta.glob 是什么东东？？ 
+18. import.meta.glob 是什么东东？？ 
 
 
 
-17. vite 的预构建是如何将依赖的第三方包从 cjs 格式转化为 esm 格式的？
+19. vite 的预构建是如何将依赖的第三方包从 cjs 格式转化为 esm 格式的？
 
     过程和 webpack 打包类似。根据指定的入口文件，做依赖分析？，提取类似 runtime、common 包，将 cjs 包内容外面包裹一层 es6 实现。？？
 
-18. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
+20. 每次启动时，如何判断需要是否需要预构建？上一次预构建的内容是否可以使用？
 
     vite 开发模式下，如果设置 server.force 为 true，那么每次启动的时候都会预构建。
 
@@ -223,17 +284,17 @@
 
     具体检查的过程: 通过 .lock 文件的内容和 vite.config.js 的内容，生成一个 md5 码。如果 .lock 文件的内容和 vite.cofig.js 的内容没有发生变化，md5 码也不会发生变化，原来的预构建内容就可以使用了。
 
-19. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
+21. 第一次启动本地服务的时候，会先去判断需不需要进行预构建，然后启动本地服务。如果不需要预构建，直接使用上一次预构建的数据；如果需要，那么会在本地服务启动以后，立刻进行预构建。
 
-20. 项目中的业务代码是否支持 commonjs 写法 ？
+22. 项目中的业务代码是否支持 commonjs 写法 ？
 
     目前看是不支持的。预构建的时候也不会对 cjs 模块进行处理。
 
-21. vite 本地服务启动以后使用到的几个中间件
+23. vite 本地服务启动以后使用到的几个中间件
 
    
 
-22. vite 中 index.html、 js、 css 文件是怎么处理的？
+24. vite 中 index.html、 js、 css 文件是怎么处理的？
 
     先去请求 index.html 文件。html 文件的处理：添加 @vite/client、/@react-refresh， 其中 @vite/client 主要用于建立 ws 连接，@react-refresh 用于热更新。
 
@@ -254,7 +315,7 @@
     css 文件的处理过程和 webpack 也相同，即使用对应的 loader 先将 saas、less 写法转化为 css 写法，然后将样式文件转换成一段 js 代码。这一段 js 代码会执行 @vite/client 提供的 updateStyle 方法，通过动态添加 style 标签的方式添加到 html 页面中。
 
 
-23. 依赖后面的 v=xxx、t=xxx 是什么意思？
+25. 依赖后面的 v=xxx、t=xxx 是什么意思？
 
     使用 vite 时我们会发现，三方依赖，请求路径会添加一个 v=xxxx 的请求参数；内部依赖，请求路径会添加一个 t=xxx 的请求参数。
 
@@ -262,7 +323,7 @@
 
     如果不加请求参数，同样的请求 url， 浏览器只会请求一次；请求参数不同，浏览器会就会任务请求 url 不相同，这样就会再次请求。
 
-24. 静态依赖和动态依赖
+26. 静态依赖和动态依赖
 
     一个文件的依赖分为静态依赖和动态依赖。
 
@@ -275,7 +336,7 @@
     其实很好理解，如果我的动态依赖是放在 if 块中，那么如果这一段代码一直没有触发， 那么就不需要请求，也不需要 transform。
 
 
-25. import.meta
+27. import.meta
 
     import.meta 是一个给 javascript 模块暴露特定上下文的元数据属性的对象，它包含了这个模块的信息，如果这个模块的的 url。
 
@@ -283,7 +344,7 @@
 
     即每个 esm 模块都有一个 import.meta, 通过 import.meta 可以访问这个模块的元数据信息。
 
-26. HMR 的整个工作过程是咋样的？
+28. HMR 的整个工作过程是咋样的？
 
     热更新的时候，没有修改的文件会重新 transform 吗？
 
@@ -363,15 +424,15 @@
 
 
     
-27. SSR
+29. SSR
 
-28. 为什么 vite 会快
+30. 为什么 vite 会快
 
     和 webpack 对比，为什么 vite 的冷启动和热启动都会快？
 
-29. worker 配置项是什么东东？？
+31. worker 配置项是什么东东？？
 
-30. client 的模块缓存机制是怎么样子的？ 
+32. client 的模块缓存机制是怎么样子的？ 
     
     client 的模块缓存是浏览器自己实现的。
 
@@ -387,9 +448,9 @@
 
 
 
-31. 如何自动打开浏览器？？
+33. 如何自动打开浏览器？？
 
-32. 常见的打包工具对比
+34. 常见的打包工具对比
 
     目前前端比较常见的打包工具： webpack、parcel、vite、esbuild、rollup 等
 
@@ -428,7 +489,7 @@
 
 
 
-33. node 的进程管理
+35. node 的进程管理
 
 pm2 ??
 
