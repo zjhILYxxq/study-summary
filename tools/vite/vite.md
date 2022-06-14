@@ -181,11 +181,22 @@
         2. 使用 esbuild 提供的 build api，做打包；
         3. 使用 esbuild 打包时，提供 onResolved hook，在解析依赖的 url 时，将三方依赖收集起来；
 
+        > 使用 esbuild 做 build 时，不提供 outdir 配置项，会输出文件
+
         通过 esbuild 的扫描，我们就可以找到整个项目所依赖的三方库，然后就可以进行预构建了。
 
     4. 对第三步找到需要预构建的文件，开始预构建
 
-        这一块儿， cjs 模块和 esm 模块是怎么处理的？
+        具体的构建过程如下:
+        1. 根据依赖文件的 url 读取文件内容；
+        2. 分析文件内容，获取 import 和 export；
+        3. 使用 esbuild 提供的 build api，做打包， outdir 为 node_modules/.vite/.dep;
+        4. 使用 esbuild 打包时，提供 onLoad hook，根据第二步得到的 import 和 export，判断模块是 cjs 还是 esm；
+
+            如果是 cjs 模块，需要对文件内容做格式化，变为 export default require('xxxx');
+
+            如果是 esm 模块，则不需要做太复杂的格式化处理；
+
 
 
 
