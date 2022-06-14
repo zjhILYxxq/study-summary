@@ -197,12 +197,14 @@
 
             如果是 esm 模块，则不需要做太复杂的格式化处理；
 
-
-
-
+    5. 预构建的内容输出到 node_modules/.vite/.dep 目录下；
 
 
 11. 预构建的时候模块的依赖关系是怎么样获取到的？ 
+
+    vite 在预构建的时候，巧妙的利用了 esbuild 的 build 能力，以 index.html 中的入口文件为 entry 去打包。
+
+    在 esbuild 做 build 时，vite 提供了 onResolve hook，自定义依赖的解析过程，将三方依赖搜集起来，然后针对三方依赖做预构建。
 
 12. esbuild 是怎么格式化 esm 模块的？
 
