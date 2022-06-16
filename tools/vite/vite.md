@@ -295,6 +295,28 @@
 
 18. import.meta.glob 是什么东东？？ 
 
+    vite 支持使用特殊的 import.meta.glob 函数从文件系统中导入多个模块。
+
+    具体的用法如下:
+
+    ```
+    const modules = import.meta.glob('./dir/*.js');
+
+    // 转义为:
+    const modules = {
+    './dir/foo.js': () => import('./dir/foo.js'),
+    './dir/bar.js': () => import('./dir/bar.js')
+    }
+    ```
+
+    import.meta.glob 导入模块时，默认是懒加载，即动态依赖。
+
+    如果想将 import.meta.glob 导入的模块作为静态依赖，可以这样配置:
+
+    ```
+    const modules = import.meta.glob('./dir/*.js', { eager: true })
+    ```
+
 
 
 19. vite 的预构建是如何将依赖的第三方包从 cjs 格式转化为 esm 格式的？
