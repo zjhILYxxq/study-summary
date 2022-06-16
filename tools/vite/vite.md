@@ -163,7 +163,11 @@
     - vite404Middleware
     - errorMiddleware
 
-9.  依赖预构建
+9.  预构建
+
+    vite 需要执行预构建的目的:
+    - 将 commonjs 或者 umd 类型的依赖转化为 esm；
+    - 将有很多内部模块的 esm 依赖关系转化为多个 模块(将多个 http 请求合并为单个 http 请求)；
     
 10. 依赖预构建过程是怎么样的?
 
@@ -178,7 +182,14 @@
 
         如果有缓存的预构建内容，但是 config.server.force 的值为 true，需要强制进行依赖预构建；
 
-        如果有缓存的预构建内容，且 config.server.force 为 false，就需要判断上一次的预构建内容是否可用。vite 会通过一个有 .lock 文件内容和 vite.config 内容生成的 hash 值来判断项目的依赖项是否发生了变化。如果 .lock 文件或者 vite.config 配置项内容发生了变化，那么 hash 就会变化，那么就需要重新进行依赖预构建。
+        如果有缓存的预构建内容，且 config.server.force 为 false，就需要判断上一次的预构建内容是否可用。
+
+        有几个源来决定 vite 是否需要重新进行预构建:
+        - package.json 中的 dependencies 列表；
+        - lockfile；
+        - vite.config.js
+        
+        vite 会通过一个有 .lock 文件内容和 vite.config 内容生成的 hash 值来判断项目的依赖项是否发生了变化。如果 .lock 文件或者 vite.config 配置项内容发生了变化，那么 hash 就会变化，那么就需要重新进行依赖预构建。
 
     3. 找到项目中需要进行预构建的文件
 
