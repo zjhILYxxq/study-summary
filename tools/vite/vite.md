@@ -14,6 +14,75 @@
 
 3. vite 常用配置项了解 
 
+    vite 的常用配置项:
+    - build、server 模式下的公用配置项
+      - root
+      - base
+      - mode
+      - define
+      - plugins
+      - publicDir
+      - cacheDir
+      - resolve
+      - css
+      - json
+      - esbuild
+      - assetsInclude
+      - logLevel
+      - clearScreen
+      - envDir
+      - envPrefix
+    - server 模式下的配置项
+      - server
+        - host
+        - port
+        - strictPor
+        - https
+        - open
+        - proxy
+        - cors
+        - headers
+        - force
+        - hmr
+        - watch
+        - middlewareMode
+        - base
+        - fs
+        - origin
+      - optimizeDeps
+        - entries
+        - exclude
+        - include
+        - esbuildOptions
+    - build 模式下的配置项
+      - build
+        - target
+        - polyfillModulePreload
+        - ourDir
+        - assetsDir
+        - assetsInlineLimit
+        - cssCodeSplit
+        - cssTarget
+        - sourcemap
+        - rollupOptions
+        - commonjsOptions
+        - dynamicImportVarsOptions
+        - lib
+        - manifest
+        - ssrManifest
+        - ssr
+        - minify
+        - terserOptions
+        - write
+        - emptyOutDir
+        - reportCompressedSize
+        - chunkSizeWarningLimit
+        - watch
+    - 其他配置项
+      - preview
+      - ssr
+      - worker
+
 4. rollup 插件学习
    
     rollup 插件的一些约定:
@@ -523,6 +592,14 @@
 32. worker 配置项是什么东东？？
 
 33. 环境变量 
+
+    在 vite 中，环境变量会通过  import.meta.env 的形式暴露给客户端源代码。
+
+    即我们可以在自己的代码中，通过 import.meta.env 来获取环境变量。
+
+    环境变量通常从 process.env 中获取。
+
+    vite 是默认不加载 .env 文件的，我们可以通过 vite 提供的 loadEnv 函数来加载指定的 env 文件。
 
 34. client 的模块缓存机制是怎么样子的？ 
     
