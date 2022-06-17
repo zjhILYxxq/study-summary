@@ -10,6 +10,8 @@
 
     vite preview 这个命令有什么用？
 
+    vite optimize, 手动进行预加载依赖优化；
+
 
 3. vite 了解
 
