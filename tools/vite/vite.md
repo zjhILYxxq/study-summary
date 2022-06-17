@@ -16,22 +16,22 @@
 
     vite 的常用配置项:
     - build、server 模式下的公用配置项
-      - root
-      - base
-      - mode
-      - define
-      - plugins
-      - publicDir
-      - cacheDir
-      - resolve
+      - root: 项目的根目录，即 index.html 所在的位置，可以是绝对路径，也可以是基于 vite.config.js 的相对路径, 默认值为 process.cwd();
+      - base: 基础公共路径？？
+      - mode: 默认，开发为 development，生产为 production；通过 mode 选项可以覆盖 serve 和 build 命令对应的默认模式；
+      - define: 定义可替换的全局变量？？
+      - plugins: 插件，对应 rollup 插件；
+      - publicDir: 静态资源目录，build 结束以后会复制到 outDir 目录下；
+      - cacheDir: 预构建文件的缓存目录，默认为 node_modules/.vite;
+      - resolve: 文件解析配置，有 alias(别名配置)、dedupe、mainField 等；
       - css
       - json
       - esbuild
       - assetsInclude
       - logLevel
       - clearScreen
-      - envDir
-      - envPrefix
+      - envDir:  .env 文件的根目录；
+      - envPrefix: 环境变量的前缀，默认为 VITE_;
     - server 模式下的配置项
       - server
         - host
