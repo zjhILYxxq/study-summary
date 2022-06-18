@@ -389,6 +389,7 @@ function backTrack(list, track) {
 - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导师会超时，使用 dp 数组。
 - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 比较典型的动态规划问题；
 - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。
+- [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
 
 一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
 
