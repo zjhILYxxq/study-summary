@@ -386,12 +386,41 @@ function backTrack(list, track) {
 - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
 - [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
 - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 这道题的解题思路可以参照硬币问题，不过不完全一样，使用 dfs 会超时；
-- [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导师会超时，使用 dp 数组。
+- [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导致会超时，使用 dp 数组。
 - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 比较典型的动态规划问题；
 - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。
 - [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
+- [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/) - 不使用动态规划也可求解；
+- [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
+- [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
+- [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+- [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+- [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
 
 一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
+
+股票问题的状态转移方程:
+
+```
+// 股票问题的状态有两个: 交易的日期和交易当天持有的股票的情况
+
+// 第 i 天、第 j 次交易后，不持有股票
+dp[i][j][0] = Math.max(
+    // 第 i - 1 天 不持有股票，第 i 天没有买入，没有新的交易
+    dp[i - 1][j][0],
+    // 第 i - 1 天持有股票，第 i 天卖出，没有新的交易
+    dp[i - 1][j][1] + prices[i]
+)
+
+// 第 i 天、 第 j 次交易后，持有股票
+dp[i][j][1] = Math.max(
+    // 第 i - 1 天持有， 第 i 天没有卖出， 没有新的交易
+    dp[i - 1][j][1],
+    // 第 i - 1 天没有， 第 i 天买入，有新的交易
+    dp[i - 1][j - 1][0] - prices[i]
+)
+
+```
 
 
 
