@@ -19,3 +19,11 @@
     - 由于 es6 module 在编译阶段就可以知道模块的依赖的关系，提供了 tree shaking 的功能，更好的优化代码体积；
     - 兼容性，可以通过插件导入 cjs 模块；
     - 支持 esm、cjs、umd 格式发布 lib，通过 package.json 的 main 字段可以使用 lib 中 cjs、umd 包；通过 module 字段可以使用 lib 中的 esm 包；
+
+3. rollup 的应用场景
+
+    一般只是用来开发 lib 吗？
+
+    有没有开发模式？
+    
+4. 
