@@ -633,6 +633,7 @@
 
 37. vite 的 build 是一个怎么样的过程 
 
+    vite 的 build 过程是基于 rollup 实现的。
 
 38. 常见的打包工具对比
 
