@@ -40,63 +40,72 @@
 
     执行 rollup 方法时，会有一个 inputOptions 的入参；执行 generate 方法时，会有一个 outputOptions 入参。
 
-    inputOptions:
-    - input
-    - external
-    - plugins
-    - cache
-    - onwarn
-    - preserveEntrySignatures
-    - strictDeprecations
-    - acorn
-    - acornInjectPlugins
-    - context
-    - moduleContext
-    - preserveSymlinks
-    - shimMissingExports
-    - treeshake
+    **inputOptions**:
+    - **核心属性**
+      - input，打包的入口配置, 可以是一个字符串(单入口文件打包)、一个字符串数组(多入口文件打包)、一个对象(多入口文件打包);
+      - external, 配置不参与打包的文件，可以是一个匹配 id 的正则表达式、一个包含 id 的数组、一个入参为 id 返回值为 true 或者 false 的函数；
+      - plugins, 插件配置；
+    - **高级属性**
+      - cache
+      - onwarn
+      - preserveEntrySignatures
+      - strictDeprecations
+    - **危险属性**
+      - acorn
+      - acornInjectPlugins
+      - context
+      - moduleContext
+      - preserveSymlinks
+      - shimMissingExports
+      - treeshake
+    - **实验性属性**
+      - experimentalCacheExpiry,
+      - perf
 
-    outputOptions:
-    - dir
-    - file
-    - format
-    - globals
-    - name
-    - plugins
-    - assetFileNames
-    - banner
-    - chunkFileNames
-    - compact
-    - entryFileNames
-    - extend
-    - externalLiveBindings
-    - footer
-    -  hoistTransitiveImports,
-    - inlineDynamicImports,
-    - interop,
-    - intro,
-    - manualChunks,
-    - minifyInternalExports,
-    - outro,
-    - paths,
-    - preserveModules,
-    - preserveModulesRoot,
-    - sourcemap,
-    - sourcemapExcludeSources,
-    - sourcemapFile,
-    - sourcemapPathTransform,
-    - validate,
-    - amd,
-    - esModule,
-    - exports,
-    - freeze,
-    - indent,
-    - namespaceToStringTag,
-    - noConflict,
-    - preferConst,
-    - sanitizeFileName,
-    - strict,
-    - systemNullSetters
+    **outputOptions**:
+    - **核心属性**
+      - dir
+      - file
+      - format
+      - globals
+      - name
+      - plugins
+    - **高级属性** 
+      - assetFileNames
+      - banner
+      - chunkFileNames
+      - compact
+      - entryFileNames
+      - extend
+      - externalLiveBindings
+      - footer
+      - hoistTransitiveImports,
+      - inlineDynamicImports,
+      - interop,
+      - intro,
+      - manualChunks,
+      - minifyInternalExports,
+      - outro,
+      - paths,
+      - preserveModules,
+      - preserveModulesRoot,
+      - sourcemap,
+      - sourcemapExcludeSources,
+      - sourcemapFile,
+      - sourcemapPathTransform,
+      - validate,
+    - **危险属性** 
+      - amd,
+      - esModule,
+      - exports,
+      - freeze,
+      - indent,
+      - namespaceToStringTag,
+      - noConflict,
+      - preferConst,
+      - sanitizeFileName,
+      - strict,
+      - systemNullSetters
 
 6. watch 配置项整理
 
