@@ -44,7 +44,7 @@
     - **核心属性**
       - input，打包的入口配置, 可以是一个字符串(单入口文件打包)、一个字符串数组(多入口文件打包)、一个对象(多入口文件打包);
       - external, 配置不参与打包的文件，可以是一个匹配 id 的正则表达式、一个包含 id 的数组、一个入参为 id 返回值为 true 或者 false 的函数；
-      - plugins, 插件配置；
+      - plugins, 打包时用到的插件；
     - **高级属性**
       - cache
       - onwarn
@@ -64,12 +64,12 @@
 
     **outputOptions**:
     - **核心属性**
-      - dir
-      - file
-      - format
-      - globals
-      - name
-      - plugins
+      - dir, 放置生成的 bundle 的目录，适用于多入口文件打包；
+      - file，生成的 bundle 的文件名及目录，适用于单入口文件打包；
+      - format，指定生成的 bundle 的格式： amd、cjs、es、iife、umd、system；
+      - globals, 指定 iife 模式下全局变量的名称；
+      - name，指定 iife 模式下赋值的变量；
+      - plugins，输出时使用的插件；
     - **高级属性** 
       - assetFileNames
       - banner
@@ -107,6 +107,7 @@
       - strict,
       - systemNullSetters
 
-6. watch 配置项整理
 
-7. rollup 工作原理梳理 
+6. rollup 工作原理梳理 
+
+7. rollup 和 webpack 的简单对比
