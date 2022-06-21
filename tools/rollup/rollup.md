@@ -2,7 +2,7 @@
 
     仅仅是因为打包出来的代码很干净吗？
 
-    软件开发时，我们通常会将一个项目拆分为小的模块，这样可以移除意外的交互、减低问题的复杂性，而且为什么要这样做并没有答案，大家都是默认这样做的。
+    软件开发时，我们通常会将一个项目拆分为小的模块，这样可以消除无法预知的相互影响、减低问题的复杂性，而且为什么要这样做并没有答案，大家都是默认这样做的。
 
     但是遗憾的时候， javascript 历史上并支持这样做，没有类似 java、c++ 的 module 功能。
 
@@ -25,5 +25,79 @@
     一般只是用来开发 lib 吗？
 
     有没有开发模式？
-    
-4. 
+
+4. rollup 常用 api 以及配置项
+
+    rollup 提供两个 api - rollup 和 watch。
+
+    其中，rollup 用于 build。执行 rollup 会返回一个 promise 对象，它解析为一个 bundle 对象。通过 bundle 对象的 generate、write 方法，可以将打包构建的包放置到指定位置。
+
+    watch 可以用来监听某个文件的变化，然后重新发起 build。
+
+5. rollup 配置项整理
+
+    rollup 在 build 时，会先执行 rollup 方法返回一个 promise 对象。promise 对象的值为一个 bundle 对象，执行 bundle 对象的 generate 方法会生成要输出的代码。
+
+    执行 rollup 方法时，会有一个 inputOptions 的入参；执行 generate 方法时，会有一个 outputOptions 入参。
+
+    inputOptions:
+    - input
+    - external
+    - plugins
+    - cache
+    - onwarn
+    - preserveEntrySignatures
+    - strictDeprecations
+    - acorn
+    - acornInjectPlugins
+    - context
+    - moduleContext
+    - preserveSymlinks
+    - shimMissingExports
+    - treeshake
+
+    outputOptions:
+    - dir
+    - file
+    - format
+    - globals
+    - name
+    - plugins
+    - assetFileNames
+    - banner
+    - chunkFileNames
+    - compact
+    - entryFileNames
+    - extend
+    - externalLiveBindings
+    - footer
+    -  hoistTransitiveImports,
+    - inlineDynamicImports,
+    - interop,
+    - intro,
+    - manualChunks,
+    - minifyInternalExports,
+    - outro,
+    - paths,
+    - preserveModules,
+    - preserveModulesRoot,
+    - sourcemap,
+    - sourcemapExcludeSources,
+    - sourcemapFile,
+    - sourcemapPathTransform,
+    - validate,
+    - amd,
+    - esModule,
+    - exports,
+    - freeze,
+    - indent,
+    - namespaceToStringTag,
+    - noConflict,
+    - preferConst,
+    - sanitizeFileName,
+    - strict,
+    - systemNullSetters
+
+6. watch 配置项整理
+
+7. rollup 工作原理梳理 
