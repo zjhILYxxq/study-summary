@@ -46,7 +46,8 @@
       - external, 配置不参与打包的文件，可以是一个匹配 id 的正则表达式、一个包含 id 的数组、一个入参为 id 返回值为 true 或者 false 的函数；
       - plugins, 打包时用到的插件；
     - **高级属性**
-      - cache
+      - cache，是否开启缓存。监听模式下(仅用于监听模式下？)使用，如果模块没有变化就不解析；
+      - maxParallelFileReads，读取文件的并发数，默认为 20；
       - onwarn
       - preserveEntrySignatures
       - strictDeprecations
