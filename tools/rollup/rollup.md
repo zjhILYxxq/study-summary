@@ -122,13 +122,19 @@
     - getCombinedSourcemap， 获取之前插件的所有源映射组合，该上下文函数只能在 transform hook 中使用；
     - getFileName，获取通过 emitFile 发出的文件的文件名；
     - getModuleIds，返回一个 iterator，可以用于获取当前模块依赖图中所有 module 的 id；
-    - getModuleInfo，获取模块依赖图中模块的信息
+    - getModuleInfo，获取模块依赖图中模块的信息；
+    - getAssetFileName，
+    - getChunkFileName，
     - load ??
     - resolve ??
     - resolveId ??
     - emitFile ??
     - parse, 使用 Rollup 内部的 acorm 实例将代码解析为 AST；
     - setAssetSource
+
+    plugin context， 插件上下文是用来干什么的？？
+
+    plugin 提供的 hook 在被触发时，上下文为 plugin context 对象。在 plugin hook 执行过程中，this 指向 plugin context，可以通过 this 获取 plugin context 的属性/方法。
 
     
 
