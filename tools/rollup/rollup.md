@@ -119,7 +119,16 @@
 
     plugin context 对象中包含的属性/方法:
     - addWatchFile, 监视模式下添加要监视的文件，当该文件更改时触发重新构建；
-    - emitFile
+    - getCombinedSourcemap， 获取之前插件的所有源映射组合，该上下文函数只能在 transform hook 中使用；
+    - getFileName，获取通过 emitFile 发出的文件的文件名；
+    - getModuleIds，返回一个 iterator，可以用于获取当前模块依赖图中所有 module 的 id；
+    - getModuleInfo，获取模块依赖图中模块的信息
+    - load ??
+    - resolve ??
+    - resolveId ??
+    - emitFile ??
+    - parse, 使用 Rollup 内部的 acorm 实例将代码解析为 AST；
+    - setAssetSource
 
     
 
