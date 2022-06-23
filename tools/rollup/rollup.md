@@ -113,6 +113,11 @@
 
 7. rollup 和 webpack 的简单对比
 
-8. rollup 读取文件时采用多线程，默认为 20 个?
+8. plugin context - 插件上下文
 
-    这个？？
+    
+
+
+9.  rollup 读取文件时采用多线程，默认为 20 个?
+
+    rollup 这一块儿是如何处理的
