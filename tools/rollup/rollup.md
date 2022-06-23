@@ -115,6 +115,12 @@
 
 8. plugin context - 插件上下文
 
+    plugin context， 插件上下文，可以帮助插件的 hook 在执行过程中获取到一些上下文相关信息，如 module 信息、模块依赖图信息 等；
+
+    plugin context 对象中包含的属性/方法:
+    - addWatchFile, 监视模式下添加要监视的文件，当该文件更改时触发重新构建；
+    - emitFile
+
     
 
 
