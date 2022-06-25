@@ -111,24 +111,30 @@
 
 6. rollup 工作原理梳理 
 
-    rollup 工作分为三个阶段：
-    - 构建模块依赖图
+    rollup 整个工作过程如下：
+    - 执行 rollup.rollup 方法，入参为 input options
+      - 依次触发 input plugins 中各个 plugin 的 options hook，更新 input options；
+      - 构建一个模块依赖图实例，初始化 plugin 驱动、acorn 实例、module loader；
+      - 依次触发 input plugins 中各个 plugin 的 buildStart，做一些初始化工作、缓存处理问题；
+      - 开始构建模块依赖图；
 
-        构建模块依赖图的具体过程:
-        1. 解析入口模块的 id，得到入口模块的绝对路径(通过 resolveId hook 来解析)
-        2. 根据解析的路径创建一个 module 对象；
-        3. 触发 load hook 来加载 module 的源文件；
-        4. 将源文件内容解析为 ast 对象；
-        5. 遍历 ast 对象，收集静态依赖和动态依赖，其中静态依赖收集到 module 对象的 sources 数组中，动态依赖收集到 module 对象的 dynamicImport 数组中；
-        6. 遍历 module 对象的 sources、dunamicImport 数组，解析依赖模块的路径；
-        7. 重复 2 - 6 步骤，直到所有的模块解析完成
+          构建模块依赖图的具体过程:
+          1. 解析入口模块的 id，得到入口模块的绝对路径(通过 resolveId hook 来解析)
+          2. 根据解析的路径创建一个 module 对象；
+          3. 触发 load hook 来加载 module 的源文件；
+          4. 将源文件内容解析为 ast 对象；
+          5. 遍历 ast 对象，收集静态依赖和动态依赖，其中静态依赖收集到 module 对象的 sources 数组中，动态依赖收集到 module 对象的 dynamicImport 数组中；
+          6. 遍历 module 对象的 sources、dunamicImport 数组，解析依赖模块的路径；
+          7. 依次触发 input plugins 中各个 plugin 的 moduleParsed hook；
+          8. 重复 2 - 7 步骤，直到所有的模块解析完成
 
-        静态依赖模块，会收集到 importer 模块的 dependencies 列表中；动态依赖模块会收集到 importer 模块的 dynamicDependencies 列表中。
+          静态依赖模块，会收集到 importer 模块的 dependencies 列表中；动态依赖模块会收集到 importer 模块的 dynamicDependencies 列表中。
 
-        静态依赖会收集到 importor module 的 sources 列表中，动态依赖会收集到 importor module 的 dynamicImport 列表中；同样的 importer 模块的 id 也会收到到静态依赖模块的 importers 和动态依赖模块的 dynamicImporters 中。这样模块依赖图就构建完成了。
-        
-    - 分离 chunk
-    - 输出 chunk
+          静态依赖会收集到 importor module 的 sources 列表中，动态依赖会收集到 importor module 的 dynamicImport 列表中；同样的 importer 模块的 id 也会收到到静态依赖模块的 importers 和动态依赖模块的 dynamicImporters 中。这样模块依赖图就构建完成了。
+      - 模块排序？？ 这里为什么要排序
+      - 返回一个带 generate、write 方法的 bundle 对象；
+    - 执行 bundle.write 方法，入参为 option options；
+      - 
 
 7. rollup 和 webpack 的简单对比
 
