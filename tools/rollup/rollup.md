@@ -113,7 +113,7 @@
 
     rollup 整个工作过程如下：
     - 执行 rollup.rollup 方法，入参为 input options
-      - 依次触发 input plugins 中各个 plugin 的 options hook，更新 input options；
+      - 初始化 input options。依次触发 input plugins 中各个 plugin 的 options hook，更新 input options；
       - 构建一个模块依赖图实例，初始化 plugin 驱动、acorn 实例、module loader；
       - 依次触发 input plugins 中各个 plugin 的 buildStart，做一些初始化工作、缓存处理问题；
       - 开始构建模块依赖图；
