@@ -88,7 +88,7 @@
             默认情况下，懒加载模块会自动分离为一个单独的 async chunk。如果 inlineDynamicImports 为 ture，懒加载模块会合并到 importor module 中。
 
             inlineDynamicImports 不能和 manualChunks 一起使用，否则会报错。
-            
+
       - interop,
       - intro,
       - manualChunks
@@ -104,6 +104,13 @@
       - outro,
       - paths,
       - preserveModules,
+
+            rollup 默认的 chunk 分离规则将模块依赖图分离为尽可能少的 chunk。一个单页应用最后的分离结果为:一个 main chunk，多个懒加载 module 为 async chunk，多个根据 manualChunks 规则生成自定义 chunks。
+
+            而 preserveModules 的分离过程正好相反。如果将 preserveModules 设置为 true， rollup 会将每个 module 分离为一个单独的 chunk。
+
+            preserveModules 需要配合 format 一起使用。
+
       - preserveModulesRoot,
       - sourcemap,
       - sourcemapExcludeSources,
