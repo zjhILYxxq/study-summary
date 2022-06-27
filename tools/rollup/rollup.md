@@ -131,9 +131,13 @@
           静态依赖模块，会收集到 importer 模块的 dependencies 列表中；动态依赖模块会收集到 importer 模块的 dynamicDependencies 列表中。
 
           静态依赖会收集到 importor module 的 sources 列表中，动态依赖会收集到 importor module 的 dynamicImport 列表中；同样的 importer 模块的 id 也会收到到静态依赖模块的 importers 和动态依赖模块的 dynamicImporters 中。这样模块依赖图就构建完成了。
+
       - 模块排序？？ 这里为什么要排序
+  
       - 返回一个带 generate、write 方法的 bundle 对象；
+  
     - 执行 bundle.write 方法，入参为 option options；
+      - 初始化 output option。依次触发 output plugin 的 outputOptions hook， 更新 output otions；
       - 
 
 7. rollup 和 webpack 的简单对比
