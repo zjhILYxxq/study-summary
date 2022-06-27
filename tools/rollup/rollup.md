@@ -84,7 +84,15 @@
       - inlineDynamicImports,
       - interop,
       - intro,
-      - manualChunks,
+      - manualChunks
+  
+            自定义 chunk 分离规则，类似于 webpack 的 splitChunks 规则，将匹配的 module 分离到指定 name 的 chunks 中。
+
+            manualChunks 可以是一个对象，也可以是一个函数。如果是一个对象，key 为自定义 chunk 的 name， value 是一个 id 数组，表示要分配到自定义 chunk 的 module。
+
+            如果是一个函数，入参为 module id，返回值为自定义 chunk 的 name。 rollup 会遍历模块依赖图，将匹配 manualChunks 函数的 module 分配到对应的自定义 chunks 中。
+
+
       - minifyInternalExports,
       - outro,
       - paths,
@@ -141,6 +149,7 @@
       - 构建一个 Bundle 实例，入参为 input options、output options、output 插件引擎、graph(模块依赖图)；
       - 执行 bundle 实例的 generate 方法,
         - 先创建一个空的 outputBundle 对象；
+        - 依次触发 output plugin 的 renderStart hook(作用应该类似于 buildStart hook，做一些初始化、缓存清理工作)；
         - 
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
