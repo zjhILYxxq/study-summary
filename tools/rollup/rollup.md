@@ -99,6 +99,8 @@
 
             如果是一个函数，入参为 module id，返回值为自定义 chunk 的 name。 rollup 会遍历模块依赖图，将匹配 manualChunks 函数的 module 分配到对应的自定义 chunks 中。
 
+            分配到 manualChunks 中的 modules 中如果存在懒加载 module，懒加载 module 也会单独分离到 async chunk 中
+
 
       - minifyInternalExports,
       - outro,
