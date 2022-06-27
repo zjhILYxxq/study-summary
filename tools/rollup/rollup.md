@@ -81,7 +81,14 @@
       - externalLiveBindings
       - footer
       - hoistTransitiveImports,
-      - inlineDynamicImports,
+      - inlineDynamicImports
+
+            懒加载模块是否内联。
+
+            默认情况下，懒加载模块会自动分离为一个单独的 async chunk。如果 inlineDynamicImports 为 ture，懒加载模块会合并到 importor module 中。
+
+            inlineDynamicImports 不能和 manualChunks 一起使用，否则会报错。
+            
       - interop,
       - intro,
       - manualChunks
