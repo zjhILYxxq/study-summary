@@ -138,7 +138,11 @@
   
     - 执行 bundle.write 方法，入参为 option options；
       - 初始化 output option。依次触发 output plugin 的 outputOptions hook， 更新 output otions；
-      - 
+      - 构建一个 Bundle 实例，入参为 input options、output options、output 插件引擎、graph(模块依赖图)；
+      - 执行 bundle 实例的 generate 方法,
+        - 先创建一个空的 outputBundle 对象；
+        - 
+      - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
 7. rollup 和 webpack 的简单对比
 
