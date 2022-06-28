@@ -166,12 +166,33 @@
       - 执行 bundle 实例的 generate 方法,
         - 先创建一个空的 outputBundle 对象；
         - 依次触发 output plugin 的 renderStart hook(作用应该类似于 buildStart hook，做一些初始化、缓存清理工作)；
-        - 
+        - 将模块依赖图分离为 chunks，具体过程为:
+          1. 根据 output.manualChunks 规则，建立一个 map，key 为 module 对象，value 为自定义 manualChunks 的 name；
+          2. 确定 chunk 分离规则。
+          
+            如果 output.inlineDynamicImports 为 ture，所有的 module 会分离为一个 chunk；如果 output.preserveModules 为 ture，每个 module 会分离为一个单独的 chunk (配合 output.format 使用)；如果 output.inlineDynamicImports、output.preserveModules 都为 false，那么就将模块依赖图分离为 entry chunks、dynamic chunks、自定义 manual chunks。
+
+          3. 根据 chunk 分离规则，确定 chunk 以及 chunk 包含的 module。
+
+            如果 output.inlineDynamicImport 为 ture，chunk 只有一个，对应的 module 列表收集了所有的 module；
+
+            如果 output.preserveModules 为 true (output.inlineDynamicImport 为 false)，module 有多少个， chunk 就有多少个，chunk 的 module 列表只有一个 module；
+
+            如果 output.inlineDynamicImport 和 output.preserveModules 为 false，chunk 分离过程为：
+            - 先根据 output.manualChunks 创建 manual chunks，把属于他们的 module 添加到对应的 manual chunks 中；
+            - 以模块依赖图的入口模块为起点，分析模块依赖图，找到懒加载 modules 以及 module 和  importor module 的映射关系(去掉已经分离到 manualChunks 中的 modules)；
+            - 找到每一个 module 和其对应的 entry modules(包含 static entry modules 和 dynamic entry modules)；
+            - 根据 module 和对应的 entry modules，将 modules 分离为 initial chunks 和 dynamic chunk ( 如果 module 的 importor module 包含 static entry modules 和 dynamic entry module，那么该 module 会分配打到 initial chunk 中)；
+
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
-7. rollup 和 webpack 的简单对比
+7. 模块依赖图的遍历算法
 
-8. plugin context - 插件上下文
+
+
+8. rollup 和 webpack 的简单对比
+
+9.  plugin context - 插件上下文
 
     plugin context， 插件上下文，可以帮助插件的 hook 在执行过程中获取到一些上下文相关信息，如 module 信息、模块依赖图信息 等；
 
@@ -201,6 +222,6 @@
     
 
 
-9.  rollup 读取文件时采用多线程，默认为 20 个?
+10. rollup 读取文件时采用多线程，默认为 20 个?
 
     rollup 这一块儿是如何处理的
