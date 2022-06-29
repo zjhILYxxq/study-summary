@@ -73,13 +73,12 @@
       - plugins，输出时使用的插件；
     - **高级属性** 
       - assetFileNames
-      - banner
+      - banner / footer，要添加到 chunk code 顶部/尾部位置的注释字符串；
       - chunkFileNames
       - compact
       - entryFileNames
       - extend
       - externalLiveBindings
-      - footer
       - hoistTransitiveImports,
       - inlineDynamicImports
 
@@ -90,7 +89,7 @@
             inlineDynamicImports 不能和 manualChunks 一起使用，否则会报错。
 
       - interop,
-      - intro,
+      - intro / outro, 要添加到 chunk code 顶部 / 尾部的代码 ？？变量注入 ？？
       - manualChunks
   
             自定义 chunk 分离规则，类似于 webpack 的 splitChunks 规则，将匹配的 module 分离到指定 name 的 chunks 中。
@@ -186,6 +185,9 @@
         
       - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
       - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
+      - 为每个 chunk 绘制内容
+        - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
+        - 
 
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
