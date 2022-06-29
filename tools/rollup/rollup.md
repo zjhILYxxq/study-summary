@@ -183,6 +183,9 @@
             - 以模块依赖图的入口模块为起点，分析模块依赖图，找到懒加载 modules 以及 module 和  importor module 的映射关系(去掉已经分离到 manualChunks 中的 modules)；
             - 找到每一个 module 和其对应的 entry modules(包含 static entry modules 和 dynamic entry modules)；
             - 根据 module 和对应的 entry modules，将 modules 分离为 initial chunks 和 dynamic chunk ( 如果 module 的 importor module 包含 static entry modules 和 dynamic entry module，那么该 module 会分配打到 initial chunk 中)；
+        
+      - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
+      - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
 
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
