@@ -187,8 +187,8 @@
       - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
       - 为每个 chunk 绘制内容
         - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
-        - 
 
+      - 将构建好的每一个 bundle 输出到 outdir 指定位置；
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
 7. 模块依赖图的遍历算法
