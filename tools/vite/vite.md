@@ -25,9 +25,13 @@
 4. development 和 production 模式下 vite 的整个工作过程
 
     production 模式下整个工作过程:
-    - 解析 build 操作需要的配置项。vite 通过读取 vite.config.js 的方式来获取 build 操作需要的配置项。
+    - 解析整个构建操作需要的配置项。vite 通过读取 vite.config.js 的方式来获取构建操作需要的配置项 - build。
 
-    - 选择 build 操作的入口文件
+    - 确定构建操作的入口文件
+      - 如果有 build.lib.entry, 选择 build.lib.entry 作为入口文件；
+      - 如果
+
+        
 
 
 5. vite 常用配置项了解 
@@ -82,7 +86,7 @@
         - cssCodeSplit
         - cssTarget
         - sourcemap
-        - rollupOptions
+        - rollupOptions, rollup 工具的配置项，分为 inputOptions 和 outputOptions，其中 inputOptions 用于构建模块依赖图，outputOptions 用于将模块依赖图分离为 chunks 并输出到指定位置；
         - commonjsOptions
         - dynamicImportVarsOptions
         - lib
