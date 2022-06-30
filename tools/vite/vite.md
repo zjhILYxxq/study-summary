@@ -24,18 +24,18 @@
 
 4. development 和 production 模式下 vite 的整个工作过程
 
+    development 模式下的整个工作过程:
+    - 
+
     production 模式下整个工作过程:
     - 解析整个构建操作需要的配置项。vite 通过读取 vite.config.js 的方式来获取构建操作需要的配置项 - build。
-
     - 确定构建操作的入口文件
       - 如果有 build.lib.entry, 选择 build.lib.entry 作为入口文件；
       - 如果配置了 ssr，选择 ssr 对应的文件作为入口文件；
       - 如果配置了 rollupOption.input， 选择 input 作为入口文件；
       - 选择 index.html 中的 main.js 文件作为入口文件；
-    - 
-
-        
-
+    - 调用 rollup.rollup, 构建模块依赖图，返回一个 bundle；
+    - 执行 bundle.write 方法，将模块依赖图分离为 chunks 并输出到指定位置(或者调用 bundle.generate 方法)； 
 
 5. vite 常用配置项了解 
 
