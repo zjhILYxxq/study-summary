@@ -29,7 +29,10 @@
 
     - 确定构建操作的入口文件
       - 如果有 build.lib.entry, 选择 build.lib.entry 作为入口文件；
-      - 如果
+      - 如果配置了 ssr，选择 ssr 对应的文件作为入口文件；
+      - 如果配置了 rollupOption.input， 选择 input 作为入口文件；
+      - 选择 index.html 中的 main.js 文件作为入口文件；
+    - 
 
         
 
