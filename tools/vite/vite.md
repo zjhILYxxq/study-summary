@@ -103,26 +103,18 @@
       - build
         - target: 根据浏览器的兼容性，生成 bundle，默认值为 modules，即浏览器支持 esm；
         - polyfillModulePreload
-        - ourDir
-        - assetsDir
-        - assetsInlineLimit
-        - cssCodeSplit
-        - cssTarget
-        - sourcemap
+        - ourDir: 指定 output 输出的文件夹目录；
+        - assetsDir: 指定生成 assets 的文件夹目录；
+        - assetsInlineLimit: 静态文件大小，小于指定值的将内联为 base64 url；
+        - cssCodeSplit: 启动/禁用 css 代码拆分。启用后，异步块中导入的 css 将内联到异步块中并在加载时插入。如果禁用，整个项目中的 css 代码将会被提取到单个文件中。
+        - cssTarget: 此选项允许用户为 CSS 缩小设置不同的浏览器目标，而不是用于 JavaScript 转换的浏览器目标, 默认值通 build.target.
+        - sourcemap: 是否成成 sourcemap 文件。
         - rollupOptions, rollup 工具的配置项，分为 inputOptions 和 outputOptions，其中 inputOptions 用于构建模块依赖图，outputOptions 用于将模块依赖图分离为 chunks 并输出到指定位置；
-        - commonjsOptions
-        - dynamicImportVarsOptions
-        - lib
-        - manifest
-        - ssrManifest
-        - ssr
-        - minify
-        - terserOptions
-        - write
-        - emptyOutDir
-        - reportCompressedSize
-        - chunkSizeWarningLimit
-        - watch
+        - commonjsOptions, ?
+        - dynamicImportVarsOptions, ?
+        - lib: 构建为 lib，必须指定 entry;
+        - manifest, 是否生成一个 manifest 文件；
+        - minify， 是否压缩；
     - 其他配置项
       - preview
       - ssr
@@ -660,7 +652,9 @@
 
     vite 的 build 过程是基于 rollup 实现的。
 
-39. 常见的打包工具对比
+39. 为什么使用 vite build 打包出的代码会把入口文件的 export 丢失？
+
+40. 常见的打包工具对比
 
     目前前端比较常见的打包工具： webpack、parcel、vite、esbuild、rollup 等
 
@@ -699,7 +693,7 @@
 
 
 
-40. node 的进程管理
+41. node 的进程管理
 
 pm2 ??
 
@@ -717,7 +711,31 @@ pm2 ??
 
 3. qiankun 下怎么对接 vite 项目？
 
+    qiankun 下对接 vite 项目的两个难点:
+    - vite 项目需要把 qiankun 需要的生命周期方法暴露到全局变量下；
+    - vite 打包出来的代码是 esm 格式，无法在 qiankun 沙箱下执行；
+
+    方案一:
+
+    vite 项目单独处理 - 采用 web component 的形式处理。
+
+    具体方式: 
+    - 将子应用分为两种类型 - qiankun 子应用和 vite 子应用；
+    - 设置路由拦截， qiankun 子应用不做处理； vite 子应用采用 web component 形式渲染；
+
+    这种模式的问题：两类子应用切换的时候要做好子应用 effect 的处理和重新激活时状态恢复。
+
+    方案二:
+
+    vite 项目不采用 esm 格式打包。 
+
+    但是如果不采用 esm 格式，打包出来的代码只有一个，懒加载就会失效。
+
+    所以这个时候要在 rollup 的 renderChunk hook、 generateBundle 做处理，将 bundle 转化成 iife 格式。？？
+    
     https://github.com/tengmaoqing/vite-plugin-qiankun/blob/master/src/index.ts
+
+
 
 
 
