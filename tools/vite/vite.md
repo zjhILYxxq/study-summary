@@ -38,7 +38,14 @@
     - 预构建优化；
     - 客户端开始请求入口文件，server 端收到请求，依次执行 middleware，返回请求的文件内容；
 
-        
+        不同的文件，处理逻辑也不相同。
+
+        如果是 .html 类型的文件，先将 html 文件解析为 ast 对象，然后找到入口文件 - main.tsx；
+
+        如果是 js/ts/tsx/jsx/cjs 文件，先通过 plugin 的 resolveId hook，解析为绝对路径；然后再通过 plugin 的 load hook 加载源文件，然后再通过 plugin 的 transform hook 做源文件做转换(jsx -> js, tsx -> js, ts -> js)、找到模块的依赖模块，然后再对依赖模块做同样的处理；
+
+        如果是 css/less/ 文件，处理过程和 js 一样。
+
 
     production 模式下整个工作过程:
     - 解析整个构建操作需要的配置项。vite 通过读取 vite.config.js 的方式来获取构建操作需要的配置项 - build。
