@@ -25,7 +25,20 @@
 4. development 和 production 模式下 vite 的整个工作过程
 
     development 模式下的整个工作过程:
-    - 
+    - 解析 vite config 配置项。解析以后的 config 中的 plugins 为内部插件 + 三方插件 + 自定义插件，插件的顺序为 alias 插件、pre 插件、vite 核心插件、normal 插件、build pre 插件、post 插件、build post 插件。
+
+        在这个过程中，每个 plugin 的 config hook 会触发，更新 vite config；
+
+    - 基于 http.createServer 创建一个 server 实例；
+    - 创建一个文件监听器 watcher，用于监听文件的变化；
+    - 依次执行各个 plugin 的 configureServer hook，收集要给 server 要添加的自定义 middlewares；
+    - 给 server 添加 middlewares；
+    - 启动 server；
+    - 依次执行各个 plugin 的 buildStart hook，做准备工作，如初始化、清理缓存工作；
+    - 预构建优化；
+    - 客户端开始请求入口文件，server 端收到请求，依次执行 middleware，返回请求的文件内容；
+
+        
 
     production 模式下整个工作过程:
     - 解析整个构建操作需要的配置项。vite 通过读取 vite.config.js 的方式来获取构建操作需要的配置项 - build。
@@ -631,15 +644,6 @@
     client 的模块缓存是浏览器自己实现的。
 
     相同的模块，client 只请求一次。
-
-
-
-
-
-
-
-
-
 
 
 
