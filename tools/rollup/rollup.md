@@ -44,7 +44,7 @@
     - **核心属性**
       - input，打包的入口配置, 可以是一个字符串(单入口文件打包)、一个字符串数组(多入口文件打包)、一个对象(多入口文件打包);
       - external, 配置不参与打包的文件，可以是一个匹配 id 的正则表达式、一个包含 id 的数组、一个入参为 id 返回值为 true 或者 false 的函数；
-      - plugins, 打包时用到的插件；
+      - plugins, build 时用到的插件；
     - **高级属性**
       - cache，是否开启缓存。监听模式下(仅用于监听模式下？)使用，如果模块没有变化就不解析；
       - maxParallelFileReads，读取文件的并发数，默认为 20；
@@ -75,9 +75,10 @@
       - assetFileNames, 给静态文件 assets 命名的模式，默认为 'assets/[name]-[hash][extname]'
       - banner / footer，要添加到 chunk code 顶部/尾部位置的注释字符串；
       - chunkFileNames, 给分离的 chunk 命名的模式，默认为 '[name]-[hash].js'
-      - compact
-      - entryFileNames
-      - extend
+      - compact, 是否压缩 rollup 生成的装饰器代码，默认为 false ？？
+      - entryFileNames，initial chunk 的命名规则，默认为 '[name].js',
+      - extend, 是否扩展全局变量？
+      - generatedCode，在生成代码时选用的 js 标准，默认为 es5，即不适用 es6 的新特征？
       - externalLiveBindings
       - hoistTransitiveImports,
       - inlineDynamicImports
@@ -102,7 +103,6 @@
 
 
       - minifyInternalExports,
-      - outro,
       - paths,
       - preserveModules,
 
@@ -112,24 +112,8 @@
 
             preserveModules 需要配合 format 一起使用。
 
-      - preserveModulesRoot,
-      - sourcemap,
-      - sourcemapExcludeSources,
-      - sourcemapFile,
-      - sourcemapPathTransform,
-      - validate,
-    - **危险属性** 
-      - amd,
-      - esModule,
-      - exports,
-      - freeze,
-      - indent,
-      - namespaceToStringTag,
-      - noConflict,
-      - preferConst,
-      - sanitizeFileName,
-      - strict,
-      - systemNullSetters
+
+    总的来说，inputOptions 中最关键的是: input、externals、plugins； outputOptions 中比较关键的是: dir、file、format、plugins、preserveModules 等。
 
 
 6. rollup 工作原理梳理 
