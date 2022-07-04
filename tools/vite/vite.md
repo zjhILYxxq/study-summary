@@ -157,10 +157,10 @@
       - **renderDynamicImport - async、parallel**
       - **augmentChunkHash - sync、sequential**
       - **resolveFileUrl / resolveImportMeta - sync、first**
-      - **renderChunk - async、sequential**
-      - **generateBundle - async、sequential**
-      - **writeBundle - async、parallel**
-      - **closeBundle - async、parallel**
+      - **renderChunk - async、sequential**, 每个 chunk 的内容构建完成触发；
+      - **generateBundle - async、sequential**，所有 chunk 的内容构建完成触发；
+      - **writeBundle - async、parallel**，将每个 chunk 的内容输出到指定位置以后触发；
+      - **closeBundle - async、parallel**，rollup 结束工作时触发；
 
 
 7. vite 插件机制
