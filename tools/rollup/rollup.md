@@ -146,7 +146,7 @@
           2. 根据解析的路径创建一个 module 对象；
           3. 触发 load hook 来加载 module 的源文件；
           4. 将源文件内容解析为 ast 对象；
-          5. 遍历 ast 对象，收集静态依赖和动态依赖，其中静态依赖收集到 module 对象的 sources 数组中，动态依赖收集到 module 对象的 dynamicImport 数组中；
+          5. 遍历 ast 对象，收集静态依赖和动态依赖，其中静态依赖收集到 module 对象的 sources 数组中，动态依赖收集到 module 对象的 dynamicImport 数组中; 同时还可以知道依赖的 import 有没有被使用(被使用的 import 会被收集到 module 的 includedImports 中);
           6. 遍历 module 对象的 sources、dunamicImport 数组，解析依赖模块的路径；
           7. 依次触发 input plugins 中各个 plugin 的 moduleParsed hook；
           8. 重复 2 - 7 步骤，直到所有的模块解析完成
