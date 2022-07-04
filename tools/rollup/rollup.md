@@ -188,7 +188,7 @@
       - 为每个 chunk 绘制内容
         - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
 
-      - 将构建好的每一个 bundle 输出到 outdir 指定位置；
+      - 将构建好的每一个 bundle，通过 fs.writeFile 输出到 outdir 指定位置；
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
 7. 模块依赖图的遍历算法
@@ -196,6 +196,8 @@
 
 
 8. rollup 和 webpack 的简单对比
+
+
 
 9.  plugin context - 插件上下文
 

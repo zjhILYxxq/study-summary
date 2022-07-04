@@ -152,8 +152,8 @@
   
     - **output generation hook**，输出阶段的 hook(按照执行顺序)：
       - **outputOptions - sync、sequential**，输出阶段的第一个 hook，可用于修改或者替换 output 配置项；
-      - **renderStart - async、parallel**；
-      - **banner / footer / intro / outro - async、parallel**， ？？
+      - **renderStart - async、parallel**，类似于 buildStart hook，做一些准备工作；
+      - **banner / footer / intro / outro - async、parallel**，在源文件的头部 / 底部添加注释、代码；
       - **renderDynamicImport - async、parallel**
       - **augmentChunkHash - sync、sequential**
       - **resolveFileUrl / resolveImportMeta - sync、first**
