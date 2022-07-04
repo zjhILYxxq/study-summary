@@ -203,20 +203,26 @@
 
 8. rollup 的代码分离规则 
 
-9. rollup 的 treeshaking
+9. rollup 是如何确定每个 module 的 exports 是否被使用的； 
+
+    分析一个 module 的 ast 时，就可以知道这个 module 的 exports 和 dependence modules 及用到的 dependence module 的 exports。
+
+    然后根据 dependence modules 的 exports 和被使用到的 exports，就可以确认 module 的哪一个 exports 没有被使用。如果某个 module 的所有 exports 都没有被使用，那么该 modules 就可以从 chunks 的 modules 列表中移除，或者在分配 chunks 就不会添加到 chunks 中去。
+
+10. rollup 的 treeshaking
 
     rollup 基于 es6 module 实现了 module level 和 statement level 的 tree shaking：
     - 在将模块依赖图分离为 chunk 时，如果一个 module 被 importor module 依赖，但是它的 exports 并没有被使用，那么该 module 不会添加到 chunk 中，实现了 module level 的 tree shaking；
-    - 
+    - 一个 module 的 exports，如果没有被其他 module 使用到，那么在构建 chunk 内容时就会被移除掉，实现了 statement level 的 tree shaking；
 
 
 
 
-10. rollup 和 webpack 的简单对比
+11. rollup 和 webpack 的简单对比
 
 
 
-11. plugin context - 插件上下文
+12. plugin context - 插件上下文
 
     plugin context， 插件上下文，可以帮助插件的 hook 在执行过程中获取到一些上下文相关信息，如 module 信息、模块依赖图信息 等；
 
@@ -246,6 +252,6 @@
     
 
 
-12. rollup 读取文件时采用多线程，默认为 20 个?
+13. rollup 读取文件时采用多线程，默认为 20 个?
 
     rollup 这一块儿是如何处理的
