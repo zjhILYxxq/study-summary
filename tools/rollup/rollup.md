@@ -185,21 +185,25 @@
         
       - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
       - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
-      - 为每个 chunk 绘制内容
+      - 为每个 chunk 绘制内容，即根据 chunk 中收集的 modules 构建 chunk 实际的内容:
         - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
+        - 根据每个 chunk 收集的 modules，找到每个 chunk 对外的 exports；
+        - 开始
 
       - 将构建好的每一个 bundle，通过 fs.writeFile 输出到 outdir 指定位置；
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
 7. 模块依赖图的遍历算法
 
-
-
-8. rollup 和 webpack 的简单对比
+8. rollup 的代码分离规则 
 
 
 
-9.  plugin context - 插件上下文
+9. rollup 和 webpack 的简单对比
+
+
+
+10. plugin context - 插件上下文
 
     plugin context， 插件上下文，可以帮助插件的 hook 在执行过程中获取到一些上下文相关信息，如 module 信息、模块依赖图信息 等；
 
@@ -229,6 +233,6 @@
     
 
 
-10. rollup 读取文件时采用多线程，默认为 20 个?
+11. rollup 读取文件时采用多线程，默认为 20 个?
 
     rollup 这一块儿是如何处理的
