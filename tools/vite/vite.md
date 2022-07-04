@@ -731,10 +731,9 @@ pm2 ??
 
     但是如果不采用 esm 格式，打包出来的代码只有一个，懒加载就会失效。
 
-    所以这个时候要在 rollup 的 renderChunk hook、 generateBundle 做处理，将 bundle 转化成 iife 格式。？？
+    所以这个时候要在 rollup 的 renderChunk hook、 generateBundle 做处理，将 bundle 转化成类似于 webpack 的格式。？？
     
     https://github.com/tengmaoqing/vite-plugin-qiankun/blob/master/src/index.ts
-
 
 
     方案三: 开发环境使用 vite， 生产环境直接使用 webpack。
