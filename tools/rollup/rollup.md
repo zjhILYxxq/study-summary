@@ -72,9 +72,9 @@
       - name，指定 iife 模式下赋值的变量；
       - plugins，输出时使用的插件；
     - **高级属性** 
-      - assetFileNames
+      - assetFileNames, 给静态文件 assets 命名的模式，默认为 'assets/[name]-[hash][extname]'
       - banner / footer，要添加到 chunk code 顶部/尾部位置的注释字符串；
-      - chunkFileNames
+      - chunkFileNames, 给分离的 chunk 命名的模式，默认为 '[name]-[hash].js'
       - compact
       - entryFileNames
       - extend
@@ -190,12 +190,16 @@
                 
         
       - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
+  
       - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
+  
       - 为每个 chunk 绘制内容，即根据 chunk 中收集的 modules 构建 chunk 实际的内容:
         - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
         - 根据每个 chunk 收集的 modules，找到每个 chunk 对外的 exports；
-        - 开始
-
+        - 对每个 chunks 做预处理，确定每个 chunk 中要移除的 module 以及 chunk 中每个 module 要移除的 exports；(有些 module 在分配到 chunk 的时候就可以确定是否被移除掉)；
+        - 给每一个 chunk 分配 id；
+        - 为每一个 chunk 根据收集的 module 构建内容，并依次触发 renderChunk hook；
+        - 所有 chunk 的内容构建完毕，依次触发 output plugin 的 generateBundle hook；
       - 将构建好的每一个 bundle，通过 fs.writeFile 输出到 outdir 指定位置；
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
 
