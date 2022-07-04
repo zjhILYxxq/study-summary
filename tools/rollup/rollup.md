@@ -181,7 +181,13 @@
             - 先根据 output.manualChunks 创建 manual chunks，把属于他们的 module 添加到对应的 manual chunks 中；
             - 以模块依赖图的入口模块为起点，分析模块依赖图，找到懒加载 modules 以及 module 和  importor module 的映射关系(去掉已经分离到 manualChunks 中的 modules)；
             - 找到每一个 module 和其对应的 entry modules(包含 static entry modules 和 dynamic entry modules)；
-            - 根据 module 和对应的 entry modules，将 modules 分离为 initial chunks 和 dynamic chunk ( 如果 module 的 importor module 包含 static entry modules 和 dynamic entry module，那么该 module 会分配打到 initial chunk 中)；
+            - 根据 module 和对应的 entry modules，将 modules 分离为 initial chunks 和 dynamic chunk;
+          
+                如果 module 的 importor module 包含 static entry modules 和 dynamic entry module，那么该 module 会分配打到 initial chunk 中。
+
+                在这一过程中，如果 module 的 importor module 并没有使用该 module 的 exports，那么该 module 并不会添加到 chunk 中，这样就做到了 module 级别的 tree shaking。
+
+                
         
       - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
       - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
@@ -197,13 +203,20 @@
 
 8. rollup 的代码分离规则 
 
+9. rollup 的 treeshaking
+
+    rollup 基于 es6 module 实现了 module level 和 statement level 的 tree shaking：
+    - 在将模块依赖图分离为 chunk 时，如果一个 module 被 importor module 依赖，但是它的 exports 并没有被使用，那么该 module 不会添加到 chunk 中，实现了 module level 的 tree shaking；
+    - 
 
 
-9. rollup 和 webpack 的简单对比
+
+
+10. rollup 和 webpack 的简单对比
 
 
 
-10. plugin context - 插件上下文
+11. plugin context - 插件上下文
 
     plugin context， 插件上下文，可以帮助插件的 hook 在执行过程中获取到一些上下文相关信息，如 module 信息、模块依赖图信息 等；
 
@@ -233,6 +246,6 @@
     
 
 
-11. rollup 读取文件时采用多线程，默认为 20 个?
+12. rollup 读取文件时采用多线程，默认为 20 个?
 
     rollup 这一块儿是如何处理的
