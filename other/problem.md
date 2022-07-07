@@ -73,28 +73,66 @@
 - [x] 虚拟列表 !!
 
 
-
-#### webpack 相关
-- [x] 环境变量( node: 启动命令时传入 NODE_ENV; 浏览器：通过 DefinePlugin 注入全局变量)??
-- [x] webpack 常用配置项
-- [x] webpack 工作过程
-- [x] 模块依赖图
-- [x] chunk 类型以及分离过程
-- [x] bundle 构建
-- [x] module hash、chunk hash、content hash、compilation hash；
-- [x] 热更新
-- [x] source-map
-- [x] 打包构建分析
-- [x] 打包构建优化
-- [x] tree shaking
-- [x] module federation 配置
-- [x] module federation 工作原理
-- [x] webpack hooks
-- [x] loader 工作原理
-- [x] 编写 webpack 插件；
-- [x] babel-loader;
-- [x] babel(ast) 可以做的事情 - 代码压缩混淆、代码检查、自动埋点、国际化、api 文档自动生成 等；
-- [x] babel runtime 
+#### build tools 相关
+- [x] build tools 的发展历史
+- **webpack 相关**
+  - [x] 环境变量( node: 启动命令时传入 NODE_ENV; 浏览器：通过 DefinePlugin 注入全局变量)??
+  - [x] webpack 常用配置项
+  - [x] webpack 工作过程
+  - [x] 模块依赖图
+  - [x] chunk 类型以及分离过程
+  - [x] bundle 构建
+  - [x] module hash、chunk hash、content hash、compilation hash；
+  - [x] 热更新
+  - [x] source-map
+  - [x] 打包构建分析
+  - [x] 打包构建优化
+  - [x] tree shaking
+  - [x] module federation 配置
+  - [ ] webpack5 持久化缓存
+  - [x] module federation 工作原理
+  - [x] webpack hooks
+  - [x] loader 工作原理
+  - [x] 编写 webpack 插件；
+  - [x] babel-loader;
+  - [x] babel(ast) 可以做的事情 - 代码压缩混淆、代码检查、自动埋点、国际化、api 文档自动生成 等；
+  - [x] babel runtime 
+- **rollup 相关**
+  - [ ] 为什么要有 rollup
+  - [ ] rollup api 的使用
+  - [ ] rollup 常用配置项 - input options 和 output options
+  - [ ] rollup 的 plugin 机制及如何实现一个自定义 plugin
+  - [ ] rollup 的整个工作过程
+  - [ ] rollup 多线程管理逻辑？？
+- **esbuild 相关**
+  - [ ] esbuild 的常用 api
+  - [ ] esbuild 使用时的配置项
+  - [ ] esbuild 的 transifrom 和 build 的对比
+  - [ ] esbuild 自定义 hook
+  - [ ] esbuild 自定义 hook 的限制
+  - [ ] esbuild 的不足
+- **vite 相关**
+  - [ ] vite 的用法
+  - [ ] vite 的常用配置项
+  - [ ] development 和 production 模式下 vite 的工作过程
+  - [ ] vite 的 plugin 类型及如何实现一个自定义 plugin
+  - [ ] vite 的预构建过程及原理
+  - [ ] vite 在预构建过程中是如何获取到依赖的三方模块的
+  - [ ] vite 的中间件原理
+  - [ ] import.meta.glob
+  - [ ] vite 中 index.html、 js、 css 文件是怎么处理的
+  - [ ] 依赖后面的 v=xxx、t=xxx 是什么意思
+  - [ ] pre-transform
+  - [ ] import.meta
+  - [ ] 热更新工作过程
+  - [ ] qiankun 下怎么对接 vite 项目
+  - [ ] vite 升级过程中遇到的问题
+  - [ ] 环境变量 
+  - [ ] 既然浏览器已经支持 esm 模块，为什么生产环境依旧需要打包
+  - [ ] 为什么 vite 会快
+- [ ] webpack 和 rollup 的对比
+- [ ] webpack 和 vite 的对比
+- [ ] webpack 和 esbuild 的对比
 
 #### next.js 相关
 - [x] CSR、SSR、SSG、ISG;
