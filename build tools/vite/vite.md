@@ -55,6 +55,8 @@
     - 调用 rollup.rollup, 构建模块依赖图，返回一个 bundle；
     - 执行 bundle.write 方法，将模块依赖图分离为 chunks 并输出到指定位置(或者调用 bundle.generate 方法)； 
 
+    不管是 development 还是 production 模式，浏览器端都是通过 ESM 加载 js 代码。
+
 5. vite 常用配置项了解 
 
     vite 的常用配置项:

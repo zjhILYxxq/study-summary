@@ -13,22 +13,71 @@
 
 2. **js 模块化的发展史和构建工具的发展**
 
-    - 青铜时代
+    - **青铜时代**
 
-        javascript 设计之初，并没有 module 的概念，语言本身无法实现 module 之间的相互隔离、相互依赖关系。
+        javascript 设计之初，并没有 module 的概念，语言层面无法实现 module 之间的相互隔离、相互依赖关系，只能由开发人员手动处理。
 
         早起的 web 开发的情况:
-        - 通过定义对象、iife 方式实现隔离；
-        - 通过手动确定 script 的加载顺序确定模块依赖；
+        - 通过定义对象、iife(或者闭包) 方式实现隔离。
+        - 通过手动确定 script 的加载顺序确定模块之间的依赖关系。
+        - jsp 开发模式，没有专门的前端，html、js、css 代码会由后端人员开发。
+
+        为了节省网络带宽和保密，需要对前端代码做压缩混淆处理。
+
+        这个时候，构建工具是 Any + YUI tool。
 
 
-        
-        
+    - **白银时代**
 
+        chrome v8 引擎 和 node 的横空出世，给前端带来了更多的可能。
 
-    - 白银时代
+        js 模块化有了新的发展:
+        1. commonjs 规范，适用于 node 开发；
+        2. amd、cmd 规范，适用于浏览器；
+        3. umd，兼容 amd、cjs，代码可以执行在浏览器、node 端；
+        4. ES6 module 出现(这个时候还不是很成熟)；
 
+        此外还出现了 less / sass、 es6、 jslint、 eslint、ts 等新的东西， 前端角色也逐渐独立，发挥越来越重要的作用。
+
+        有了 node 提供的平台，大量的工具开始涌现:
+        - requirejs 提供的 r.js 插件，可以分析 amd 模块依赖关系、合并压缩 js、优化 css；
+        - less / sass 插件，可以将 less / sass 代码转化为 css 代码；
+        - babel，可以将 es6 转化为 es5；
+        - ts，将 ts 编译为 js；
+        - jslint / eslint，代码检查；
+        - ...
+
+        这个时候，我们可以使用 grunt / gulp，将上面的构建过程拆分为一个个小的任务，自动处理它们。
 
     - 黄金时代
+
+        angular / vue / react 三大框架和 webpack 的使用，奠定了现在的前端开发模式 - 组件模块化。
+
+        同时 es6 moudle 规范也被更多的浏览器接受。
+
+        webpack 是一个静态模块打包器，以入口文件为起点构建一个模块依赖图，得到模块之间的依赖分析，然后将模块依赖图分离为多个 bundle。再构建模块依赖图的过程中，会使用 loader 处理一个个模块，将它们转化为浏览器可以是识别的 js、css、图片、音视频等。
+
+        随着时间的发展， webpack 逐步发展，同时也迎来诸多对手。
+
+        webpack1
+           |
+           |
+        rollup 出现(推崇 ESM 标准，可以实现 tree shaking, 打包出来的代码更干净)
+           |
+           |
+        webpack2(也实现了 tree shaking, 但是配置太繁琐了)
+           |
+           |
+        parcel (号称 0 配置)
+           |
+           |
+        webpack4(通过 mode 确定 development 和 production 模式，各个模式有自己的默认配置)
+           |
+           |
+        webpack5(持久化缓存、module federation)
+
+        esbuild(采用 go 语言开发，比 webpack 更快)
+
+        vite(开发模式采用 nobundle，更好的开发体验)
 
 3.  
