@@ -89,8 +89,8 @@
   - [x] 打包构建优化
   - [x] tree shaking
   - [x] module federation 配置
-  - [ ] webpack5 持久化缓存
   - [x] module federation 工作原理
+  - [ ] webpack5 持久化缓存
   - [x] webpack hooks
   - [x] loader 工作原理
   - [x] 编写 webpack 插件；
