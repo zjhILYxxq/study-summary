@@ -699,17 +699,32 @@ pm2 ??
 
 22. vite 升级过程中遇到的问题？
 
-1. vite.config.js 中使用 es6 语法报错问题处理；
+    1. vite.config.js 中使用 es6 语法报错问题处理；
 
-2. 路径无法解析问题 - 没有使用别名，也没有使用相对路径
+    2.  路径无法解析问题 - 没有使用别名，也没有使用相对路径
 
-    在项目开发过程中，我们 import 文件会存在以下几种形式:
-    - import header from '../components/header.tsx', 相对路径， 这种情况下 vite 会自动将相对路径解析为绝对路径；
-    - import header from '@/components/header.tsx'，路径别名， 其中 @ 为 src 的别名，这种情况下 vite 会通过 resolve.alias 配置项将 path 解析为绝对路径；
-    - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；这种情况下，可以通过一个自定义 vite 插件来解析该路径
+        在项目开发过程中，我们 import 文件会存在以下几种形式:
+        - import header from '../components/header.tsx', 相对路径， 这种情况下 vite 会自动将相对路径解析为绝对路径；
+        - import header from '@/components/header.tsx'，路径别名， 其中 @ 为 src 的别名，这种情况下 vite 会通过 resolve.alias 配置项将 path 解析为绝对路径；
+        - import header from 'components/header.tsx', 其中 components 为 src 目录下的一级目录，这种情况也比较常见，需要配置 tsconfig.json 中的 baseUrl；这种情况下，可以通过一个自定义 vite 插件来解析该路径
+  
+    3. 项目中的环境变量处理问题
+
+        通过 define 配置项可以定义要替换的全局变量。
+
+        ```
+        define: {
+            'process.env.API_ENV': JSON.stringify(process.env.API_ENV),
+            // 正确的格式
+            'process.env.API_ENV': '"test"',
+            // 不正确的格式
+            'process.env.API_ENV': 'test'
+        }
+        ```
+        
   
 
-3. qiankun 下怎么对接 vite 项目？
+23. qiankun 下怎么对接 vite 项目？
 
     qiankun 下对接 vite 项目的两个难点:
     - vite 项目需要把 qiankun 需要的生命周期方法暴露到全局变量下；
