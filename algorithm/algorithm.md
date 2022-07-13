@@ -57,8 +57,20 @@
   - [最少回文分割](https://leetcode.cn/problems/omKAoA/)
   
 - **双序列问题**
+  - [最长公共子序列](https://leetcode.cn/problems/qJnOS7/)
+  - [字符串交织](https://leetcode.cn/problems/IY6buf/)
+  - [子序列的数目](https://leetcode.cn/problems/21dk04/)
+
+- **矩阵路径问题**
+  - [路径的数目](https://leetcode.cn/problems/2AoeFn/)
+  - [最小路径之和](https://leetcode.cn/problems/0i0mDW/)
+  - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/)
 
 - **背包问题**
+  - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
+  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/)
+  - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/)
+  - [排列的数目](https://leetcode.cn/problems/D0F0SV/)
   
 - **股票问题**
   - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/) - 不使用动态规划也可求解；
@@ -400,7 +412,7 @@ function backTrack(list, track) {
 
 
 #### 动态规划
-- [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
+
 - [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
 - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
 - [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
