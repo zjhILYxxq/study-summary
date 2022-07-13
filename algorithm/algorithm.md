@@ -48,18 +48,28 @@
 - **爬楼梯问题**
   - [经典爬楼梯](https://leetcode.cn/problems/climbing-stairs/), 解法： f(n) = f(n - 1) + f(n - 2);
   - [最小成本爬楼梯](https://leetcode.cn/problems/GzCJIP/);
-- **单序列问题**
-  - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 比较典型的动态规划问题；
+- **单序列问题**，题目的输入通常是一个一维数组或者字符串
+  - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
   - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
-- **股票问题**
+  - [粉刷房子](https://leetcode.cn/problems/JEj789/)
+  - [翻转字符](https://leetcode.cn/problems/cyJERH/)
+  - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/)
+  - [最少回文分割](https://leetcode.cn/problems/omKAoA/)
+  
+- **双序列问题**
 
-常见的动态规划问题的解题过程:
-- **斐波那契数列**
-- **跳楼梯**： 最简单的动态回归问题，确定 dp 数组， index 为 楼梯的阶数， value 为跳上该台阶的步数；确定 base case；
-- **零钱兑换问题**： 确定 dp 数组，dp 数组的 index 为 amount， value 为选择硬币的数量或者硬币的组合数；
-- **股票**: 状态有天数、做多允许交易的次数、当天的操作情况。
 - **背包问题**
-- **打家劫舍问题**
+  
+- **股票问题**
+  - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/) - 不使用动态规划也可求解；
+  - [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
+  - [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
+  - [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+  - [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+  - [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+- **其他动态规划问题**
+
 
 
 #### 回溯算法 - DFS(深度优先遍历算法)
@@ -397,12 +407,7 @@ function backTrack(list, track) {
 - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 这道题的解题思路可以参照硬币问题，不过不完全一样，使用 dfs 会超时；
 - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导致会超时，使用 dp 数组。
 - [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
-- [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/) - 不使用动态规划也可求解；
-- [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
-- [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
-- [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
-- [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
-- [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
 
 一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
 
