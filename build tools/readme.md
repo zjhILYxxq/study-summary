@@ -496,6 +496,10 @@
 
 - [ ] **为什么要有 rollup**
 
+   rollup 的应用场景:
+   - 组件库开发；
+   - vite；
+
 - [x] **rollup api 的使用**
 
    rollup 提供两个 api - rollup 和 watch。
@@ -515,22 +519,139 @@
 
    watch 可以用来监听某个文件的变化，然后重新发起 build。
   
-- [ ] **rollup 常用配置项 - input options 和 output options**
+- [x] **rollup 常用配置项 - input options 和 output options**
 
    rollup 的配置项分为两个部分：
+
    - 执行 rollup.rollup 时需要传入的 inputOption；
+- 
    - 执行 bundle.write 是需要传入的 outputOption；
 
    常用的 inputOption:
 
+   - input，打包的入口配置, 可以是一个字符串(单入口文件打包)、一个字符串数组(多入口文件打包)、一个对象(多入口文件打包);
+   
+   - external, 配置不参与打包的文件，可以是一个匹配 id 的正则表达式、一个包含 id 的数组、一个入参为 id 返回值为 true 或者 false 的函数；
+      
+   - plugins, build 时用到的插件；
 
    常用的 outputOption:
 
+   - dir, 放置生成的 bundle 的目录，适用于多入口文件打包；
+  
+   - file，生成的 bundle 的文件名及目录，适用于单入口文件打包；
+  
+   - format，指定生成的 bundle 的格式： amd、cjs、es、iife、umd、system；
+  
+   - globals, 指定 iife 模式下全局变量的名称；
+  
+   - name，指定 iife 模式下赋值的变量；
+  
+   - plugins，输出时使用的插件；
+  
+   - assetFileNames, 给静态文件 assets 命名的模式，默认为 'assets/[name]-[hash][extname]'；
+  
+   - banner / footer，要添加到 chunk code 顶部/尾部位置的注释字符串；
+  
+   - chunkFileNames, 给分离的 chunk 命名的模式，默认为 '[name]-[hash].js'；
+  
+   - entryFileNames，initial chunk 的命名规则，默认为 '[name].js'；
+  
+   - inlineDynamicImports
+  
+      懒加载模块是否内联。
 
+      默认情况下，懒加载模块会自动分离为一个单独的 async chunk。如果 inlineDynamicImports 为 ture，懒加载模块会合并到 importor module 中。
+
+      inlineDynamicImports 不能和 manualChunks 一起使用，否则会报错。
+
+   - intro / outro, 要添加到 chunk code 顶部 / 尾部的代码，可用于变量注入。
+   
+   - manualChunks
   
-- [ ] **rollup 的 plugin 机制及如何实现一个自定义 plugin**
+      自定义 chunk 分离规则，类似于 webpack 的 splitChunks 规则，将匹配的 module 分离到指定 name 的 chunks 中。
+
+      manualChunks 可以是一个对象，也可以是一个函数。如果是一个对象，key 为自定义 chunk 的 name， value 是一个 id 数组，表示要分配到自定义 chunk 的 module。
+
+      如果是一个函数，入参为 module id，返回值为自定义 chunk 的 name。 rollup 会遍历模块依赖图，将匹配 manualChunks 函数的 module 分配到对应的自定义 chunks 中。
+
+      分配到 manualChunks 中的 modules 中如果存在懒加载 module，懒加载 module 也会单独分离到 async chunk 中
+   
+   - preserveModules,
+
+      rollup 默认的 chunk 分离规则将模块依赖图分离为尽可能少的 chunk。一个单页应用最后的分离结果为:一个 main chunk，多个懒加载 module 为 async chunk，多个根据 manualChunks 规则生成自定义 chunks。
+
+      而 preserveModules 的分离过程正好相反。如果将 preserveModules 设置为 true， rollup 会将每个 module 分离为一个单独的 chunk。
+
+      preserveModules 需要配合 format 一起使用。
+
+   总的来说，inputOptions 中最关键的是: input、externals、plugins； outputOptions 中比较关键的是: dir、file、format、plugins、preserveModules 等。
   
-- [ ] **rollup 的整个工作过程**
+- [x] **rollup 的 plugin 机制及如何实现一个自定义 plugin**
+
+   rollup 插件的一些约定:
+    - 插件要有一个清晰的名称和 rollup-plugin-前缀；
+    - 在 package.json 中要包含 rollup-plugin 关键字 (这个是什么意思呢？？)
+    - 插件应该是被测试的
+    - 尽可能的使用异步方法
+    - 如果可能，请确保您的插件输出正确的源映射
+    - 如果您的插件使用“虚拟模块”（例如用于辅助功能），请在模块 ID 前加上\0. 这可以防止其他插件尝试处理它 ？？
+
+   rollup hook 根据执行的顺序类型：
+    - async，异步 hook；
+  
+    - first - 如果有多个 plugin 实现了这个 hook，这些 hook 会按序执行，直到一个 hook 返回不是 null 或者 undefined 的值，即如果某个 hook 返回不是 null 或者 undefined 的值，那么后续的同类型的 hook 就不会执行了。
+  
+    - sequential - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个 hook 是异步的，那么后续的 hook 会等待当前 hook 执行完毕才执行。上一个 hook 返回的结果会作为下一个 hook 的入参。
+
+    - parallel - 如果有多个 plugin 实现了这个 hook，这些 hook 会按照 plugin 的顺序按序执行。如果一个一个 hook 是异步的，那么后续的 hook 将会并行执行，而不是等待当前的 hook，即 parallel 类型的 hook 之间不相互依赖。
+
+      针对 parallel 的 hook，vite(或者 rollup) 会采用一个 promise.all，等所有的 parallel hook 处理完毕以后，开始处理下一类型的 hook。
+
+
+   rollup hook 根据执行的阶段可以分为：
+    
+   - **build hook**，构建阶段的 hook(按照执行顺序):
+  
+      - **options - async、sequential**，构建阶段的第一个 hook，可用于修改或者替换配置项 options，唯一一个无法访问插件上下文的 hook；
+  
+      - **buildStart - async、parallel**，各个插件可以通过这个 hook 做一些准备工作，如初始化一些对象、清理一些缓存等；
+  
+      - **resolveId - async、first**，自定义解析器，用于解析模块的绝对路径；
+  
+      - **resolveDynamicImport - async、first**，为动态导入定义自定义解析器
+  
+      - **load - asnyc、first**，自定义加载器，根据 resolveId 返回的路径去加载模块；
+  
+      - **transform - async、sequential**，对模块做转换操作，一般的操作是生成 AST，分析 AST，收集依赖，做代码转换等；
+  
+      - **moduleParsed - async、parallel**，模块已经解析完毕，接下来需要解析静态依赖/动态依赖；
+  
+      - **buildEnd - async、parallel**，rollup 完成 bundle 调用，即模块依赖图构建完成；
+  
+   - **output generation hook**，输出阶段的 hook(按照执行顺序)：
+  
+     - **outputOptions - sync、sequential**，输出阶段的第一个 hook，可用于修改或者替换 output 配置项；
+     
+     - **renderStart - async、parallel**，类似于 buildStart hook，做一些准备工作；
+     
+     - **banner / footer / intro / outro - async、parallel**，在源文件的头部 / 底部添加注释、代码；
+     
+     - **renderDynamicImport - async、parallel**
+     
+     - **augmentChunkHash - sync、sequential**
+     
+     - **resolveFileUrl / resolveImportMeta - sync、first**
+     
+     - **renderChunk - async、sequential**, 每个 chunk 的内容构建完成触发；
+     
+     - **generateBundle - async、sequential**，所有 chunk 的内容构建完成触发；
+     
+     - **writeBundle - async、parallel**，将每个 chunk 的内容输出到指定位置以后触发；
+     
+     - **closeBundle - async、parallel**，rollup 结束工作时触发；
+  
+- [x] **rollup 的整个工作过程**
 
    rollup 整个工作过程如下：
     - 执行 rollup.rollup 方法，入参为 input options
@@ -567,7 +688,7 @@
   
       - 构建一个 Bundle 实例，入参为 input options、output options、output 插件引擎、graph(模块依赖图)；
   
-      - 执行 bundle 实例的 generate 方法
+      - 执行 bundle 实例的 generate 方法, 及模块依赖图分离为 chunks；
 
          整个过程如下：
 
@@ -625,6 +746,23 @@
       - 将构建好的每一个 bundle，通过 fs.writeFile 输出到 outdir 指定位置；
   
       - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
+
+
+- [x] **rollup 是如何确定每个 module 的 exports 是否被使用的**
+
+    分析一个 module 的 ast 时，就可以知道这个 module 的 exports 和 dependence modules 及用到的 dependence module 的 exports。
+
+    然后根据 dependence modules 的 exports 和被使用到的 exports，就可以确认 module 的哪一个 exports 没有被使用。如果某个 module 的所有 exports 都没有被使用，那么该 modules 就可以从 chunks 的 modules 列表中移除，或者在分配 chunks 就不会添加到 chunks 中去。
+
+- [x] **rollup 的 treeshaking**
+
+    rollup 基于 es6 module 实现了 module level 和 statement level 的 tree shaking：
+
+    - 在将模块依赖图分离为 chunk 时，如果一个 module 被 importor module 依赖，但是它的 exports 并没有被使用，那么该 module 不会添加到 chunk 中，实现了 module level 的 tree shaking；
+  
+    - 一个 module 的 exports，如果没有被其他 module 使用到，那么在构建 chunk 内容时就会被移除掉，实现了 statement level 的 tree shaking；
+
+
 
 
 #### vite 篇
