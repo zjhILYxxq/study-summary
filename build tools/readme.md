@@ -87,8 +87,6 @@
 
 #### webpack 篇
 
-#### webpack 相关
-
 - [x] **常用的配置手段**
   
     entry
@@ -494,7 +492,124 @@
     - **body** 内部第一层一般为**声明语句**，如 **ImportDeclaration**、**ExportDeclarction**、**ClassDelaration**、**FunctionDelaration**、**VarliableDelarction**，如果有语句执行，还会有 **IfStatement**、**WhileStatement**、**ExpressionStatement**；
     - 接下来就是各个 AST 节点内部的结构；
 
+#### rollup 篇
 
+- [ ] 为什么要有 rollup
+
+- [x] rollup api 的使用
+
+   rollup 提供两个 api - rollup 和 watch。
+
+   rollup 用于 build。执行 rollup 会返回一个 promise 对象，它解析为一个 bundle 对象。通过 bundle 对象的 write 方法，可以将打包构建的包放置到指定位置。
+
+   用法如下:
+
+   ```
+   const rollp = require('rollup');
+
+   rollup.rollup(inputOptions).then(bundle => {
+      bundle.write(outputOptions);
+   });
+
+   ```
+
+   watch 可以用来监听某个文件的变化，然后重新发起 build。
+  
+- [ ] rollup 常用配置项 - input options 和 output options
+
+   rollup 的配置项分为两个部分：
+   - 执行 rollup.rollup 时需要传入的 inputOption；
+   - 执行 bundle.write 是需要传入的 outputOption；
+
+   常用的 inputOption:
+
+
+   常用的 outputOption:
+
+
+  
+- [ ] rollup 的 plugin 机制及如何实现一个自定义 plugin
+  
+- [ ] rollup 的整个工作过程
+
+   rollup 整个工作过程如下：
+    - 执行 rollup.rollup 方法，入参为 input options
+      - 初始化 input options。依次触发 input plugins 中各个 plugin 的 options hook，更新 input options；
+      - 构建一个模块依赖图实例，初始化 plugin 驱动、acorn 实例、module loader；
+      - 依次触发 input plugins 中各个 plugin 的 buildStart，做一些初始化工作、缓存处理问题；
+      - 开始构建模块依赖图；
+
+          构建模块依赖图的具体过程:
+          1. 解析入口模块的 id，得到入口模块的绝对路径(通过 resolveId hook 来解析)
+          2. 根据解析的路径创建一个 module 对象；
+          3. 触发 load hook 来加载 module 的源文件；
+          4. 将源文件内容解析为 ast 对象；
+          5. 遍历 ast 对象，收集静态依赖和动态依赖，其中静态依赖收集到 module 对象的 sources 数组中，动态依赖收集到 module 对象的 dynamicImport 数组中; 同时还可以知道依赖的 import 有没有被使用(被使用的 import 会被收集到 module 的 includedImports 中);
+          6. 遍历 module 对象的 sources、dunamicImport 数组，解析依赖模块的路径；
+          7. 依次触发 input plugins 中各个 plugin 的 moduleParsed hook；
+          8. 重复 2 - 7 步骤，直到所有的模块解析完成
+
+          静态依赖模块，会收集到 importer 模块的 dependencies 列表中；动态依赖模块会收集到 importer 模块的 dynamicDependencies 列表中。
+
+          静态依赖会收集到 importor module 的 sources 列表中，动态依赖会收集到 importor module 的 dynamicImport 列表中；同样的 importer 模块的 id 也会收到到静态依赖模块的 importers 和动态依赖模块的 dynamicImporters 中。这样模块依赖图就构建完成了。
+
+      - 模块排序？？ 这里为什么要排序
+  
+      - 返回一个带 generate、write 方法的 bundle 对象；
+  
+    - 执行 bundle.write 方法，入参为 option options；
+      - 初始化 output option。依次触发 output plugin 的 outputOptions hook， 更新 output otions；
+      - 构建一个 Bundle 实例，入参为 input options、output options、output 插件引擎、graph(模块依赖图)；
+      - 执行 bundle 实例的 generate 方法,
+        - 先创建一个空的 outputBundle 对象；
+        - 依次触发 output plugin 的 renderStart hook(作用应该类似于 buildStart hook，做一些初始化、缓存清理工作)；
+        - 将模块依赖图分离为 chunks，具体过程为:
+          1. 根据 output.manualChunks 规则，建立一个 map，key 为 module 对象，value 为自定义 manualChunks 的 name；
+          2. 确定 chunk 分离规则。
+          
+            如果 output.inlineDynamicImports 为 ture，所有的 module 会分离为一个 chunk；如果 output.preserveModules 为 ture，每个 module 会分离为一个单独的 chunk (配合 output.format 使用)；如果 output.inlineDynamicImports、output.preserveModules 都为 false，那么就将模块依赖图分离为 entry chunks、dynamic chunks、自定义 manual chunks。
+
+          3. 根据 chunk 分离规则，确定 chunk 以及 chunk 包含的 module。
+
+            如果 output.inlineDynamicImport 为 ture，chunk 只有一个，对应的 module 列表收集了所有的 module；
+
+            如果 output.preserveModules 为 true (output.inlineDynamicImport 为 false)，module 有多少个， chunk 就有多少个，chunk 的 module 列表只有一个 module；
+
+            如果 output.inlineDynamicImport 和 output.preserveModules 为 false，chunk 分离过程为：
+            - 先根据 output.manualChunks 创建 manual chunks，把属于他们的 module 添加到对应的 manual chunks 中；
+            - 以模块依赖图的入口模块为起点，分析模块依赖图，找到懒加载 modules 以及 module 和  importor module 的映射关系(去掉已经分离到 manualChunks 中的 modules)；
+            - 找到每一个 module 和其对应的 entry modules(包含 static entry modules 和 dynamic entry modules)；
+            - 根据 module 和对应的 entry modules，将 modules 分离为 initial chunks 和 dynamic chunk;
+          
+                如果 module 的 importor module 包含 static entry modules 和 dynamic entry module，那么该 module 会分配打到 initial chunk 中。
+
+                在这一过程中，如果 module 的 importor module 并没有使用该 module 的 exports，那么该 module 并不会添加到 chunk 中，这样就做到了 module 级别的 tree shaking。
+
+                
+        
+      - 遍历分离好的 chunks，给每个 chunk 中收集的 modules 排序，然后构建 chunk 实例，建立一个 map，收集 module 和 chunk 的映射关系；
+  
+      - 遍历 chunks，确定每个 chunk 依赖的 static chunks 和 dynamic chunks，static chunks 需要先加载，dynamic 需要 懒加载；
+  
+      - 为每个 chunk 绘制内容，即根据 chunk 中收集的 modules 构建 chunk 实际的内容:
+        - 依次触发 output plugin 的 banner hook、footer hook、intro hook、outro hook，返回需要添加到 chunk 中的 banner、footer、intro、outro；
+        - 根据每个 chunk 收集的 modules，找到每个 chunk 对外的 exports；
+        - 对每个 chunks 做预处理，确定每个 chunk 中要移除的 module 以及 chunk 中每个 module 要移除的 exports；(有些 module 在分配到 chunk 的时候就可以确定是否被移除掉)；
+        - 给每一个 chunk 分配 id；
+        - 为每一个 chunk 根据收集的 module 构建内容，并依次触发 renderChunk hook；
+        - 所有 chunk 的内容构建完毕，依次触发 output plugin 的 generateBundle hook；
+      - 将构建好的每一个 bundle，通过 fs.writeFile 输出到 outdir 指定位置；
+      - 依次触发 output plugin 的 writeBundle hook， 整个 build 过程结束；
+
+
+
+#### vite 篇
+
+
+#### esbuild 篇
+
+
+#### 其他构建工具
 
 
 
