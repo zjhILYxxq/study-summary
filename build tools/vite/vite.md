@@ -721,6 +721,20 @@ pm2 ??
             'process.env.API_ENV': 'test'
         }
         ```
+    4. less 文件处理和 antd 修改前缀
+
+        配置 css.preprocessorOptions 如下:
+
+        ```
+          css: {
+            preprocessorOptions: {
+                less: {
+                    modifyVars: {   '@ant-prefix': 'byfe-scrm-ant' },
+                    javascriptEnabled: true,
+                },
+            }
+        },
+        ```
         
   
 
