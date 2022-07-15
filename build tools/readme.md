@@ -790,13 +790,39 @@
   
     - 一个 module 的 exports，如果没有被其他 module 使用到，那么在构建 chunk 内容时就会被移除掉，实现了 statement level 的 tree shaking；
 
+#### esbuild 篇
 
+- [x] esbuild 的常用 api
+
+   esbuild api 的使用方式有三种： cli、js、go。比较常用的为 js、cli。
+
+   esbuild 提供了两个 api 供大家使用：transform 和 build。
+
+   transfrom，即转换的意思，通过这个 api 可以将 ts、jsx、tsx 格式的内容转化为 js 格式的内容。 transfrom 只负责文件内容转换，并不会生成一个新的文件。
+
+   build，即构建的意思，根据指定的单个或者多个入口，分析依赖，并使用 loader 将不同格式的内容转化为 js 内容，生成一个 bundle 文件。 build 过程肯定包含了 transform 过程。
+
+
+   这两个 api 的使用方式:
+   ```
+   const res = await esbuild.transform(code, options) // 将 code 转换为指定格式的内容
+
+   esbuild.build(options) // 打包构建
+   ```
+
+
+  
+- [ ] esbuild 的常用配置项
+  
+- [ ] 自定义 esbuild plugin
+  
+- [ ] esbuild 的优缺点
 
 
 #### vite 篇
 
 
-#### esbuild 篇
+
 
 
 #### 其他构建工具

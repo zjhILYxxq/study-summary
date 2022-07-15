@@ -135,7 +135,6 @@
 
     - **loader**，用于配置指定类型文件的解释方式(对比 webpack 的 loader)
 
-        transform 只需要一个 loader ？？
 
     - **minify**, 压缩代码
 
@@ -198,7 +197,7 @@
 
         多个 plugin 的 onEnd 是按序执行的。
 
-4. esbuild plugin 的限制 
+4. esbuild 的限制 
 
     - 无法修改 ast，防止暴露过多的 api 而影响性能；
   
