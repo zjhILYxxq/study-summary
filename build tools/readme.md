@@ -590,12 +590,31 @@
 - [x] **rollup 的 plugin 机制及如何实现一个自定义 plugin**
 
    rollup 插件的一些约定:
+
     - 插件要有一个清晰的名称和 rollup-plugin-前缀；
+  
     - 在 package.json 中要包含 rollup-plugin 关键字 (这个是什么意思呢？？)
+  
     - 插件应该是被测试的
+  
     - 尽可能的使用异步方法
+  
     - 如果可能，请确保您的插件输出正确的源映射
+
+
     - 如果您的插件使用“虚拟模块”（例如用于辅助功能），请在模块 ID 前加上\0. 这可以防止其他插件尝试处理它 ？？
+
+   一个自定义插件的格式为：
+
+   ```
+   {
+      name: 'rollup-plugin-xxxx',
+      options: () => { ... },
+      resolveId: () => { ... },
+      load: () => { ... },
+      ...
+   }
+   ```
 
    rollup hook 根据执行的顺序类型：
     - async，异步 hook；
