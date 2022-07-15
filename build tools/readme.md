@@ -494,11 +494,16 @@
 
 #### rollup 篇
 
-- [ ] **为什么要有 rollup**
+- [x] **为什么要有 rollup**
+
+   原因:
+   - webpack 作为构建工具，用在 lib 开发方面，打包出来的代码包含大量的冗余代码；
+   - 推崇 ESM 模块规范，在打包过程中可以实现 tree shaking (其他构建工具的 tree shaking 功能都借鉴了 rollup)；
+   - 浏览器对 ESM 规范的支持，使得在生产环境直接使用 ESM 规范的代码也是可以的；
 
    rollup 的应用场景:
    - 组件库开发；
-   - vite；
+   - 如果浏览器对 esm 规范完全支持，可以使用 rollup 打包应用，vite 的 production 打包就是基于 rollup 实现的。
 
 - [x] **rollup api 的使用**
 
