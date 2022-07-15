@@ -971,7 +971,7 @@
 
    缺点：
    - 无法修改 ast，防止暴露过多的 api 而影响性能；
-   - 不支持自定义代码拆分；
+   - 不支持自定义代码拆分(拆分出来的 chunk： initial chunk、async chunk、runtime chunk)
    - 产物无法降级到 es5 之下；
 
 - [x] esbuild 快的原因
