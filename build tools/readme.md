@@ -675,6 +675,10 @@
      
      - **closeBundle - async、parallel**，rollup 结束工作时触发；
   
+   build 阶段，用的较多的 hook - options、resolveId、load、transform。
+
+   generate 阶段， 用的较多的 hook - outputOptions、renderChunk、generateBundle。
+
 - [x] **rollup 的整个工作过程**
 
    rollup 整个工作过程如下：
