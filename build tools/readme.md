@@ -1124,6 +1124,28 @@
 
    在 esbuild 做 build 时，vite 提供了 onResolve hook，自定义依赖的解析过程，将三方依赖搜集起来，然后针对三方依赖做预构建。
 
+- [ ] 二次预构建
+
+   二次预构建，本地服务运行的时候，发现有新的第三方依赖没有预构建，此时要重新进行预构建，然后通知客户端去重新刷新页面。
+
+   当动态依赖的 url 在运行时才能确定，此时动态 url 有第三方依赖时，这个第三方依赖是无法在第一次预构建的时候扫描出来的，这就导致会发生再次预构建。
+
+   (这种情况下 webpack 是怎么处理的？？)
+
+   ```
+   import objectAssign from "object-assign";
+   console.log(objectAssign);
+
+   // main.tsx
+   const importModule = (m) => import(`./locales/${m}.ts`);
+   importModule("zh_CN");
+   ```
+
+   如何处理二次预构建：
+   1. 
+
+
+
 - [x] esbuild 是怎么格式化 esm 模块的？
 
    esbuild 会简单的对 esm 模块做处理
@@ -1529,6 +1551,9 @@
     - 特性: Go 语言开发，可以多线程打包，代码直接编译成机器码(不用先解析为字节码)，可充分利用多核 cpu 优势；
     - 优点：快；
     - 缺点: 无法修改 ast，防止暴露过多的 api 而影响性能；不支持自定义代码拆分；产物无法降级到 es5 之下；
+
+
+- [ ] vite 3.0 的变化
 
 
 #### 其他构建工具
