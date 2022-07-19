@@ -1148,7 +1148,21 @@
    4. 通知客户端重新刷新页面；
 
    如何处理二次预构建：
-   1. 
+   1. 使用 vite-plugin-package-config、vite-plugin-optimize-persist 这两个插件
+
+      vite-plugin-package-config 提供了 config hook， 使得 vite 可以在初始化 config 时从 package.json 读取 vite 配置项合并到 config 中。
+
+      vite-plugin-optimize-persist 提供了 configureServer hook，添加自定义 middleware， 可以在发现有新的未进行预构建的第三方依赖时，将其写到 package.json 中。
+
+      通过这样的操作，当下一次开发服务器启动以后，不会发生二次预构建了。
+
+      注意， vite 的 2.9 版本不适合。
+
+   2. vite3.0 修复了这个问题
+
+      怎么修复的？
+
+   
 
 
 
