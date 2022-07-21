@@ -1132,6 +1132,8 @@
 
    (这种情况下 webpack 是怎么处理的？？)
 
+   动态依赖:
+
    ```
    import objectAssign from "object-assign";
    console.log(objectAssign);
@@ -1140,6 +1142,8 @@
    const importModule = (m) => import(`./locales/${m}.ts`);
    importModule("zh_CN");
    ```
+
+   静态依赖: 通过 plugin 添加三方依赖。
 
    二次预构建的过程：
    1. vite 服务运行时，解析依赖，发现是第三方依赖，而且新发现的第三方依赖没有重新预构建；
@@ -1158,9 +1162,9 @@
 
       注意， vite 的 2.9 版本不适合。
 
-   2. vite3.0 修复了这个问题？
+   2. vite3.0 修复了首屏时的二次预构建。
 
-      目前看，并没有解决这个问题。
+      解决方案: 把预构建延迟的页面加载的最后阶段进行？？
 
    
 
