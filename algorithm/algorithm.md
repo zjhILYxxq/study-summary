@@ -73,12 +73,42 @@
   - [排列的数目](https://leetcode.cn/problems/D0F0SV/)
   
 - **股票问题**
-  - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/) - 不使用动态规划也可求解；
+  - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/)；
+  - [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
   - [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
   - [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
-  - [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
   - [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
   - [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+    股票问题有三个状态：股票交易天数、交易次数、持有股票情况
+
+    dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+
+    dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+
+    当股票只能交易一次时：
+    - 持有股票:  dp[i][1] = max(dp[i - 1][1], -prices[i]), 即要么之前买了没卖，要么今天买；
+    - 不持有股票: dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+
+    当股票可以交易无数次时:
+    - 持有股票: dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+    - 不持有股票: dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+
+    当股票规定只能交易 k 次时：
+    - 持有股票: dp[i][k][1] = max(dp[i - 1][k][1], k === 0 ? -prices[i] : dp[i - 1][k - 1][0] - prices);
+    - 不持有股票: dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])；
+
+    卖出时有手续费：
+    - 持有股票: - 持有股票 dp[i][k][1] = max(dp[i - 1][k][1], k === 0 ? -prices[i] : dp[i - 1][k - 1][0] - prices);
+    - 不持有股票: dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i] - fee)；
+
+    有冷冻期:
+    - 持有股票: - 持有股票 dp[i][k][1] = max(dp[i - 1][k][1], k === 0 ? -prices[i] : dp[i - m][k - 1][0] - prices);
+    - 不持有股票: 不持有股票 dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])；
+
+
+
+
 
 - **其他动态规划问题**
 
