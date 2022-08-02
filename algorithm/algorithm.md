@@ -51,7 +51,7 @@
 - **单序列问题**，题目的输入通常是一个一维数组或者字符串
   - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
   - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
-  - [粉刷房子](https://leetcode.cn/problems/JEj789/)
+  - [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的成本，然后再找出最小的成本来；
   - [翻转字符](https://leetcode.cn/problems/cyJERH/)
   - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/)
   - [最少回文分割](https://leetcode.cn/problems/omKAoA/)
