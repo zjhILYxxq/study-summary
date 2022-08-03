@@ -514,7 +514,6 @@
 
 30. HMR 的整个工作过程是咋样的？
 
-    热更新的时候，没有修改的文件会重新 transform 吗？
 
     HMR 工作分为两个部分： client 和 server 端。
 
@@ -735,6 +734,25 @@ pm2 ??
             }
         },
         ```
+    5. vite react 项目中使用装饰器 开启 decorators-legacy
+
+        ```
+        import { defineConfig } from "vite";
+        import react from "@vitejs/plugin-react";
+        // https://vitejs.dev/config/
+        export default defineConfig({
+        plugins: [
+            react({
+            babel: {
+                plugins: [
+                ["@babel/plugin-proposal-decorators", { legacy: true }],
+                ["@babel/plugin-proposal-class-properties", { loose: true }],
+                ],
+            },
+            }),
+        ],
+        });
+        ```
         
   
 
@@ -770,6 +788,9 @@ pm2 ??
 
 
 最近有幸在前端团队里面做了一次关于 webpack 的技术分享。在分享的准备过程中，为了能让大家更好的理解 webpack，特意对市面上以前和现在流行的构建工具做了一个整理总结。在整理和分享的过程中，获益匪浅，对前端构建工具的发展变化有了清晰的认识。现将自己的总结写出来，希望能给到对构建工具同样感兴趣的同学一点帮助。
+
+
+
 
 
 
