@@ -53,7 +53,7 @@
   - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
   - [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本；
   - [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
-  - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/)
+  - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/) 
   - [最少回文分割](https://leetcode.cn/problems/omKAoA/)
   
 - **双序列问题**
