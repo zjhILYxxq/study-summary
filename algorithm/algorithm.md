@@ -63,7 +63,7 @@
 
 - **矩阵路径问题**
   - [路径的数目](https://leetcode.cn/problems/2AoeFn/)
-  - [最小路径之和](https://leetcode.cn/problems/0i0mDW/)
+  - [最小路径之和](https://leetcode.cn/problems/0i0mDW/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
   - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]), 在考虑一下边界情况即可。
 
 - **背包问题**
