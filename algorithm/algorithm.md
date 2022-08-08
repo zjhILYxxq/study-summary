@@ -54,7 +54,7 @@
   - [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本；
   - [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
   - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/) - 解题思路，dp[i][j] = dp[j][k] + 1, dp[i][j] 代表最后一位为 i， 前一位为 j 的斐波那契数列， d[j][k] 为最后一位为 j，前一位为 k 的斐波那契数列。解题时，需要建立一个 n * n 的 dp 数组。
-  - [最少回文分割](https://leetcode.cn/problems/omKAoA/)
+  - [最少回文分割](https://leetcode.cn/problems/omKAoA/) - 困难
   
 - **双序列问题**
   - [最长公共子序列](https://leetcode.cn/problems/qJnOS7/)
@@ -64,7 +64,7 @@
 - **矩阵路径问题**
   - [路径的数目](https://leetcode.cn/problems/2AoeFn/)
   - [最小路径之和](https://leetcode.cn/problems/0i0mDW/)
-  - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/)
+  - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]), 在考虑一下边界情况即可。
 
 - **背包问题**
   - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
