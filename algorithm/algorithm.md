@@ -70,7 +70,7 @@
   - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
   - [加减的目标值](https://leetcode.cn/problems/YaVDxD/)
   - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
-  - [排列的数目](https://leetcode.cn/problems/D0F0SV/)
+  - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 无限背包问题，类似于最少的硬币数目问题， dp[i] = dp[i] + dp[i - bag[j]];
 
     背包问题的基本描述: 给定一组物品，每组物品都有其重量和价格，在限定的总重量内如何选择才能是物品的价格最高。
 
