@@ -47,16 +47,75 @@ theme: cyanosis
 
 - 可充分利用多核 cpu 优势；
 
+
 <h4>关键 API - transfrom & build</h4>
 
 `Esbuild` 并不复杂。它对外提供了两个 `API` - `transform` 和 `build`，使用起来非常简单。
 
+`transfrom`，转换的意思。通过这个 api，我们可以将 `ts`、`jsx`、`tsx` 等格式的内容转化为 `js`。 `transfrom` 只负责文件内容转换，并不会生成一个新的文件。
 
+`build`，即构建的意思，根据指定的单个或者多个入口，分析依赖，并使用 `loader` 将不同格式的内容转化为 js 内容，生成一个或多个 `bundle` 文件。 
 
+这两个 `API` 的使用方式:
+
+```
+const res = await esbuild.transform(code, options) // 将 code 转换为指定格式的内容
+
+esbuild.build(options) // 打包构建
+```
+
+关于使用 `transform`、`build` 需要传入的具体配置项，本文就不详细说明了，官网对这一块儿有很详细的说明，感兴趣的同学可以去官网 - **[simple-options](https://esbuild.github.io/api/#simple-options)**、**[Advanced options](https://esbuild.github.io/api/#advanced-options)** 看看，并自己试试。
 
 
 <h4>plugin</h4>
 
+和 `Webpack`、`Rollup` 等构建工具一样，`Esbuild` 对外也提供了 `plugin`，使得我们可以接入构建打包过程。
+
+> 在这里要说明一点，只有 `build` 这个 `API` 的入参中可以配置 `plugin`，`transform` 不可以。
+
+一个标准的 `plugin` 的标准格式如下:
+
+```
+let customerPlugin = {
+    name: 'xxx',
+    setup: (build) => {
+        build.onResolve({ filter: '', namespace: '' }, args => { ...});
+        build.onLoad({ filter: '', namespace: ''}, args => { ... });
+        build.onStart(() => { ... });
+        build.onEnd((result) => { ... });
+    }
+}
+```
+
+其中，`setup` 可以帮助我们在 `build` 的各个过程中注册 `hook`。
+
+`Esbuild` 对外提供的 `hook` 比较简单，总共 `4` 个:
+
+- `onResolve`, 类型为 `first`, 解析 `url` 是调用，可自定义 `url` 如何解析。
+
+    如果 `callback` 有返回 `path`，后面的同类型 `callback` 将不会执行。
+
+    所有的 `onResolve` `callback` 将按照对应的 `plugin` 注册的顺序执行。
+
+- `onLoad`, 类型为 `first`， 加载模块时调用，可自定义模块如何加载。 
+
+    如果 `callback` 有返回 `contents`，后面的同类型 `callback` 将不会执行。
+
+    所有的 `onLoad` `callback` 将按照对应的 `plugin` 注册的顺序执行。
+
+- `onStart`, 类型为 `parallel`
+
+    每次 `build` 开始时都会触发，没有入参，因此不具有改变 `build` 的能力。
+
+    多个 `plugin` 的 `onStart` 并行执行。
+
+- `onEnd`, 类型为 `sequential`
+
+    每次 `build` 结束时会触发，入参为 `build` 的结果，可对 `result` 做修改。
+
+    所有的的 `onEnd` 将按照对应的 `plugin` 注册的顺序执行。
+
+正是有了 `onResolve`、`onLoad`、`onStart`、`onEnd`，我们可以在 `build` 过程中的解析 `url`、加载模块内容、构建开始、构建结束阶段介入，做自定义操作。
 
 <h3>Esbuild 在 Vite 中的巧妙使用</h3>
 
