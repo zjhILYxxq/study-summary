@@ -68,7 +68,7 @@
 
 - **背包问题**
   - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
-  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/)
+  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/) - 0 - 1 背包问题？ 这个问题还要再研究一下。
   - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
   - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 无限背包问题，类似于最少的硬币数目问题， dp[i] = dp[i] + dp[i - bag[j]];
 
