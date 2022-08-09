@@ -69,10 +69,20 @@
 - **背包问题**
   - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
   - [加减的目标值](https://leetcode.cn/problems/YaVDxD/)
-  - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/)
+  - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
   - [排列的数目](https://leetcode.cn/problems/D0F0SV/)
 
-    
+    背包问题的基本描述: 给定一组物品，每组物品都有其重量和价格，在限定的总重量内如何选择才能是物品的价格最高。
+
+    0-1 背包问题: 每种物品只有一个，可以放入或者不放入背包。0 - 1 背包问题是最基本的背包问题，其他类型的背包问题都可以转化为 0 - 1 背包问题。
+
+    有限背包问题: 每种物品的个数是有限的。
+
+    无限背包问题: 每种物品的个数是无限的。
+
+
+
+
   
 - **股票问题**
   - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/)；
