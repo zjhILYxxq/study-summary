@@ -67,8 +67,8 @@
   - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]), 在考虑一下边界情况即可。
 
 - **背包问题**
-  - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题需要回过头来再好好研究一下。
-  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/) - 0 - 1 背包问题？ 这个问题稍微有点不好理解，解决思路是先通过数学方案，确定解题思路是从给定 list 中找到和为 target 的方案。dp[i][j] 表示从前 i 个数中找到和为 j 的方案， dp[i][j] = dp[i - 1][j] + dp[i - 1][j - list[i]]。这个题要回来回顾 ！！
+  - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题和 [加减的目标值](https://leetcode.cn/problems/YaVDxD/) 解题思路一样。通过数学方法，转化从给定 list 中找到和为 target 的方案，变成 0 - 1 背包问题。
+  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/) - 可以转化为 0 - 1 背包问题。这个问题稍微有点不好理解，解决思路是先通过数学方案，确定解题思路是从给定 list 中找到和为 target 的方案。dp[i][j] 表示从前 i 个数中找到和为 j 的方案， dp[i][j] = dp[i - 1][j] + dp[i - 1][j - list[i]]。这个题要回来回顾 ！！
   - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
   - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 无限背包问题，类似于最少的硬币数目问题， dp[i] = dp[i] + dp[i - bag[j]];
 
