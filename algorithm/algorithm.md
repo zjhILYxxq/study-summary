@@ -60,8 +60,10 @@
   - [最长公共子序列](https://leetcode.cn/problems/qJnOS7/)
   
     解题思路，dp[i, j] 表示从 s1[0...i] 和 s2[0...j] 中找到满足题意的最长公共子序列的长度，状态转移方程：如果 s1[i] === s2[j], dp[i][j] = dp[i - 1][j - 1] + 1; 如果 s1[i] !== s2[j], dp[i, j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-    
+
   - [字符串交织](https://leetcode.cn/problems/IY6buf/)
+
+    解题思路, dp[i, j] 表示 s1[0...i] 和 s2[0...j] 是否能组成 s3， 状态转移方程，如果 dp[i][j] = s1[i - 1] === s3[i + j - 1] && dp[i - 1][j] || s2[j - 1] === s3[i + j - 1] && dp[i][j - 1];
 
     解题思路，
   - [子序列的数目](https://leetcode.cn/problems/21dk04/)
