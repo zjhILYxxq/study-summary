@@ -93,9 +93,6 @@
 
     无限背包问题: 每种物品的个数是无限的。
 
-
-
-
   
 - **股票问题**
   - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/)；
@@ -132,12 +129,15 @@
     - 不持有股票: 不持有股票 dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])；
 
 
-
-
-
 - **其他动态规划问题**
+  - [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
+  - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
+  - [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
+  - [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
 
+    一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
 
+    
 
 #### 回溯算法 - DFS(深度优先遍历算法)
 
@@ -176,6 +176,31 @@ function backTrack(list, track) {
 
 回溯算法需要的时间复杂度很大，解题规模一般比较小。
 
+回溯算法，关键是在所有选项形成的树上进行 DFS。如果明确知道某些子树没有必要遍历，那么在遍历的时候应该避开这些子树以优化效率，这个称之为剪枝。
+
+常见的回溯算法问题：
+- **集合、排列、子集问题**
+  - [所有子集](https://leetcode.cn/problems/TVdhkn/)
+  - [包含 K 个元素的组合](https://leetcode.cn/problems/uUsW3B/)
+  - [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/)
+  - [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/)
+  - [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
+  - [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
+  - [没有重复元素的全排列组合](https://leetcode.cn/problems/wtcaE1/)
+- **岛屿问题**
+  - [岛屿的数量](https://leetcode.cn/problems/number-of-islands/)
+  - [统计子岛屿](https://leetcode.cn/problems/count-sub-islands/)
+  - [岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island/)
+  - [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
+  - [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
+  - [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
+- **其他问题**
+  - [生成匹配的括号](https://leetcode.cn/problems/IDBivT/)
+  - [分割回文子字符串](https://leetcode.cn/problems/M99OJA/)
+  - [恢复 IP 地址](https://leetcode.cn/problems/0on3uN/)
+
+
+
 #### BFS 算法
 
 **BFS**，**广度优先遍历**, 一般会借助**队列 - queue** 来实现。
@@ -198,6 +223,9 @@ function backTrack(list, track) {
 - **判断链表有环**: 快慢指针，一个指针一次走两步，另一个指针一次一步，快指针能追上慢指针，说明有环，否则没有。当快指针指向 null 或者快指针的 next 指向 null，停止追赶。
 - **判断链表环的起点**: 快指针追上慢指针以后，慢指针指向 head，快指针继续前进，两者再次相遇的节点就是环的起点。
 - **判断链表相交**: 双指针,第一个指针先遍历 A，再遍历 B; 第二个指针先遍历 再遍历 A； 当两个指针指向同一个节点时，说明链表相交。
+
+
+
 
 #### 数组、字符串问题
 
@@ -248,16 +276,8 @@ function backTrack(list, track) {
 
 - **使岛屿分离的最小天数**
 
-#### 股票问题
-
-股票问题常用的解法: **动态规划**。
-
-常见的股票问题:
 
 
-#### 打家劫舍问题
-
-打家劫舍问题的解法: **动态规划**
 
 #### n 数之和问题
 
@@ -466,40 +486,6 @@ function backTrack(list, track) {
 - [最多删除一个字符得到回文](https://leetcode-cn.com/problems/RQku0D/)
 
 
-#### 动态规划
-
-- [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
-- [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
-- [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
-- [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 这道题的解题思路可以参照硬币问题，不过不完全一样，使用 dfs 会超时；
-- [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 第一时间考虑使用回溯算法，导致会超时，使用 dp 数组。
-- [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
-
-
-一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
-
-股票问题的状态转移方程:
-
-```
-// 股票问题的状态有两个: 交易的日期和交易当天持有的股票的情况
-
-// 第 i 天、第 j 次交易后，不持有股票
-dp[i][j][0] = Math.max(
-    // 第 i - 1 天 不持有股票，第 i 天没有买入，没有新的交易
-    dp[i - 1][j][0],
-    // 第 i - 1 天持有股票，第 i 天卖出，没有新的交易
-    dp[i - 1][j][1] + prices[i]
-)
-
-// 第 i 天、 第 j 次交易后，持有股票
-dp[i][j][1] = Math.max(
-    // 第 i - 1 天持有， 第 i 天没有卖出， 没有新的交易
-    dp[i - 1][j][1],
-    // 第 i - 1 天没有， 第 i 天买入，有新的交易
-    dp[i - 1][j - 1][0] - prices[i]
-)
-
-```
 
 
 
