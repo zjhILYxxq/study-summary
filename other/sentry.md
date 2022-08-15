@@ -93,6 +93,8 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
     EvalError， 一个关于 eval 的异常，不会被 javascript 抛出。
 
+    能捕捉到的异常，必须是线程执行已经进入 try catch 但 try catch 未执行完的时候抛出来的。
+
 - [ ] Sentry 异常处理机制
 
 - [ ] 异常监控相关问题
