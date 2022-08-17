@@ -180,10 +180,10 @@ function backTrack(list, track) {
 
 常见的回溯算法问题：
 - **集合、排列、子集问题**
-  - [所有子集](https://leetcode.cn/problems/TVdhkn/)
+  - [x] [所有子集](https://leetcode.cn/problems/TVdhkn/)
   - [包含 K 个元素的组合](https://leetcode.cn/problems/uUsW3B/)
-  - [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/)
-  - [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/)
+  - [x] [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/)
+  - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题的关键是先排序，然后去除重复的组合(去除重复的组合的方法要回来回顾一下)
   - [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
   - [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
   - [没有重复元素的全排列组合](https://leetcode.cn/problems/wtcaE1/)
