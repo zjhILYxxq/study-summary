@@ -186,7 +186,6 @@ function backTrack(list, track) {
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题的关键是先排序，然后去除重复的组合(去除重复的组合的方法要回来回顾一下)
   - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
   - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/)
-  - [ ] [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
 
 
     在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
@@ -201,6 +200,7 @@ function backTrack(list, track) {
   - [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
   - [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
   - [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
+  
 - **其他问题**
   - [生成匹配的括号](https://leetcode.cn/problems/IDBivT/)
   - [分割回文子字符串](https://leetcode.cn/problems/M99OJA/)
@@ -239,12 +239,17 @@ function backTrack(list, track) {
 数组、字符串问题的常用解法: **左右指针**、**滑动窗口**
 
 - **数组、字符串反转**: 使用**左右指针**；
-- **字符串寻找满足题意的子串**: 使用**左右指针**、**滑动窗口**，整个过程如下:
-  - 移动右指针，扩大窗口，直到满足要求为止；
-  - 移动左指针，缩小窗口，满足要求就更新结果；不满足要求，停止移动；
-  - 重复第一步，移动右指针，直到右指针到底为止；
+- **字符串寻找满足题意的子串**: 使用**左右指针**、**滑动窗口**，
+  
+    整个过程如下:
+    - 移动右指针，扩大窗口，直到满足要求为止；
+    - 移动左指针，缩小窗口，满足要求就更新结果；不满足要求，停止移动；
+    - 重复第一步，移动右指针，直到右指针到底为止；
 
-**滑动窗口**最关键的就是找准**缩小窗口**的时机。
+    **滑动窗口**最关键的就是找准**缩小窗口**的时机。
+
+    常见的滑动窗口题目:
+    - [ ] [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
 
 
 #### 岛屿问题
