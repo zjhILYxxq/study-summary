@@ -184,9 +184,15 @@ function backTrack(list, track) {
   - [包含 K 个元素的组合](https://leetcode.cn/problems/uUsW3B/)
   - [x] [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/)
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题的关键是先排序，然后去除重复的组合(去除重复的组合的方法要回来回顾一下)
-  - [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
-  - [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
-  - [没有重复元素的全排列组合](https://leetcode.cn/problems/wtcaE1/)
+  - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
+  - [ ] [不含重复字符的最长子字符串](https://leetcode.cn/problems/wtcaE1/)
+  - [ ] [没有重复元素的全排列组合](https://leetcode.cn/problems/wtcaE1/)
+
+    在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
+
+    去重有一个小技巧：如果当前元素和上一个元素相等，且上一个元素还没有被选择，那么当前元素不可选。如果不这么处理，那就造成重复了。
+
+
 - **岛屿问题**
   - [岛屿的数量](https://leetcode.cn/problems/number-of-islands/)
   - [统计子岛屿](https://leetcode.cn/problems/count-sub-islands/)
