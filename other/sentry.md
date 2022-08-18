@@ -95,9 +95,23 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
     能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
 
+    运行时错误，即代码执行的错误
+
+    资源加载错误
+
 - [ ] Sentry 异常处理机制
 
     Error ？ Exception ？ DOMError ？ DOMException ？ ErrorEvent ？
+
+    如何判断 window.fetch 方法没有进行包装过 ？
+
+    ```
+        /^function fetch\(\)\s+\{\s+\[native code\]\s+\}$/.test(func.toString());
+    ```
+
+    如何判断当前环境是否支持 fetch ？？ Sentry 里面的实现还蛮巧妙的
+
+    Sentry 是如何覆写原生的 console、fetch、XMLHttpRequest、history、dom 节点的 addEventListeners 方法、onerror、unhandledrejection 方法的 ？
 
 - [ ] 异常监控相关问题
 
