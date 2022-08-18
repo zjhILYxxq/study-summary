@@ -46,7 +46,7 @@
 
 常见的动态规划问题：
 - **爬楼梯问题**
-  - [经典爬楼梯](https://leetcode.cn/problems/climbing-stairs/), 解法： f(n) = f(n - 1) + f(n - 2);
+  - [x] [经典爬楼梯](https://leetcode.cn/problems/climbing-stairs/), 解法： f(n) = f(n - 1) + f(n - 2);
   - [最小成本爬楼梯](https://leetcode.cn/problems/GzCJIP/);
 - **单序列问题**，题目的输入通常是一个一维数组或者字符串
   - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
@@ -139,7 +139,7 @@
 
     
 
-#### 回溯算法 - DFS(深度优先遍历算法)
+#### 回溯算法
 
 **回溯算法**问题的一般形式就是：**列出某个问题的所有情况**。
 
@@ -186,25 +186,36 @@ function backTrack(list, track) {
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题的关键是先排序，然后去除重复的组合(去除重复的组合的方法要回来回顾一下)
   - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
   - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/)
-
+  - [ ] [组合总和-1](https://leetcode.cn/problems/combination-sum/)
+  - [ ] [组合总和-2](https://leetcode.cn/problems/combination-sum-ii/)
+  - [ ] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/)
+  - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/)
+  - [ ] [子集-1](https://leetcode.cn/problems/subsets/)
+  - [ ] [子集-2](https://leetcode.cn/problems/subsets-ii/)
 
     在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
 
     去重有一个小技巧：如果当前元素和上一个元素相等，且上一个元素还没有被选择，那么当前元素不可选。如果不这么处理，那就造成重复了。
 
-
-- **岛屿问题**
-  - [岛屿的数量](https://leetcode.cn/problems/number-of-islands/)
-  - [统计子岛屿](https://leetcode.cn/problems/count-sub-islands/)
-  - [岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island/)
-  - [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
-  - [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
-  - [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
-  
 - **其他问题**
   - [生成匹配的括号](https://leetcode.cn/problems/IDBivT/)
   - [分割回文子字符串](https://leetcode.cn/problems/M99OJA/)
   - [恢复 IP 地址](https://leetcode.cn/problems/0on3uN/)
+
+
+#### DFS + BFS
+
+- **岛屿问题**
+  - [x] [岛屿的数量](https://leetcode.cn/problems/number-of-islands/), 找到小岛，然后使用 DFS 算法淹没它；
+  - [x] [统计子岛屿](https://leetcode.cn/problems/count-sub-islands/), 对比 A、B， 将 B 中不是子岛屿的岛屿淹没掉，剩下的就是子岛屿了；
+  - [x] [岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island/), 淹没岛屿时，要记录淹没的次数；
+  - [ ] [统计封闭岛屿的数量](https://leetcode.cn/problems/number-of-closed-islands/)
+  - [ ] [飞地的数量](https://leetcode.cn/problems/number-of-enclaves/)
+  - [ ] [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
+  - [ ] [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
+  - [ ] [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
+  
+
 
 
 
