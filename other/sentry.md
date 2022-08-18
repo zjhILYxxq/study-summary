@@ -75,27 +75,29 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 - [x] 常见的 js 异常类型
 
-    Error，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
+    `Error`，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
 
-    RangeError: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
+    `RangeError`: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
 
-    ReferenceError，引用错误。当一个不存在的对象被引用时发生的异常。
+    `ReferenceError`，引用错误。当一个不存在的对象被引用时发生的异常。
 
-    SyntaxError，语法错误。如变量以数字开头；花括号没有闭合等。
+    `SyntaxError`，语法错误。如变量以数字开头；花括号没有闭合等。
 
-    TypeError，类型错误。如把 number 当 str 使用。
+    `TypeError`，类型错误。如把 number 当 str 使用。
 
-    URIError，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
+    `URIError`，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
 
-    AggregateError，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
+    `AggregateError`，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
 
-    InternalError， js 引擎内部的异常。
+    `InternalError`， js 引擎内部的异常。
 
-    EvalError， 一个关于 eval 的异常，不会被 javascript 抛出。
+    `EvalError`， 一个关于 eval 的异常，不会被 javascript 抛出。
 
-    能捕捉到的异常，必须是线程执行已经进入 try catch 但 try catch 未执行完的时候抛出来的。
+    能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
 
 - [ ] Sentry 异常处理机制
+
+    Error ？ Exception ？ DOMError ？ DOMException ？ ErrorEvent ？
 
 - [ ] 异常监控相关问题
 
