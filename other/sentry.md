@@ -123,6 +123,17 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
     Sentry 是如何覆写原生的 console、fetch、XMLHttpRequest、history、dom 节点的 addEventListeners 方法、onerror、unhandledrejection 方法的 ？
 
+
+    js 代码执行异常  try...catch 捕获
+
+    资源加载异常 window.addEventListener('error', callback, true) 捕获
+
+    dom 操作异常 这块儿 Sentry 是怎么处理的？
+
+    网络请求异常 这一块儿 Sentry 是怎么处理的？ 
+
+    XMLHttpRequest 实例的 open、send 方法重写有什么意义？？
+
 - [ ] 异常监控相关问题
 
 - [ ] 微前端下异常处理 
