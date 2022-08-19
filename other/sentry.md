@@ -101,7 +101,17 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 - [ ] Sentry 异常处理机制
 
-    Error ？ Exception ？ DOMError ？ DOMException ？ ErrorEvent ？
+    Error： js 代码执行发生异常
+    
+    DOMException， dom 节点操作发生异常(js 代码可以正常执行，但是 dom 树发生异常)
+
+    资源加载异常 - 资源加载异常比较特殊，需要借助 window.addEventListener('error', callback, ture), 在捕获阶段才可以拿到。资源加载异常，需要手动上报 ？？
+
+    promise 异常
+    
+    ErrorEvent, window 的 error 事件触发时，传入的 target
+
+    PromiseRejectionEvent, window 的 unhandledrejection 事件触发时，传入的 target
 
     如何判断 window.fetch 方法没有进行包装过 ？
 
