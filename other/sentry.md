@@ -136,11 +136,16 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
     Sentry 是如何处理这上面的几种类型的异常的？
     - 可以用 try...catch... 捕获的异常(js 代码执行异常、dom 异常)；
-    - 网络请求异常
-    - 文件加载异常 
+    - 网络请求异常:
+    - 文件加载异常: 
 
 
-    Sentry 上
+
+
+    
+    Sentry 中的异常上报，不管是开发人员手动上报，还是自动上报，最终是要通过 hub 实例的 captureException 统一处理(经过 client 实例、backend 实例、transport 实例)，最后通过 fetch 或者 xhr 实例，发起 http 请求上报给 Sentry sever 端。
+
+
 
 
 
