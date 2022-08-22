@@ -47,26 +47,26 @@
 常见的动态规划问题：
 - **爬楼梯问题**
   - [x] [经典爬楼梯](https://leetcode.cn/problems/climbing-stairs/), 解法： f(n) = f(n - 1) + f(n - 2);
-  - [最小成本爬楼梯](https://leetcode.cn/problems/GzCJIP/);
+  - [x] [最小成本爬楼梯](https://leetcode.cn/problems/GzCJIP/);
 - **单序列问题**，题目的输入通常是一个一维数组或者字符串
-  - [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
-  - [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
-  - [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本；
-  - [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
-  - [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/) - 解题思路，dp[i][j] = dp[j][k] + 1, dp[i][j] 代表最后一位为 i， 前一位为 j 的斐波那契数列， d[j][k] 为最后一位为 j，前一位为 k 的斐波那契数列。解题时，需要建立一个 n * n 的 dp 数组。
-  - [最少回文分割](https://leetcode.cn/problems/omKAoA/) - 困难
+  - [x] [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
+  - [x] [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
+  - [x] [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本；
+  - [x] [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
+  - [x] [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/) - 解题思路，dp[i][j] = dp[j][k] + 1, dp[i][j] 代表最后一位为 i， 前一位为 j 的斐波那契数列， d[j][k] 为最后一位为 j，前一位为 k 的斐波那契数列。解题时，需要建立一个 n * n 的 dp 数组。
+  - [ ] [最少回文分割](https://leetcode.cn/problems/omKAoA/) - 困难
   
 - **双序列问题**
-  - [最长公共子序列](https://leetcode.cn/problems/qJnOS7/)
+  - [x] [最长公共子序列](https://leetcode.cn/problems/qJnOS7/)
   
     解题思路，dp[i, j] 表示从 s1[0...i] 和 s2[0...j] 中找到满足题意的最长公共子序列的长度，状态转移方程：如果 s1[i] === s2[j], dp[i][j] = dp[i - 1][j - 1] + 1; 如果 s1[i] !== s2[j], dp[i, j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
 
-  - [字符串交织](https://leetcode.cn/problems/IY6buf/)
+  - [x] [字符串交织](https://leetcode.cn/problems/IY6buf/)
 
     解题思路, dp[i, j] 表示 s1[0...i] 和 s2[0...j] 是否能组成 s3， 状态转移方程，如果 dp[i][j] = s1[i - 1] === s3[i + j - 1] && dp[i - 1][j] || s2[j - 1] === s3[i + j - 1] && dp[i][j - 1];
 
     解题思路，
-  - [子序列的数目](https://leetcode.cn/problems/21dk04/)
+  - [x] [子序列的数目](https://leetcode.cn/problems/21dk04/)
 
     双序列问题的输入有两个或者更多的序列，通常是两个字符串或者数组。
 
@@ -75,15 +75,15 @@
 
 
 - **矩阵路径问题**
-  - [路径的数目](https://leetcode.cn/problems/2AoeFn/) - 这个题也超级简答, dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-  - [最小路径之和](https://leetcode.cn/problems/0i0mDW/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
-  - [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]), 在考虑一下边界情况即可。
+  - [x] [路径的数目](https://leetcode.cn/problems/2AoeFn/) - 这个题也超级简答, dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+  - [x] [最小路径之和](https://leetcode.cn/problems/0i0mDW/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+  - [x] [三角形中最小路径之和](https://leetcode.cn/problems/IlPe0q/) - 这个题比较简单，dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]), 在考虑一下边界情况即可。
 
 - **背包问题**
-  - [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题和 [加减的目标值](https://leetcode.cn/problems/YaVDxD/) 解题思路一样。通过数学方法，转化从给定 list 中找到和为 target 的方案，变成 0 - 1 背包问题。
-  - [加减的目标值](https://leetcode.cn/problems/YaVDxD/) - 可以转化为 0 - 1 背包问题。这个问题稍微有点不好理解，解决思路是先通过数学方案，确定解题思路是从给定 list 中找到和为 target 的方案。dp[i][j] 表示从前 i 个数中找到和为 j 的方案， dp[i][j] = dp[i - 1][j] + dp[i - 1][j - list[i]]。这个题要回来回顾 ！！
-  - [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
-  - [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 无限背包问题，类似于最少的硬币数目问题， dp[i] = dp[i] + dp[i - bag[j]];
+  - [x] [分割等和子集](https://leetcode-cn.com/problems/NUPfPr/) - 这道题和 [加减的目标值](https://leetcode.cn/problems/YaVDxD/) 解题思路一样。通过数学方法，转化从给定 list 中找到和为 target 的方案，变成 0 - 1 背包问题。
+  - [x] [加减的目标值](https://leetcode.cn/problems/YaVDxD/) - 可以转化为 0 - 1 背包问题。这个问题稍微有点不好理解，解决思路是先通过数学方案，确定解题思路是从给定 list 中找到和为 target 的方案。dp[i][j] 表示从前 i 个数中找到和为 j 的方案， dp[i][j] = dp[i - 1][j] + dp[i - 1][j - list[i]]。这个题要回来回顾 ！！
+  - [x] [最少的硬币数目](https://leetcode.cn/problems/gaM7Ch/) - 无限背包问题，dp[i] = Math.min(dp[i], dp[i - bag[j]] + 1);
+  - [x] [排列的数目](https://leetcode.cn/problems/D0F0SV/) - 无限背包问题，类似于最少的硬币数目问题， dp[i] = dp[i] + dp[i - bag[j]];
 
     背包问题的基本描述: 给定一组物品，每组物品都有其重量和价格，在限定的总重量内如何选择才能是物品的价格最高。
 
@@ -95,12 +95,12 @@
 
   
 - **股票问题**
-  - [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/)；
-  - [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
-  - [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
-  - [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
-  - [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
-  - [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+  - [x] [交易一次的股票问题](https://leetcode.cn/problems/gu-piao-de-zui-da-li-run-lcof/)；
+  - [x] [不限制交易次数的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+  - [x] [交易 2 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/);
+  - [x] [交易 k 次的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
+  - [x] [含冷冻期的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+  - [x] [含手续费的股票问题](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
 
     股票问题有三个状态：股票交易天数、交易次数、持有股票情况
 
@@ -130,10 +130,10 @@
 
 
 - **其他动态规划问题**
-  - [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
-  - [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
-  - [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
-  - [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
+  - [ ] [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
+  - [ ] [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
+  - [ ] [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
+  - [ ] [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
 
     一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
 
