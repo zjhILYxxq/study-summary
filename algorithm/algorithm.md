@@ -188,10 +188,10 @@ function backTrack(list, track) {
   - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/)
   - [x] [组合总和-1](https://leetcode.cn/problems/combination-sum/)
   - [x] [组合总和-2](https://leetcode.cn/problems/combination-sum-ii/)
-  - [ ] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/)
-  - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/)
-  - [ ] [子集-1](https://leetcode.cn/problems/subsets/)
-  - [ ] [子集-2](https://leetcode.cn/problems/subsets-ii/)
+  - [x] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/)
+  - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/) - 使用回溯会超时，这就要考虑使用动态规划了
+  - [x] [子集-1](https://leetcode.cn/problems/subsets/)
+  - [x] [子集-2](https://leetcode.cn/problems/subsets-ii/)
 
     在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
 
@@ -202,6 +202,8 @@ function backTrack(list, track) {
   - [分割回文子字符串](https://leetcode.cn/problems/M99OJA/)
   - [恢复 IP 地址](https://leetcode.cn/problems/0on3uN/)
 
+
+在使用回溯算法的时候，如果出现超时的情况，则要考虑使用动态规划算法了
 
 #### DFS + BFS
 
