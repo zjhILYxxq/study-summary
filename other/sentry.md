@@ -153,9 +153,35 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 
 - [ ] 性能监控
+
+- [ ] 异常监控
+
+    完善的异常监控，需要做哪些事情:
+    - 应用报错时，可以及时知晓，及时安排人员修复问题；
+    - 修复报错时，可以追踪到用户行为，帮助 bug 复现；
+    - 修复报错时，可以找到错误行列及其他详细信息，帮助快速定位异常源代码；
+    - 数据统计功能，分析错误数、错误率、影响用户数等关键指标；
+
+    常见的前端异常类型:
+    - 常见的 js 代码执行异常， 这类型的异常可以通过 window.onerror 或者 window.addEventListener('error', callback) 捕获；
+    - promise 类异常，这类型的异常可以通过 window.unhandledrejection 或者 window.addEventListener('handlerejection', callback) 捕获；
+    - 资源加载异常；
+    - 网络请求异常；
+    - 
+
+- [ ] 用户行为追踪
+
   
 
 - [ ] 微前端下异常处理 
+
+
+
+- [ ] 前端监控的架构设计
+
+    前端监控: 性能监控、用户行为监控、异常监控
+
+
 
 
 
