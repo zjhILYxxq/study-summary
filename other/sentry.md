@@ -134,7 +134,21 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
     XMLHttpRequest 实例的 open、send 方法重写有什么意义？？
 
+    Sentry 是如何处理这上面的几种类型的异常的？
+    - 可以用 try...catch... 捕获的异常(js 代码执行异常、dom 异常)；
+    - 网络请求异常
+    - 文件加载异常 
+
+
+    Sentry 上
+
+
+
 - [ ] 异常监控相关问题
+
+
+- [ ] 性能监控
+  
 
 - [ ] 微前端下异常处理 
 
