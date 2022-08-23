@@ -213,8 +213,8 @@ function backTrack(list, track) {
   - [x] [岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island/), 淹没岛屿时，要记录淹没的次数；
   - [x] [统计封闭岛屿的数量](https://leetcode.cn/problems/number-of-closed-islands/), 先淹没边缘，然后再用淹没岛屿的方法统一淹没岛屿的数量；
   - [x] [飞地的数量](https://leetcode.cn/problems/number-of-enclaves/), 先淹没边缘岛屿，然后再统计淹没剩余岛屿的次数；
-  - [ ] [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
-  - [ ] [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
+  - [x] [岛屿的周长](https://leetcode.cn/problems/island-perimeter/), 这个题是简单类型的题目，不需要淹没岛屿；
+  - [ ] [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)，解题的关键 - 记录遍历的顺序并序列化，然后比较序列化的字符串就可以了，也比较简单；
   - [ ] [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
   
 
