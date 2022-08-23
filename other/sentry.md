@@ -73,31 +73,7 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 #### 前端异常监控问题相关
 
-- [x] 常见的 js 异常类型
-
-    `Error`，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
-
-    `RangeError`: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
-
-    `ReferenceError`，引用错误。当一个不存在的对象被引用时发生的异常。
-
-    `SyntaxError`，语法错误。如变量以数字开头；花括号没有闭合等。
-
-    `TypeError`，类型错误。如把 number 当 str 使用。
-
-    `URIError`，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
-
-    `AggregateError`，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
-
-    `InternalError`， js 引擎内部的异常。
-
-    `EvalError`， 一个关于 eval 的异常，不会被 javascript 抛出。
-
-    能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
-
-    运行时错误，即代码执行的错误
-
-    资源加载错误
+- [ ]
 
 - [ ] Sentry 异常处理机制
 
@@ -165,11 +141,42 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
     常见的前端异常类型:
     - 常见的 js 代码执行异常， 这类型的异常可以通过 window.onerror 或者 window.addEventListener('error', callback) 捕获；
     - promise 类异常，这类型的异常可以通过 window.unhandledrejection 或者 window.addEventListener('handlerejection', callback) 捕获；
-    - 资源加载异常；
-    - 网络请求异常；
+    - 资源加载异常，这类型的异常可以通过 window.addEventListener('error', callback, true) 来捕获；
+    - 网络请求异常，对 xhr(分析 onerror、onload 的结果) 或者 fetch 做劫持，然后对返回的结果做判断；
+    - 跨域脚本异常，跨域的脚本只会报简单的 script error 异常，没有异常的详细信息，这个时候需要先在 script 添加 crossorigin="anonymous"，然后给响应信息添加 Access-Control-Allow-Origin: *；
+
+
+    常见的 js 异常类型:
+
+    - `Error`，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
+
+    - `RangeError`: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
+
+    - `ReferenceError`，引用错误。当一个不存在的对象被引用时发生的异常。
+
+    - `SyntaxError`，语法错误。如变量以数字开头；花括号没有闭合等。
+
+    - `TypeError`，类型错误。如把 number 当 str 使用。
+
+    - `URIError`，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
+
+    - `AggregateError`，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
+
+    - `InternalError`， js 引擎内部的异常。
+
+    - `EvalError`， 一个关于 eval 的异常，不会被 javascript 抛出。
+
+    能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
+
+
+
 
 
     如何过滤一个异常
+
+    如何追踪用户行为？
+
+    如何获取异常的详细信息，而不仅仅是调用栈信息？
 
     如何判断一个异常不需要重复上报(判断异常的类型、异常的值、异常的追踪栈是否相等：追踪栈的长度、每一层的信息是否完成相等)
 
