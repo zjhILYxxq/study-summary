@@ -211,8 +211,8 @@ function backTrack(list, track) {
   - [x] [岛屿的数量](https://leetcode.cn/problems/number-of-islands/), 找到小岛，然后使用 DFS 算法淹没它；
   - [x] [统计子岛屿](https://leetcode.cn/problems/count-sub-islands/), 对比 A、B， 将 B 中不是子岛屿的岛屿淹没掉，剩下的就是子岛屿了；
   - [x] [岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island/), 淹没岛屿时，要记录淹没的次数；
-  - [ ] [统计封闭岛屿的数量](https://leetcode.cn/problems/number-of-closed-islands/)
-  - [ ] [飞地的数量](https://leetcode.cn/problems/number-of-enclaves/)
+  - [x] [统计封闭岛屿的数量](https://leetcode.cn/problems/number-of-closed-islands/), 先淹没边缘，然后再用淹没岛屿的方法统一淹没岛屿的数量；
+  - [x] [飞地的数量](https://leetcode.cn/problems/number-of-enclaves/), 先淹没边缘岛屿，然后再统计淹没剩余岛屿的次数；
   - [ ] [岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
   - [ ] [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)
   - [ ] [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)

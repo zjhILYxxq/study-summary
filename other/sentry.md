@@ -130,55 +130,72 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 - [ ] 性能监控
 
+
+
 - [ ] 异常监控
 
-    完善的异常监控，需要做哪些事情:
-    - 应用报错时，可以及时知晓，及时安排人员修复问题，这就需要做到异常推送；
-    - 修复报错时，可以追踪到用户行为，帮助 bug 复现，这一点对应 Sentry 里面的 breadcrumb；
-    - 修复报错时，可以找到错误行列及其他详细信息，帮助快速定位异常源代码；
-    - 数据统计功能，分析错误数、错误率、影响用户数、异常处理等关键指标，这就需要做到可视化异常统计、异常处理统计；
+    1. 完善的异常监控，需要做哪些事情:
+       - 应用报错时，可以及时知晓，及时安排人员修复问题，这就需要做到异常推送；
+       - 修复报错时，可以追踪到用户行为，帮助 bug 复现，这一点对应 Sentry 里面的 breadcrumb；
+       - 修复报错时，可以找到错误行列及其他详细信息，帮助快速定位异常源代码；
+       - 数据统计功能，分析错误数、错误率、影响用户数、异常处理等关键指标，这就需要做到可视化异常统计、异常处理统计；
 
-    常见的前端异常类型:
-    - 常见的 js 代码执行异常， 这类型的异常可以通过 window.onerror 或者 window.addEventListener('error', callback) 捕获；
-    - promise 类异常，这类型的异常可以通过 window.unhandledrejection 或者 window.addEventListener('handlerejection', callback) 捕获；
-    - 资源加载异常，这类型的异常可以通过 window.addEventListener('error', callback, true) 来捕获；
-    - 网络请求异常，对 xhr(分析 onerror、onload 的结果) 或者 fetch 做劫持，然后对返回的结果做判断；
-    - 跨域脚本异常，跨域的脚本只会报简单的 script error 异常，没有异常的详细信息，这个时候需要先在 script 添加 crossorigin="anonymous"，然后给响应信息添加 Access-Control-Allow-Origin: *；
-
-
-    常见的 js 异常类型:
-
-    - `Error`，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
-
-    - `RangeError`: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
-
-    - `ReferenceError`，引用错误。当一个不存在的对象被引用时发生的异常。
-
-    - `SyntaxError`，语法错误。如变量以数字开头；花括号没有闭合等。
-
-    - `TypeError`，类型错误。如把 number 当 str 使用。
-
-    - `URIError`，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
-
-    - `AggregateError`，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
-
-    - `InternalError`， js 引擎内部的异常。
-
-    - `EvalError`， 一个关于 eval 的异常，不会被 javascript 抛出。
-
-    能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
+    2. 常见的前端异常类型:
+       - 常见的 `js` 代码执行异常， 这类型的异常可以通过 `window.onerror` 或者 `window.addEventListener('error', callback)` 捕获；
+       - `promise` 类异常，这类型的异常可以通过 `window.unhandledrejection` 或者 `window.addEventListener('handlerejection', callback)` 捕获；
+       - 资源加载异常，这类型的异常可以通过 `window.addEventListener('error', callback, true`) 来捕获；
+       - 网络请求异常，对 `xhr` (分析 `onerror`、`onload` 的结果) 或者 `fetch` 做劫持，然后对返回的结果做判断；
+       - 跨域脚本异常，跨域的脚本只会报简单的 `script error` 异常，没有异常的详细信息，这个时候需要先在 script 添加 crossorigin="anonymous"，然后给响应信息添加 Access-Control-Allow-Origin: *；
 
 
+    3. 常见的 `js` 异常类型:
+
+       - `Error`，最基本的错误类型，其他的错误类型都继承自该类型。通过 Error，我们可以自定义 Error 类型。
+
+       - `RangeError`: 范围错误。当出现堆栈溢出(递归没有终止条件)、数值超出范围(new Array 传入负数或者一个特别大的整数)情况时会抛出这个异常
+
+       - `ReferenceError`，引用错误。当一个不存在的对象被引用时发生的异常。
+
+       - `SyntaxError`，语法错误。如变量以数字开头；花括号没有闭合等。
+
+       - `TypeError`，类型错误。如把 number 当 str 使用。
+
+       - `URIError`，向全局 URI 处理函数传递一个不合法的 URI 时，就会抛出这个异常。如使用 decodeURI('%')、decodeURIComponent('%')。
+
+       - `AggregateError`，把多个错误包装为一个错误，如果 Promise.any([...]).cath(error => console.log(error.errors))。
+
+       - `InternalError`， js 引擎内部的异常。
+
+       - `EvalError`， 一个关于 eval 的异常，不会被 javascript 抛出。
+
+        能捕捉到的异常，必须是线程执行已经进入 `try catch` 但 `try catch` 未执行完的时候抛出来的。
+
+
+    4. 如何给特殊异常打标记？比如说我想区分 setTimeout 和 requestAnimationFrame 的 callback 中发生的异常，或者我想区分接口回调和事件回调中发生的异常？
+
+        js 代码执行的异常，我们可以通过 window.onerror 或者 window.addEventListener('error', callback) 来捕获异常，查看异常的追踪栈信息。
+
+        这其实也够用了，但是如果我们想拿到一些更准确的信息，比如是在 setTimeout 中出现异常、事件中出现异常，还是接口中出现异常，这是我们可以对 setTimeout、setInterval、requestAnimationFrame、requestIdleCallback、Node 的 addEventListener 原型方法进行覆写，对 callback 使用 try...catch... 包装，给特殊类型的异常打标记。
+
+
+    5. 如何获取异常发生时的用户行为？
+
+        常见的用户行为: 页面跳转、鼠标点击行为、键盘 press 行为、fetch / xhr 请求的 url、console 打印的信息等。
+
+        收集异常发生时的用户行为，主要是为了重现问题。
+    
+        为了记录这些行为，我们可以对 history、console 的 api、fetch、 XMLHttpRequest 原型链上的 open / send 方法、Node 原型链上 addEventListener 方法覆写，拦截相关操作，拿到路由跳转信息、点击/press 事件发生的 dom 节点、 请求的 url、console 打印的信息等。
+
+        然后把这些行为和捕获到的异常一起上报，根据异常追踪栈信息和用户行为，就可以定位问题并重现问题。
+
+
+    6.如何判断一个不需要重复上报的异常？
+
+        判断异常的类型、异常的值、异常的追踪栈是否相等：追踪栈的长度、每一层的信息是否完成相等
 
 
 
-    如何过滤一个异常
-
-    如何追踪用户行为？
-
-    如何获取异常的详细信息，而不仅仅是调用栈信息？
-
-    如何判断一个异常不需要重复上报(判断异常的类型、异常的值、异常的追踪栈是否相等：追踪栈的长度、每一层的信息是否完成相等)
+    1. 如何过滤一个异常？
 
 
 
