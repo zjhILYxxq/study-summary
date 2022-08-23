@@ -216,6 +216,61 @@ function backTrack(list, track) {
   - [x] [岛屿的周长](https://leetcode.cn/problems/island-perimeter/), 这个题是简单类型的题目，不需要淹没岛屿；
   - [ ] [计算不同岛屿的数量](https://leetcode.cn/problems/number-of-distinct-islands/)，解题的关键 - 记录遍历的顺序并序列化，然后比较序列化的字符串就可以了，也比较简单；
   - [ ] [使陆地分离的最小天数](https://leetcode.cn/problems/minimum-number-of-days-to-disconnect-island/)
+
+
+
+
+#### n 数之和问题
+- [x] [两数之和](https://leetcode.cn/problems/two-sum/) - 两数之和比较简单，一种解法是两层循环暴力求解；另一种解法是两次循环，第一次循环记录 target - nums[i] 和 i，然后在第二次循环中找 nums 中是否存在 target-nums[i];
+- [x] [三数之和](https://leetcode.cn/problems/3sum/) - 三数之和，关键之处有三点： 排序 + 双层循环 + 去除重复组合
+- [x] [四数之和](https://leetcode.cn/problems/4sum/) - 四叔之和，和三数之和一样，关键之处也是三点: 排序 + 三层循环 + 去除重复组合
+
+```
+function threeSum(nums) {
+    let result = [];
+    if (!nums || !nums.length || nums.length < 3) return result;
+    let start = 0, end = nums.length - 1;
+    if (nums[start] <= 0 && nums[end] >= 0) {
+        while(start < end) {
+            let a = nums[start], j = start + 1, k = end;
+            while( j < k) {
+                let b = nums[j], c = nums[k];
+                let res = a + b + c;
+                if (res === 0) result.push([a, b, c]);
+                if (res <= 0) {
+                    while(nums[j] === b && j++ < k) {}
+                }
+                if (res >= 0) {
+                    while(nums[k] === c && j < k--) {}
+                }
+            }
+            while(nums[start] === a && start++ < end) {}
+
+        }
+    }
+    return result;
+}
+```
+
+
+#### 二叉树问题
+
+
+
+#### 链表问题
+
+
+#### 查找问题
+
+
+#### 数组、字符串问题
+
+- **左右指针**
+
+- **滑动窗口** 
+
+
+#### 排序问题
   
 
 
@@ -304,41 +359,6 @@ function backTrack(list, track) {
 
 
 
-#### n 数之和问题
-
-**n 数之和**问题的关键: **先排序**。
-
-- **二数之和问题**: 先**排序**，然后使用**左右指针**，找到满足条件的两个数字；
-- **三数之和问题**: 先**排序**，然后确定一个数，再使用二数之后的求解过程，找到满足条件的三个数字；
-
-    ```
-    function threeSum(nums) {
-        let result = [];
-        if (!nums || !nums.length || nums.length < 3) return result;
-        let start = 0, end = nums.length - 1;
-        if (nums[start] <= 0 && nums[end] >= 0) {
-            while(start < end) {
-                let a = nums[start], j = start + 1, k = end;
-                while( j < k) {
-                    let b = nums[j], c = nums[k];
-                    let res = a + b + c;
-                    if (res === 0) result.push([a, b, c]);
-                    if (res <= 0) {
-                        while(nums[j] === b && j++ < k) {}
-                    }
-                    if (res >= 0) {
-                        while(nums[k] === c && j < k--) {}
-                    }
-                }
-                while(nums[start] === a && start++ < end) {}
-
-            }
-        }
-        return result;
-    }
-    ```
-
-- **四数之和问题**: 先**排序**， 先确定一个数，然后在使用三数之和的方法，求解满足题意的四个数。
 
 
 
