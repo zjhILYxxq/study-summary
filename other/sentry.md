@@ -219,19 +219,54 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
         `Web Vitals` 需要统计的三个指标: `LCP`、`CLS`、`FID`
 
+    3. 首屏性能指标的优化方式
+
+        `FP`, 优化方式: 优化服务器响应速度(SSG、index.html 静态页面)、script 脚本放在 body 底部、
+
+        `FCP`, 优化方式就是**消除渲染阻塞资源**，优化手段有 SSR(最好是 SSG)、资源 preload、通过合理的分包配置减小入口文件的体积、利用缓存、script 脚本放在 body 底部；
+
+        `LCP`, 优化方式就是: SSR、资源 preload、利用缓存；
+
+        `TTI`, 优化方式: 资源预加载(缓存)、web worker、缩小 js、 减少 js 执行时间、减少初始请求；
+
+        `TBT`, 优化方式: web worker、减少 js 执行时间、减少初始请求；
+
+
+        总结: 
+        - **让用户尽早看到页面** - FP、FCP、LCP，资源预加载、SSR、script 脚本放在 body 底部；
+        - **让用户尽早可以操作页面** - 减少 js 执行时间、减少初始请求、web worker 等；
+
+    4. DomContentLoaded 和 loaded
+
+        `domLoading`, dom 树开始解析， 解析到一半的 dom 树也会渲染；
+
+        `domInteractive`, 整个 dom 树解析完成， 所有的 js 脚本全部执行完毕。
+
+        `DomContentLoaded`, dom 树解析完成就可以触发 `DomContentLoaded` 事件
+
+        `domComplete`, dom 树解析完成，资源请求完毕。
+
+        `onload`, dom 树解析完成，资源请求完毕即可触发 `onload` 事件。
+
+        `async 异步脚本` 没有顺序，加载完毕之后会立即执行，且会阻塞 dom 树的解析。
+
+        `defer 异步脚本` 有顺序，不会阻塞 dom 树的解析。
 
 
 
 
-    3. 采样率是一个什么东东 
+
+
+
+    4. 采样率是一个什么东东 
 
         大概理解了
     
-    4. heart beat 心跳是一个什么东东 ？？ 
+    5. heart beat 心跳是一个什么东东 ？？ 
     
-    5. 性能监控中的 p100、p99、p95、p75、p50 是啥东西？？ 
+    6. 性能监控中的 p100、p99、p95、p75、p50 是啥东西？？ 
     
-    6. 性能监控，要监控哪些
+    7. 性能监控，要监控哪些
 
         首屏：统计首屏指标 + 接口
 
