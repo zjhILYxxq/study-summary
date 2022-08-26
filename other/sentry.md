@@ -130,23 +130,85 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 - [ ] 性能监控
 
-    1. 采样率是一个什么东东 
+    1. `Performance API` 的使用
+
+        `Performance` 接口可以获取到当前页面中与性能相关的信息。该类型的对象可以通过 `window.performance` 来获得。
+
+        常用的 `API`：
+
+        - `performance.navigation`
+
+            `performance.navigation` 提供了与页面导航操作相关的信息，包括页面是加载还是刷新、发生了多少次重定向。
+
+            即通过 `performance.navigation.type`, 就可以知道触发页面加载的动作：
+            - `0`，点击链接、直接输入 url、脚本操作(直接操作 href) 等；
+            - `1`，点击刷新按钮、Location.reload()'
+            - `2`，通过 history 访问；
+            - `255`， 其他方式；
+
+            此外，通过 `performance.navigation.redirectCount` 还可以知道到达这个页面之间重定向了多少次。
+
+
+        - `performance.timing`
+
+
+        - `performance.getEntries()`
+
+            通过 `performance.getEntries()`，可以获取 web 页面整个生命周期中各个操作的开始时间和耗时时间，包括服务端响应时间、FP 时间、资源请求时间、接口请求时间。
+
+            常见的操作类型如下:
+            - `navigation`，导航类型, 通过 `navigation` 可以获取如下时间:
+            - `unloadEventStart` - 前一个页面卸载事件开始的时间；
+            - `unloadEventEnd` - 前一个页面卸载事件结束的时间；
+            - `fetchStart` - 浏览器准备好使用 http 抓取文档的时间，发生在检查本地缓存之前；
+            - `domainLookupStart` - DNS 域名查询开始的时间；
+            - `domainLookupEnd` - DNS 域名查询完成的时间；
+            - `connectStart` - TCP 开始建立的时间；
+            - `connectEnd` - TCP 完成建立的时间；
+            - `requestStart` - html 页面开始请求的时间；
+            - `responseStart` - html 页面响应的开始时间；
+            - `responseEnd` - html 页面响应的结束时间；
+            - `domLoading` - 开始解析 dom 树的时间；
+            - `domInteractive` - dom 树解析完成的时间，此时可以操作 dom 树；
+            - `domContentLoadedEventStart` - DomContentLoaded 事件开始时间；
+            - `domContentLoadedEventEnd` - DomContentLoaded 事件结束时间；
+            - `domComplete` - dom 树解析完成，所有的资源也准备就绪；
+            - `loadEventStart` - loaded 事件开始时间；
+            - `loadEventEnd` - loaded 事件结束时间；
+            - `type`, 导航类型， 值为 navigate、reload、back_forward、prerender 等；
+            - `resource`, 资源类型，包括接口请求、静态资源获取、DNS 域名解析等，可获取开始时间、耗时时间、请求资源大小等；
+            - `paint`, 渲染类型, 包括 FP、FCP、LCP 等。
+            - `longtask` - 长任务类型， 可以获取长任务(超过 50 ms) 的开始时间、耗时时间；
+            - 
+
+            通过 `performance.getEntriesByType()`、`performance.getEntriesByName()` 可以获取指定类型的 `PerformanceEntry`。
+        
+        
+        - `performance.now()`
+
+            用于计算从浏览器开始导航到当前调用经过的时间，是一个相对时间。
+
+            和 `Date.now()` 的对比：
+            - 精度高，可到微妙；
+            - 相对时间，不受本地时钟影响；
+
+    2. 
+
+
+
+    2. 采样率是一个什么东东 
 
         大概理解了
     
-    2. heart beat 心跳是一个什么东东 ？？ 
+    3. heart beat 心跳是一个什么东东 ？？ 
     
-    3. 性能监控中的 p100、p99、p95、p75、p50 是啥东西？？ 
+    4. 性能监控中的 p100、p99、p95、p75、p50 是啥东西？？ 
     
-    4. 性能监控，要监控哪些
+    5. 性能监控，要监控哪些
 
         首屏：统计首屏指标 + 接口
 
-        每次页面跳转: 只统计接口 ？？
-
-        静态资源获取
-
-        接口响应
+        每次页面跳转: 资源加载 + 接口
 
 
 
