@@ -355,7 +355,7 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
         然后把这些行为和捕获到的异常一起上报，根据异常追踪栈信息和用户行为，就可以定位问题并重现问题。
 
 
-    6.如何判断一个不需要重复上报的异常？
+    6. 如何判断一个不需要重复上报的异常？
 
         判断异常的类型、异常的值、异常的追踪栈是否相等：追踪栈的长度、每一层的信息是否完成相等
 
@@ -369,7 +369,75 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
   
 
-- [ ] 微前端下异常处理 
+- [x] 微前端下异常处理 
+
+    微前端下异常上报存在的问题: 由于同一个页面可能会存在一个或者多个应用，导致出现异常出现的应用和上报的应用不匹配的情况。
+
+    解决思路: 主应用设置一个拦截器，拦截异常上报接口，根据异常的堆栈信息判断异常属于哪个应用，然后重组接口参数，将异常上报到正确的应用。
+
+    Sentry 异常上报最后一步是通过 fetch 实现的，内部实现了一个 fetchTransport。
+
+    而我们的解决方法就是覆写这个 fetchTransport，重新实现它。
+
+    解决方案:
+    - 6.x 版本
+
+        在执行 init 方法的时候，传入一个自定义的 transport。
+
+        这个 transport 继承自 FetchTransport。
+
+        在 transport，我们可以对异常重新分析，看它属于哪个应用。
+
+        ```
+        const { FetchTransport } = Transports;
+
+        const fetchImpl = (url, options) => {
+            console.log(url, options);
+            const [newUrl, newOptions] = sentryFilter(url, options);
+            console.log('newUrl', newUrl, 'newOptions', newOptions);
+            return window.fetch(newUrl, newOptions);
+        };
+
+        class MyFetchTransport extends FetchTransport {
+            constructor(options) {
+                super(options, fetchImpl);
+            }
+        }
+        // @ts-ignore
+        init({
+            // byai-console 对应的 dsn
+            dsn: 'https://525053cc037e42bcb981670e97a0a821@sentry.byai.com/52',
+            enabled: true,
+            environment: feConfig.API_ENV || 'local',
+            transport: MyFetchTransport,
+        });
+        ```
+
+    - 7.x 版本
+
+        基于 Sentry 提供的 makeFetchTransport, 自定义一个 transport
+
+        ```
+            const myCustomeTransport = (options: BrowserTransportOptions) => {
+                const fetchImpl = (url, options) => {
+                    console.log('oldUrl', url, options);
+                    const [newUrl, newOptions] = sentryFilter(url, options);
+                    console.log('newUrl', newUrl, 'newOptions', newOptions);
+                    return window.fetch(newUrl, newOptions);
+                };
+                return makeFetchTransport(options, fetchImpl);
+            };
+
+            // @ts-ignore
+            init({
+                // byai-console 对应的 dsn
+                dsn: 'https://525053cc037e42bcb981670e97a0a821@sentry.byai.com/52',
+                enabled: true,
+                environment: feConfig.API_ENV || 'local',
+                transport: myCustomeTransport,
+            });
+
+        ```
 
 
 
