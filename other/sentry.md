@@ -73,60 +73,6 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 #### 前端异常监控问题相关
 
-- [ ]
-
-- [ ] Sentry 异常处理机制
-
-    Error： js 代码执行发生异常
-    
-    DOMException， dom 节点操作发生异常(js 代码可以正常执行，但是 dom 树发生异常)
-
-    资源加载异常 - 资源加载异常比较特殊，需要借助 window.addEventListener('error', callback, ture), 在捕获阶段才可以拿到。资源加载异常，需要手动上报 ？？
-
-    promise 异常
-    
-    ErrorEvent, window 的 error 事件触发时，传入的 target
-
-    PromiseRejectionEvent, window 的 unhandledrejection 事件触发时，传入的 target
-
-    如何判断 window.fetch 方法没有进行包装过 ？
-
-    ```
-        /^function fetch\(\)\s+\{\s+\[native code\]\s+\}$/.test(func.toString());
-    ```
-
-    如何判断当前环境是否支持 fetch ？？ Sentry 里面的实现还蛮巧妙的
-
-    Sentry 是如何覆写原生的 console、fetch、XMLHttpRequest、history、dom 节点的 addEventListeners 方法、onerror、unhandledrejection 方法的 ？
-
-
-    js 代码执行异常  try...catch 捕获
-
-    资源加载异常 window.addEventListener('error', callback, true) 捕获
-
-    dom 操作异常 这块儿 Sentry 是怎么处理的？
-
-    网络请求异常 这一块儿 Sentry 是怎么处理的？ 
-
-    XMLHttpRequest 实例的 open、send 方法重写有什么意义？？
-
-    Sentry 是如何处理这上面的几种类型的异常的？
-    - 可以用 try...catch... 捕获的异常(js 代码执行异常、dom 异常)；
-    - 网络请求异常:
-    - 文件加载异常: 
-
-
-
-
-    
-    Sentry 中的异常上报，不管是开发人员手动上报，还是自动上报，最终是要通过 hub 实例的 captureException 统一处理(经过 client 实例、backend 实例、transport 实例)，最后通过 fetch 或者 xhr 实例，发起 http 请求上报给 Sentry sever 端。
-
-
-
-
-
-- [ ] 异常监控相关问题
-
 
 - [x] 性能监控
 
@@ -365,7 +311,23 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 
 
-- [ ] 用户行为追踪
+- [x] 用户行为追踪
+
+    常见的用户行为追踪:
+    - PV/UV;
+    - 用户的基本信息；
+    - 用户行为记录(点击操作、路由切换操作、接口请求情况等)；
+    - 页面停留时间;
+
+    PV: 每个页面都有一个 PV 接口，由后端根据接口的调用数量来统计 PV。
+
+    UV: 由后端来统计。
+
+    用户的基本信息：将用户浏览器信息、用户 id 等信息通过接口上报。
+
+    用户行为记录: 对路由切换、点击、接口请求做拦截，收集用户行为。
+
+    页面停留时间: 拦截路由 pushState、replaceState、onpopstate 方法，收集页面停留时间。
 
   
 
@@ -441,9 +403,17 @@ qiankun 运行js时， 会把 script 的 src 作为 sourceurl 添加到尾行
 
 
 
-- [ ] 前端监控的架构设计
+- [ ] 异常监控的架构设计
 
-    前端监控: 性能监控、用户行为监控、异常监控
+    一个完善的异常监控需要: 搜集上报端(前端 SDK)、采集聚合端(后台服务)、可视化分析端、监控告警端 ？？
+
+    收集上报端: 异常捕获、异常上报；
+
+    采集聚合端: 错误表示、错误过滤、错误存储；
+
+    可视化分析
+
+    监控告警: 企业微信、飞书
 
 
 
