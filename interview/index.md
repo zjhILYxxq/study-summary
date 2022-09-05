@@ -5,6 +5,8 @@
 - 项目亮点介绍
 
   - [ ] SaaS 项目的一系列优化点
+
+    
   
   - [x] Sentry 前端监控
   
@@ -23,7 +25,13 @@
     Sentry 异常监控、性能监控的原理 !!
 
   
-  - [ ] Vite 接入
+  - [x] Vite 接入
+
+    对已有项目进行改造，开发模式采用支持 Vite、Webpack, 生产环境还是使用 Webpack。
+
+    在改造过程中，总结遇到的问题，修复并抽象为插件： UrlResolvePlugin、LazyLoadPrefetchPlugin。
+
+    提炼了了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
   - [ ] 微前端
