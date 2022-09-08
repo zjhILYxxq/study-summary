@@ -149,15 +149,15 @@
     提炼了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
-  - [ ] 微前端
-  - [ ] react
-  - [ ] 构建工具 Webpack、Vite、Rollup、Esbuild
-  - [ ] ssr
-  - [ ] typescript
-  - [ ] 前端监控
-  - [ ] 基础知识
-
-  - [ ] lerna、webrtc、前端工程化、k8s、docker、CI/CD 等
+  - [x] [微前端](../micro%20frontend/micro-frontend.md)
+  - [x] [react](../react/react-study.md)
+  - [x] [构建工具](../build%20tools/readme.md)
+  - [x] [ssr](../react-ssr/react-ssr.md)
+  - [x] [ts](../ts/ts-study.md)
+  - [x] [前端监控](../other/sentry.md)
+  - [x] [基础知识]()
+  - [x] [lerna](../lerna/lerna.md)
+  - [x] [其他]()
   
 - 算法
   - [ ] 动态规划
