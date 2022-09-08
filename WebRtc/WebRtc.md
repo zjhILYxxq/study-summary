@@ -67,9 +67,6 @@
 **轨道**，**MediaStreamTrack** 是 **WebRTC** 中的**基本媒体单元**。**MediaStramTrack** 在 **User Agent** 中表示一段媒体源，比如音轨或者视频。
 
 
-
-
-
 #### MediaDevices API - 媒体设备
 
 - **navigator.mediaDevices.enumerateDevices**： 返回一个可用的**媒体输入/输出设备**的列表

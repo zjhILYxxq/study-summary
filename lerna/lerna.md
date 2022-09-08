@@ -18,7 +18,6 @@
 
     lerna init --exact   // 什么意思？？
 
-
     ``` 
 
     lerna init 命令的处理过程:
@@ -103,6 +102,7 @@
     lerna publish from-git  // 发布当前 commit 中打上 annoted tag version 的包
 
     lerna publish from-packges  // 发布 package 中 pkg.json 上的 version 在 registry(高于 latest version)不存在的包
+    
     ```
 
 - 执行每个 packages 包的 script 脚本
