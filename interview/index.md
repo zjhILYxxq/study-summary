@@ -120,7 +120,7 @@
 
     在改造过程中，总结遇到的问题，修复并抽象为插件： UrlResolvePlugin、LazyLoadPrefetchPlugin。
 
-    提炼了了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
+    提炼了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
   - [ ] 微前端
