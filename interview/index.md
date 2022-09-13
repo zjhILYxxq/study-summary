@@ -149,6 +149,69 @@
     提炼了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
+  - [ ] 微前端技术的理解
+
+
+  - [ ] 构建工具的理解
+
+    1. 谈谈你对常用构建工具的理解 ？
+
+      目前，比较流行的构建工具有 webpack、vite、rollup、esbuild、parcel。
+
+      这些构建工具，根据是否会将源文件打包成一个 bundle，分为 bundle 类型构建工具和 unbundle 类型的构建工具。
+
+      bundle 类型构建工具，典型的有 webpack、rollup、parsel、esbuild；unbundle 类型的构建工具，典型的为 Vite。
+
+      不过 Vite 当前也只是开发模式下采用 unbundle 模式，生产模式下依旧推荐使用 bundle 模式(2.x 版本会借助 rollup 进行打包，3.x 版本可以使用 esbuild 进行打包，保证了开发环境和生产环境的统一)。
+
+      bundle 模式，最显著的特点就是需要在打包构建时分析源文件的依赖关系，构建一个模块依赖图，然后根据一定的策略将这个模块依赖图分解为多个 chunk，多个 chunk 之间存在依赖关系。通用的分包策略: initial chunk、async chunks、common chunks。在打包构建的过程中，构建模块依赖图和分离 chunk 是耗时大户，涉及到 url 解析、loader 转换源文件、通过 acron 解析源文件来分析依赖关系等，导致项目规模越大，打包耗时越久。
+
+      针对 bundle 类型构建工具打包构建耗时较久的优化，主要有:
+      - 缩小打包构建的范围；
+      - 缓存；
+      - 使用更高效的语言；
+      - 多线程；
+      
+      其中，像 webpack5的持久化缓存，webpack4 中 loader 的 cache 配置，都是基于缓存策略实现的
+
+      而 unbundle 模式，最显著的特点是借助了浏览器对 esm 规范的支持，源文件的依赖关系由浏览器解析，不需要构建工具去处理，因此也就
+
+
+
+    2. 谈谈你对 Webpack 配置项的理解 ？
+    
+    3. webpack 的工作原理是怎么样的 ？
+
+    4. 谈谈你对 webpack 的 loader、plugin 的理解 ?
+    
+    5. 谈谈你对 webpack5 的 module federation 的理解 ?
+    
+    6. 谈谈你对 source-map 的理解?  
+    
+    7. 谈谈你对 module hot replace 的理解 ? 
+    
+    8. 谈谈你对 webpack5 的持久化缓存的理解？
+    
+    9.  谈谈你对 hash 的理解？
+    
+    10. 谈谈你对 tree shaking 的理解 ？
+    
+    11. 谈谈你知道的 webpack 的常用优化策略 ？
+    
+    12. 谈谈你知道的 webpack 打包构建分析工具 ？
+    
+    13. 谈谈你对 babel 的理解 ？
+    
+    14. 谈谈你对 AST 的理解 ？ 
+
+
+  - [ ] react 及相关依赖技术栈的理解
+  - [ ] 前端监控技术的理解
+  - [ ] csr、ssr 渲染技术的理解
+  - [ ] ts 技术的理解
+  - [ ] lerna 技术的理解
+
+- 前端知识
   - [x] [微前端](../micro%20frontend/micro-frontend.md)
   - [x] [react](../react/react-study.md)
   - [x] [构建工具](../build%20tools/readme.md)
