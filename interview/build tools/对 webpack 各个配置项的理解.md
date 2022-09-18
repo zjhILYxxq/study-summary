@@ -62,13 +62,13 @@ func2();
 
 <h4>resolve</h4>
 
-`resolve`，配置源文件、`npm` 包如何被解析，得到绝对路径。
+`resolve`，配置源文件、第三方依赖包如何被解析，得到文件的绝对路径。
 
 在日常开发中，用的比较多的配置项为 `resolve.alias` 别名配置和 `resolve.extensions` 扩展配置。
 
 源文件的路径解析是构建模块依赖图最初始的环节。拿不到源文件的决定路径，就无法读取源文件、对源文件做 `transform`、解析源文件、分析依赖关系等。`resolve` 失败了，打包构建就立即会终止。
 
-默认情况下，`webpack` 会自动解析相对路径和第三方依赖路径。但如果我们在项目中使用了别名，`webpack` 就需要借助 `resolve.alias` 配置项来解析路径了。另外，如果源文件 `url` 没有携带后缀，`webpack` 默认会使用 `.wasm`、`.mjs`、`.js`、`.json`, 如果这些默认的后缀都匹配，如 `.tsx`，那么打包构建会报错。
+默认情况下，`Webpack` 会自动解析相对路径和第三方依赖路径。但如果我们在项目中使用了别名，`Webpack` 就需要借助 `resolve.alias` 配置项来解析路径了。另外，如果源文件 `url` 没有携带后缀，`webpack` 默认会使用 `.wasm`、`.mjs`、`.js`、`.json`, 如果这些默认的后缀都匹配，如 `.tsx`，那么打包构建会报错。
 
 <h4>module</h4>
 
@@ -80,7 +80,7 @@ func2();
 
 `loader` 本质上是一个函数，它的入参是代码字符串，返回的结果也是一个代码字符串。
 
-`webpack` 完成源文件绝对路径的解析以后，会根据解析出来的绝对路径去读取源文件的内容，然后作为入参传递给 `loader` 函数。`loader` 处理完以后会返回新的代码字符串，传递给下一个 `loader` 函数或者 `parser` 解析器。`loader` 转换，是 `Webpack` 打包构建时间久的原因之一。
+`Webpack` 完成源文件绝对路径的解析以后，会根据解析出来的绝对路径去读取源文件的内容，然后作为入参传递给 `loader` 函数。`loader` 处理完以后会返回新的代码字符串，传递给下一个 `loader` 函数或者 `parser` 解析器。`loader` 转换，是 `Webpack` 打包构建时间久的原因之一。
 
 当 `parser` 收到 `loader` 转换以后的内容以后，会将内容转换为一个 `AST` 对象，分析并收集源文件的依赖，然后对收集到的依赖继续做路径解析、内容读取、内容转换、依赖解析。这一套流程会一直持续到涉及的所有源文件都解析完成，构建出一个模块依赖图。
 
@@ -100,7 +100,7 @@ func2();
 
 <h5>tree shaking</h5>
 
-在正式拆分模块依赖图前，`Webpack` 会先对模块依赖图做预处理。预处理主要做一件事情 - `tree shaking`, 将模块依赖图中没有用到的模块、模块中没有用到的 `deadcode` 移除掉。有一个前提哈，模块源代码要符合 `ESM` 规范。
+在正式拆分模块依赖图前，`Webpack` 会先对模块依赖图做预处理。预处理主要做一件事情 - `tree shaking`, 将模块依赖图中没有用到的模块、模块中没有用到的 `deadcode` 移除掉。不过有一个前提哈，模块源代码要符合 `ESM` 规范。
 
 做 `tree shaking`，要用到 `optimization` 中的 `minimize`(是否压缩 bundle 代码)、`usedExports`(是否标记模块中被使用的 exports)、`sideEffects`(是否可以将未使用的模块移除)这 `3` 个配置项。
 
@@ -127,10 +127,10 @@ func2();
 
 需要动态加载的模块，遇到就会单独的为它构建一个新的 `async chunk`。以动态加载模块开始，沿着静态依赖能遍历到所有未分配的模块，都会分配到对应的 `async chunk` 中。
 
-在分离 `async chunks` 时有一个限制条件 - `optimization.splitchunks.maxAsyncRequests`, 异步
+由于这一步是 `Webpack` 的默认操作，`optimization` 没有提供什么配置项。
 
 
-<h5>二次分离 - common chunks、runtime chunk、custome chunk </h5>
+<h5>二次分离 - common chunks、runtime chunk、custome chunks </h5>
 
 分离好 `initial chunk` 和 `async chunks` 以后，`Webpack` 还提供了自定义分包策略，让开发人员根据实际需要进行分包, 对应的是 `optimization.splitChunks` 配置项。
 
@@ -138,9 +138,9 @@ func2();
 
 `common chunks`，通用模块组成的 `chunk`。在拆分模块依赖图的过程中，如果一个模块被多个 `chunk` 使用，那么这个模块就会被单独的分离为一个 `common chunk`。这一项对应的配置项是 `optimization.splitChunks.minChunks`。`miniChunks`，指定模块被共享的次数，如果一个模块被共享的次数 `>= miniChunks`, 那么该模块就会被分离成一个单独的 `common chunk`。 `miniChunks` 默认值为 `1`， 共享一次，意味着只要一个模块同时存在于两个 `chunk` 中，那么这个模块就会被分离。这个配置项实际用于多页面打包，单页面打包没有任何用处。因为单页面打包，一个模块永远只属于一个 `chunk`，只有多页面打包才会出现一个模块被多个 `chunk` 公用的情况。
 
-`runtime chunk`，运行时 `chunk`, 里面包含 `Webpack` 的自定义模块加载机制，对应的配置项为 `optimization.runtimeChunk`, 默认为 `false`。默认情况下，Webpack 的自定义模块加载机制是包含在 initial chunk 中的。如果配置 optimization.runtimeChunk 为 ture，那么这一套逻辑就会单独分离为一个 `runtime chunk`。
+`runtime chunk`，运行时 `chunk`, 里面包含 `Webpack` 的自定义模块加载机制，对应的配置项为 `optimization.runtimeChunk`, 默认为 `false`。默认情况下，`Webpack` 的自定义模块加载机制是包含在 `initial chunk` 中的。如果配置 `optimization.runtimeChunk` 为 `ture`，那么这一套逻辑就会被单独分离为一个 `runtime chunk`。
 
-`custome chunks`，用户自定义 `chunks`, 即开发人员自己配置分离的 chunks，对应的配置项为 `optimization.splitchunks.cacheGroups`。通过这个配置项，开发人员可以自定义分包策略，如把第三方依赖分离为 `vendors`。
+`custome chunks`，用户自定义 `chunks`, 即开发人员自己配置分离的 `chunks`，对应的配置项为 `optimization.splitchunks.cacheGroups`。通过这个配置项，开发人员可以自定义分包策略，如把第三方依赖分离为 `vendors`。
 
 在分离 `common chunks` 和 `customer chunks` 时，Webpack 规定了一些限制条件。如果不满足这些限制条件，分包就会失败。
 
@@ -151,7 +151,9 @@ func2();
 - `minSize`, 分出来的 `common/custome chunk` 的最小体积。如果小于 `minSize`，分包失败。
 - `minSizeReduction`, 对 `initial chunk` 和 `async chunks` 做二次分离时，如果 `initial chunk` 和 `async chunks` 减小的体积小于 `minSizeReduction`，分包失败。 
 
-很多时候，我们配置了 `optimization.splitchunks.cacheGroups`，却没有分离出相应的包，这个时候就要看看是不是收到了上面的限制条件的影响。
+很多时候，我们配置了 `optimization.splitchunks.cacheGroups`，却没有分离出相应的包，这个时候就要看看是不是受到了上面的限制条件的影响。
+
+大多情况下， `Webpack` 会默认帮我们把一个应用分离为 `initial chunk`、`async chunks`、`vendors chunk`，如果还需要更定制化的分包，可以自行调整上面提到的配置项。
 
 <h5>构建 bundle</h5>
 
@@ -169,11 +171,13 @@ func2();
 
 <h4>output</h4>
 
-`output`, 用于配置 `webpack` 如何输出 `bundle` 内容, 包括确定 `bundle` 文件名、指定输出位置、如何对外暴露变量等，是 `Webpack` 打包构建的最后一环
+`output`, 用于配置 `webpack` 如何输出 `bundle` 内容, 包括确定 `bundle` 文件名、指定输出位置、如何对外暴露变量等，是 `Webpack` 打包构建的最后一环。
 
-`output.filename`, 指定 initial 类型的 bundle 的文件名，常用配置 `[name].[chunkhash:8].js`。
+`output.filename`, 指定 `initial` 类型的 `bundle` 的文件名，常用配置 `[name].[chunkhash:8].js`。
 
-`output.chunkFilename`, 指定非 initial 类型的 bundle 的文件名，常用配置为 `[name].[chunkhash:8].chunk.js`。
+`output.chunkFilename`, 指定非 `initial` 类型的 `bundle` 的文件名，常用配置为 `[name].[chunkhash:8].chunk.js`。
+
+(这里要把命名规则再敞开讲讲。)
 
 `output.path`, 指定 `bundle` 的输出目录，即打包后文件在硬盘中的存储位置, 是一个绝对路径。
 
@@ -181,15 +185,150 @@ func2();
 
 `output.libraryTarget`, 常和 `output.library` 一起使用，配置如何暴露 `library`。
 
+(library、libraryTarget 也要讲讲)。
+
 `output.publicPath`, 对页面里面引入的资源的路径做对应的补全。
 
 在这里，我们只列举这几个常用的配置项，其他配置项用的比较少，就不一一介绍了。
 
+
 <h4>plugin</h4>
+
+可以这么说，配置 `entry`、`resolve`、`module`、`optimization`、`output`，只是可以让我们用 `Webpack` 顺利完成打包构建工作。整个过程对我们来说是一个黑盒。如果我们想介入打包过程，做一些自定义操作，那么要用到 `plugin` 配置项了。
+
+`plugin`，给我们提供了介入 `Webpack` 打包构建的机会。
+
+`Webpack` 在整个打包构建过程，一共提供了 `130+` 的 `hook`。这些 `hook` 可以分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类，涵盖打包构建过程的各个生命周期。
+
+`plugin` 的工作过程非常简单，可以用`订阅/发布`设计模式来理解。通过 `Webpack` 提供的 `api`，我们可以在合适的时机给 `hook` 注册 `callback`，然后等 `webpack` 到了 `hook` 对应的阶段，触发 `callback`。
+
+举个 🌰:
+
+```
+    class CustomePlugin {
+        constructor(option) {
+            ...
+        }
+
+        apply(compiler) {
+            compiler.hooks.initialize.tap('CustomePlugin', (compiler) => {
+                ...
+            });
+        }
+    }
+```
+
+在这个 🌰 中，我们订阅了 `initiallize hook`。当 `compiler` 对象构建并完成初始化以后，就会触发 `initiallize hook` 收集的 `callback`。
+
+定义一个自己需要的 `plugin`，还是蛮简单的。只要像上面 🌰 一样，定义一个 `plugin class`，在 class 中定义一个 `apply` 方法，然后在 `apply` 方法中订阅想要的 `hook` 就可以了。
+
+不过这里面有一些门道是我们需要注意的: 
+
+- 首先，`Webpack` 提供的 `hook` 分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类。不同类型的 `hook`，可订阅的时机不同。
+
+    `Compiler` 类型的 `hook`，需要在 `compiler` 对象创建完成以后才可订阅。 `Webpack` 开始工作的时候，会先创建一个 `compiler`, 然后依次执行 `plugin` 配置项中各个插件示例的 `apply` 方法，订阅 `Compiler` 类型的 `hook`。
+
+    `Compilation` 类型的 `hook`，需要在 `compilation` 对象构建完成以后才可以订阅。要订阅 `Compilation` 类型的 `hook`，我们需要先订阅 `compiler` 的 `compilation hook`， 等 `compilation` 创建以后，会触发 `compiler` 的 `compilation hook` 的 `callback`，`compilation` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `Compilation` 类型的 `hook`。
+
+    同理，`ContextModuleFactory / NormalModuleFactory`  类型的 `hook`，需要在 `contextModuleFactory / NormalModuleFactory` 对象构建完成以后才可以订阅。要订阅 `ContextModuleFactory / NormalModuleFactory`  类型的 `hook`, 我们需要先订阅 `compiler` 的 `contextModuleFactory / normalModuleFactory hook`， 等 `contextModuleFactory / NormalModuleFactory` 对象创建以后，会触发 `compiler` 的 `contextModuleFactory / NormalModuleFactory hook`,`contextModuleFactory / NormalModuleFactory` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `ContextModuleFactory / NormalModuleFactory`  类型的 `hook`。
+
+    `JavascriptParser` 类型的 `hook`，需要 `parser` 对象构建完成以后才可以订阅。要订阅该类型的 `hook`，我们需要先订阅 `compiler` 的 `normalModuleFactory` 的 `hook`， 在 `normalModuleFactory hook` 的 `callback` 中，订阅 `normalModuleFactory` 对象的 `parser hook`，在 `parser hook` 的 `callback` 中，才可以订阅 `JavascriptParser` 类型的 hook。
+
+    这一段看起来是不是非常绕呢，😂？ 这一块儿是非常复杂的，通过几句话是无法描述清楚的，小编会在下一遍文章中，再给大家做详细解释。
+
+
+- 其次，`Webpack` 提供的 `hook` 可以分为 `sync hook` 和 `async hook` 中两大类。这两大类 `hook`，又可具体细分为 `SyncHook`、`SyncBailHook`、`SyncWaterfallHook`, `SyncLoopHook` , `AsyncParallelHook`, `AsyncParallelBailHook`, `AsyncSeriesHook`, `AsyncSeriesBailHook`, `AsyncSeriesWaterfallHook` 这 9 小类。不同类型的 `hook`，订阅方式也不相同。
+
+    要区分一个 `hook` 是 `sync` 还是 `async`，关键要看这个 `hook` 的 `callback` 的内部是不是可以出现异步代码，如 `xhr`、`setTimeout`、`Promise` 等。如果可以出现异步代码，那就是 `async hook`，否则就是 `sync hook`。
+
+    在解释为什么 `Webpack` 要提供 `sync` 和 `async` 两种类型的 `hook`之前，我们要先了解一点前置知识。`Webpack` 在打包构建过程中，如果完成了某个阶段，就会依次执行该阶段 `hook` 对应的 `callback`。`callback` 执行的顺序，和订阅时的顺序保持一致，即哪个 `plugin` 先订阅，对应的 `callback` 先执行。等所有的 `callback` 处理完毕，才会进入下一个阶段。
+
+    如果 `callback` 内部全部是同步代码，刚刚提到的完全没有问题，`Webpack` 会依次处理完所有 `callback`，然后顺利进入下一个阶段。这种情况下，我们可以直接使用 `sync hook`，通过 `tap` 这种方式订阅。
+    
+    举个 🌰:
+
+    ```
+    // initialize 是 sync hook， 直接使用 tap 订阅
+    compiler.hooks.initialize.tap('CustomePlugin', (compiler) => {
+        ...
+    });
+
+    ```
+    如果 `callback` 中有异步代码，如果不做特殊处理，那么 `callback` 就有可能不会正确处理，甚至会出现 `Webpack` 构建过程进入下一个阶段的情况。这时，我们就要使用 `async hook` 来处理这种情况了。
+
+    常见的异步代码，可以分为 `promise` 类型和非 `promise` 类型，对应的 `async hook` 也提供了 `tapPromise` 和 `tapAsync` 这两种方式订阅。
+
+    再举个 🌰:
+
+    ```
+    compiler.hooks.run.tapAsync('CustomePlugin', (compiler, callback) => {
+        setTimeout(() => {
+            ...
+            callback();
+        });
+    });
+
+    compiler.hooks.run.tapPromise('CustomePlugin', (compiler) => {
+        return Promise.resolve(1).then((res) => {
+            ...
+        });
+    });
+    ``` 
+
+    要注意哦，通过 `tapAsync` 订阅 `async hook` 时，回调函数的最后一个入参，必须时 `callback`，而且 `callback` 必须在异步代码执行完毕以后调用; 使用 `tapPromise` 时，必须要返回一个已经注册 `onFullfilled` 的 `promise` 对象，这样才能保证回调函数按序执行，`Webpack` 可以顺利进入下一个阶段。
+
+
+    了解完 `sync `和 `async` 这两大类 `hook` 之后，我们再来了解一下细分的 `9` 小类 `hook`。
+
+    这 `9` 种类型，是基于订阅同一种 `hook` 的 `callback` 的不同处理方式来划分的，具体如下:
+    - `series`, 顺序，所有 `callback` 按订阅 `hook` 的顺序按序执行。`sync` 对应的是 `SyncHook`，`async` 对应的是 `AsyncSeriesHook`。如果是 `AsyncSeriesHook`，会在上一个 `callback` 的异步代码执行完毕以后，才会处理下一个 `callback`。
+    - `bail`, 熔断，如果某一个 `callback` 有返回非 `undefined` 的值，那么后面的所有 `callback` 都不处理。`sync` 对应 `SyncBailHook`, `async` 对应 `AsyncSeriesBailHook`、`AsyncParallelBailHook`。
+    - `waterfall`, 瀑布，上一个 `callback` 的返回值会作为下一个 `callback` 的入参。 `sync` 对应 `SyncWaterfallHook`, `async` 对应 `AsyncSeriesWaterfallHook`。
+    - `parallel`, 并行，只有在 `async hook` 中使用，`AsyncParallelHook`。`callback` 可并行执行，即不用等上一个 `callback` 的异步代码执行，就可以开始处理下一个 `callback`。
+    - `noop`，逐次循环处理 `callback`，直到所有的 `callback` 返回 `undefined`，只有在 `sync hook` 中使用，`SyncLoopHook`。
+
+有了这两点说明，相信大家对如何写一个合适的自定义 `plugin`，有初步的认识了吧。
+
 
 <h4>cache</h4>
 
+`cache`，配置 `Webpack` 将打包构建过程中生成的 `module`、`chunk` 缓存起来, 供二次构建使用。
+
+使用 `cache`，可以有效提升二次构建的速度。
+
 <h4>externals<h4>
+
+`externals`，配置 `Webpack` 选择指定资源不参与打包构建，可有效提升打包构建速度。
+
+通常，如果应用程序中引入了第三方依赖，`webpack` 会自动把第三方依赖也打包到 `bundle` 中。在运行 `bundle` 代码时，会先运行第三方依赖代码，拿到第三方依赖的 `exports`，然后使进行下一步操作。
+
+如果使用了 `externals` 配置项指定不参与编译打包的第三方依赖，那我们在运行打包以后的 `bundle` 代码时，由于 `bundle` 并没有第三方依赖代码，直接使用第三方依赖的 `export` 是会报错的。此时我们必须先加载好第三方依赖代码。
+
+使用 `externals` 配置项 时， 会受到 `output.libraryTarget` 配置项的影响。
+
+举个 🌰，如果 `output.libraryTarget` 的值为 `'var'`, 应用程序会通过一个变量来获取第三方依赖的输出结果，此时当前上下文环境 - `window` 中必须存在已定义变量。
+
+对应的打包代码如下:
+
+```
+// main.js
+(function(modules){
+    ...
+        
+    return __webpack_require__(__webpack_require__.s = "./src/main.js");
+        
+}({
+    'main': {
+        ...
+        var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("react")
+        ...
+    },
+    'react': (function(module, exports) {
+        module.exports = React;   // React 变量在使用 main.js 前，必须已经存在 window 中
+    })
+}))
+```
+
 
 <h4>mode</h4>
 
@@ -242,12 +381,6 @@ func2();
 生产模式下，`devtool` 默认是为 `false`，不生成 `.map` 文件。但是我们通常会接入类似 `Sentry` 的异常监控，需要我们将 `.map` 文件上传到 `Sentry` 方便我们定位问题，这就要求 `devtool` 需要配置为 `source-map`。这样做又会带来一个新的问题，就是源代码会暴露给外部用户。
 
 针对这个问题，我们可以分 `4` 步来处理他，先完成打包构建，然后上传 `.map` 到 `Sentry`，然后再将 `.map` 文件移除，最后将删除 `.map` 文件以后的静态资源放置到合适的位置。这样就既可以保证源码不被暴露，又可以很方便的定位线上问题。
-
-
-<h4>cache</h4>
-
-<h4>externals</h4>
-
 
 
 <h4>devServer</h4>
