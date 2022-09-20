@@ -156,29 +156,25 @@
 
     1. 谈谈你对常用构建工具的理解 ？
 
-      目前，比较流行的构建工具有 webpack、vite、rollup、esbuild、parcel。
+      [对构建工具的理解](./build%20tools/对构建工具的理解.md)
 
-      这些构建工具，根据是否会将源文件打包成一个 bundle，分为 bundle 类型构建工具和 unbundle 类型的构建工具。
-
-      bundle 类型构建工具，典型的有 webpack、rollup、parsel、esbuild；unbundle 类型的构建工具，典型的为 Vite。
-
-      不过 Vite 当前也只是开发模式下采用 unbundle 模式，生产模式下依旧推荐使用 bundle 模式(2.x 版本会借助 rollup 进行打包，3.x 版本可以使用 esbuild 进行打包，保证了开发环境和生产环境的统一)。
-
-      bundle 模式，最显著的特点就是需要在打包构建时分析源文件的依赖关系，构建一个模块依赖图，然后根据一定的策略将这个模块依赖图分解为多个 chunk，多个 chunk 之间存在依赖关系。通用的分包策略: initial chunk、async chunks、common chunks。在打包构建的过程中，构建模块依赖图和分离 chunk 是耗时大户，涉及到 url 解析、loader 转换源文件、通过 acron 解析源文件来分析依赖关系等，导致项目规模越大，打包耗时越久。
-
-      针对 bundle 类型构建工具打包构建耗时较久的优化，主要有:
-      - 缩小打包构建的范围；
-      - 缓存；
-      - 使用更高效的语言；
-      - 多线程；
-      
-      其中，像 webpack5的持久化缓存，webpack4 中 loader 的 cache 配置，都是基于缓存策略实现的
-
-      而 unbundle 模式，最显著的特点是借助了浏览器对 esm 规范的支持，源文件的依赖关系由浏览器解析，不需要构建工具去处理，因此也就
-
-
+      [对 webpack 配置项的理解](./build%20tools/对%20webpack%20各个配置项的理解.md)
 
     2. 谈谈你对 Webpack 配置项的理解 ？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     3. webpack 的工作原理是怎么样的 ？
 
