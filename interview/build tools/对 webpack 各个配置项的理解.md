@@ -1,33 +1,8 @@
----
-theme: cyanosis
----
-
-<h3>前言</h3>
-
-相信不少小伙伴都有听说过这样一个名词 - `Webpack` 配置工程师。😂，都需要设置专门的岗位去维护了，可见 `Webpack` 的配置是有多么复杂。
-
-现实也确实如此。发展到现在 `5.x` 版本， `Webpack` 已经有 `18+` 大类的配置项，再加上大类中各种小的配置项，那就更多了。复杂的配置项，给新人入门 `Webpack` 带来了极大的门槛。光弄懂 `Webpack` 怎么用、熟练使用各个配置项就需要花费很长的功夫，更别提要了解其内部工作机制了。而且要吐槽一下，官方文档写的是真不咋地，好多配置项的用法都没说清楚。
-
-小编一开始接触 `Webpack` 的时候，也是一脸懵逼，看着那么多的配置项，不知所措。但为了能在项目中更好的使用 `Webpack`，只能硬着头皮去看官网文档，一个一个的去试各种配置项。如果看官网文档还不理解，就去尝试看源码中这个配置项是怎么工作的，来理解它在实际工作中该怎么用。
-
-在学习和日常使用过程中，小编发现 `Webpack` 的各个配置项，理解起来也有一定的脉络可循的。本文，小编会根据自己的一些理解和社区存在的大量资料，对 `Webpack` 配置项做一番梳理，希望能给到小伙伴们一些帮助。
-
-本文的目录结构如下:
-- <a>Webpack 的各个配置项</a>
-- <a>结束语</a>
-- <a>传送门</a>
-
-
-<h3>Webpack 的各个配置项</h3>
-
 `Webpack` 官网里面罗列的配置项有 `entry`、`resolve`、`module`、`plugin`、`output`、`mode`、`cache`、`devServer`、`devtools`、`optimization`、`watch`、`externals`、`performance`、`node`、`stats` 等。
 
 小编以为，要想更好的理解这些配置项，首先要对 `Webpack` 的工作机制有一个整体的认识。
 
-在这里，先推荐两篇文章: [重新认识 Webpack: 旧时代的破局者](https://juejin.cn/book/7115598540721618944/section/7115598759844642816)和[如何理解 Webpack 配置底层结构逻辑](https://juejin.cn/book/7115598540721618944/section/7116186197902229517)。这是范文杰大佬的掘金小册 - [Webpack5 核心原理与应用实践](https://juejin.cn/book/7115598540721618944) 的前两个章节(给大佬点赞)。本来小编是想自己先给大家梳理一下 `Webpack` 的背景和工作机制的，但是发现大佬总结的更棒、更全面，就直接借花献佛了。还没有了解的小伙伴，可以先去看看，如果对自己胃口，可以去购买噢。
-
-
-这里总结一下，`Webpack` 的整个工作过程可以归纳为: 以 `entry` 指定的入口文件为起点，分析源文件之间的依赖关系，构建一个模块依赖图，然后将这个模块依赖图拆分为多个 `bundles`，并输出到 `output` 指定的位置。
+`Webpack` 的整个工作过程可以归纳为: 以 `entry` 指定的入口文件为起点，分析源文件之间的依赖关系，构建一个模块依赖图，然后将这个模块依赖图拆分为多个 `bundles`，并输出到 `output` 指定的位置。
 
 上面罗列的这些配置项的使用，贯穿了 `Webpack` 的整个工作过程。
 
@@ -192,15 +167,23 @@ func2();
 在这里，我们只列举这几个常用的配置项，其他配置项用的比较少，就不一一介绍了。
 
 
-<h4>plugin</h4>
+<h4 id="1-1">plugins</h4>
 
-可以这么说，配置 `entry`、`resolve`、`module`、`optimization`、`output`，只是可以让我们用 `Webpack` 顺利完成打包构建工作。整个过程对我们来说是一个黑盒。如果我们想介入打包过程，做一些自定义操作，那么要用到 `plugin` 配置项了。
+可以这么说，配置 `entry`、`resolve`、`module`、`optimization`、`output`，只是可以让我们用 `Webpack` 顺利完成打包构建工作。整个过程对我们来说是一个黑盒。如果我们想介入打包过程，做一些自定义操作，那么就要用到 `plugins` 这个配置项了。
 
-`plugin`，给我们提供了介入 `Webpack` 打包构建的机会。
+`plugins`，给我们提供了介入 `Webpack` 打包构建的机会。
 
-`Webpack` 在整个打包构建过程，一共提供了 `130+` 的 `hook`。这些 `hook` 可以分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类，涵盖打包构建过程的各个生命周期。
+`Webpack` 在整个打包构建过程，一共提供了 `130+` 的 `hooks`。这些 `hooks` 可以分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类。这五大类 `hooks` 基本上涵盖打包构建过程的各个生命周期,通过这些 `hooks`，我们可以在期望的某个阶段做一些自定义操作。
 
-`plugin` 的工作过程非常简单，可以用`订阅/发布`设计模式来理解。通过 `Webpack` 提供的 `api`，我们可以在合适的时机给 `hook` 注册 `callback`，然后等 `webpack` 到了 `hook` 对应的阶段，触发 `callback`。
+在这里，小编要对这五类的 `hooks` 稍微介绍一下，让大家对这几类 `hooks` 有个认识。
+
+`Webpack` 在做实际打包构建时，内部会先创建一个编译器 `compiler` 实例。`compiler` 在 `Webpack` 打包过程中负责做配置项初始化、打包构建准备、将 `bundles` 输出到 `output` 指定位置等工作。对应的， `Webpack` 提供了 `Compiler` 类型的 `hooks`，如 `initialize`、`beforeRun`、`run`、`beforeCompile`、`compile`、`shouldEmit`、`emit` 等，通过这些 `hooks`，我们可以介入 `Webpack` 初始化配置项、输出 `bundles` 等阶段。
+
+真正负责构建模块依赖图、分离模块依赖图、构建 `bundle` 内容工作的是 `compiler` 构建的一个实例对象：编译过程 - `compilation`。我们可以通过开发模式来更好的理解这两个实例的区别。开发模式下，每次修改源文件，`Webpack` 都会重新做打包构建。在这整个过程中，`Webpack` 只会构建一个 `compiler`，做一次配置项初始化工作，每次打包构建时，都会创建一个新的 `compilation` 来做模块依赖图构建、分离、`bundle` 内容构建。 对应的，`Webpack` 提供了 `Compilation` 类型的 `hooks`，让我们来介入模块依赖图的构建、分离等阶段，如 `buildModule`、`finishModules`、`seal`、`optimize`、`recordHash` 等。
+
+`compilation` 在做模块依赖图构建的时候，会根据源文件创建一个 `module` 对象，并借助 `AST` 来解析 `module` 的依赖关系。对应的，`Webpack` 也提供了 `ContextModuleFactory` / `NormalModuleFactory` 和 `JavascriptParser` 类型的 `hooks`，让我们来介入 `module` 构建和依赖解析的过程。
+
+`plugin` 的工作原理非常简单，可以直接用`订阅/发布`设计模式来理解。通过 `Webpack` 提供的 `tap`、`tapAsync`、`tapPromise` 这几个 `api`，我们可以给需要的 `hook` 注册 `callback`，然后等 `Webpack` 运行到我们选择的阶段时，就会触发 `callback`。
 
 举个 🌰:
 
@@ -218,30 +201,31 @@ func2();
     }
 ```
 
-在这个 🌰 中，我们订阅了 `initiallize hook`。当 `compiler` 对象构建并完成初始化以后，就会触发 `initiallize hook` 收集的 `callback`。
+在这个 🌰 中，我们订阅了 `initiallize hook`。当 `compiler` 对象构建并完成初始化以后，就会触发 `initiallize hook` 注册的 `callback`。
 
-定义一个自己需要的 `plugin`，还是蛮简单的。只要像上面 🌰 一样，定义一个 `plugin class`，在 class 中定义一个 `apply` 方法，然后在 `apply` 方法中订阅想要的 `hook` 就可以了。
+定义一个自己需要的 `plugin`，还是蛮简单的。只要像上面 🌰 一样，定义一个 `plugin class`，在 `class` 中定义一个 `apply` 方法，然后在 `apply` 方法中订阅想要的 `hook` 就可以了。
 
 不过这里面有一些门道是我们需要注意的: 
 
-- 首先，`Webpack` 提供的 `hook` 分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类。不同类型的 `hook`，可订阅的时机不同。
+- 首先，`Webpack` 提供的 `hook` 分为 `Compiler`、`Compilation`、`ContextModuleFactory`、`JavascriptParser`、`NormalModuleFactory` 五大类。不同类型的 `hooks`，可订阅的时机不同。
 
-    `Compiler` 类型的 `hook`，需要在 `compiler` 对象创建完成以后才可订阅。 `Webpack` 开始工作的时候，会先创建一个 `compiler`, 然后依次执行 `plugin` 配置项中各个插件示例的 `apply` 方法，订阅 `Compiler` 类型的 `hook`。
+    `Compiler` 类型的 `hooks`，需要在 `compiler` 对象创建完成以后才可订阅。 `compiler` 创建好以后，`Webpack` 会依次执行 `plugin` 配置项中各个插件实例的 `apply` 方法，订阅 `Compiler` 类型的 `hooks`。
 
-    `Compilation` 类型的 `hook`，需要在 `compilation` 对象构建完成以后才可以订阅。要订阅 `Compilation` 类型的 `hook`，我们需要先订阅 `compiler` 的 `compilation hook`， 等 `compilation` 创建以后，会触发 `compiler` 的 `compilation hook` 的 `callback`，`compilation` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `Compilation` 类型的 `hook`。
+    `Compilation` 类型的 `hook`，需要在 `compilation` 对象构建完成以后才可以订阅。要订阅 `Compilation` 类型的 `hooks`，我们需要先订阅 `compiler` 的 `compilation hook`， 等 `compilation` 创建以后，会触发 `compiler` 的 `compilation hook` 的 `callback`，`compilation` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `Compilation` 类型的 `hooks`。
 
-    同理，`ContextModuleFactory / NormalModuleFactory`  类型的 `hook`，需要在 `contextModuleFactory / NormalModuleFactory` 对象构建完成以后才可以订阅。要订阅 `ContextModuleFactory / NormalModuleFactory`  类型的 `hook`, 我们需要先订阅 `compiler` 的 `contextModuleFactory / normalModuleFactory hook`， 等 `contextModuleFactory / NormalModuleFactory` 对象创建以后，会触发 `compiler` 的 `contextModuleFactory / NormalModuleFactory hook`,`contextModuleFactory / NormalModuleFactory` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `ContextModuleFactory / NormalModuleFactory`  类型的 `hook`。
+    同理，`ContextModuleFactory / NormalModuleFactory` 类型的 `hook`，需要在 `contextModuleFactory / normalModuleFactory` 对象构建完成以后才可以订阅。要订阅 `ContextModuleFactory / NormalModuleFactory` 类型的 `hook`, 我们需要先订阅 `compiler` 的 `contextModuleFactory / normalModuleFactory hook`， 等 `contextModuleFactory / NormalModuleFactory` 对象创建以后，会触发 `compiler` 的 `contextModuleFactory / NormalModuleFactory hook`,`contextModuleFactory / normalModuleFactory` 对象会做为 `callback` 的入参，在 `callback` 中我们就可以订阅 `ContextModuleFactory / NormalModuleFactory`  类型的 `hooks`。
 
-    `JavascriptParser` 类型的 `hook`，需要 `parser` 对象构建完成以后才可以订阅。要订阅该类型的 `hook`，我们需要先订阅 `compiler` 的 `normalModuleFactory` 的 `hook`， 在 `normalModuleFactory hook` 的 `callback` 中，订阅 `normalModuleFactory` 对象的 `parser hook`，在 `parser hook` 的 `callback` 中，才可以订阅 `JavascriptParser` 类型的 hook。
+    `JavascriptParser` 类型的 `hooks`，需要 `parser` 对象构建完成以后才可以订阅。要订阅该类型的 `hooks`，我们需要先订阅 `compiler` 的 `normalModuleFactory` 的 `hook`， 在 `normalModuleFactory hook` 的 `callback` 中，订阅 `normalModuleFactory` 对象的 `parser hook`，在 `parser hook` 的 `callback` 中，才可以订阅 `JavascriptParser` 类型的 `hooks`。
 
-    这一段看起来是不是非常绕呢，😂？ 这一块儿是非常复杂的，通过几句话是无法描述清楚的，小编会在下一遍文章中，再给大家做详细解释。
-
+    说实话，这一块的逻辑还是蛮复杂的，大家在实际项目中自己写 plugin 时，一定要找准 hook 的订阅时机。
 
 - 其次，`Webpack` 提供的 `hook` 可以分为 `sync hook` 和 `async hook` 中两大类。这两大类 `hook`，又可具体细分为 `SyncHook`、`SyncBailHook`、`SyncWaterfallHook`, `SyncLoopHook` , `AsyncParallelHook`, `AsyncParallelBailHook`, `AsyncSeriesHook`, `AsyncSeriesBailHook`, `AsyncSeriesWaterfallHook` 这 9 小类。不同类型的 `hook`，订阅方式也不相同。
 
     要区分一个 `hook` 是 `sync` 还是 `async`，关键要看这个 `hook` 的 `callback` 的内部是不是可以出现异步代码，如 `xhr`、`setTimeout`、`Promise` 等。如果可以出现异步代码，那就是 `async hook`，否则就是 `sync hook`。
 
-    在解释为什么 `Webpack` 要提供 `sync` 和 `async` 两种类型的 `hook`之前，我们要先了解一点前置知识。`Webpack` 在打包构建过程中，如果完成了某个阶段，就会依次执行该阶段 `hook` 对应的 `callback`。`callback` 执行的顺序，和订阅时的顺序保持一致，即哪个 `plugin` 先订阅，对应的 `callback` 先执行。等所有的 `callback` 处理完毕，才会进入下一个阶段。
+    在解释为什么 `Webpack` 要提供 `sync` 和 `async` 两种类型的 `hook`之前，我们要先了解一点前置知识。
+    
+    `Webpack` 在打包构建过程中，如果完成了某个阶段，就会依次执行该阶段 `hook` 对应的 `callback`。`callback` 执行的顺序，和订阅时的顺序保持一致，即哪个 `plugin` 先订阅，对应的 `callback` 先执行。等所有的 `callback` 处理完毕，才会进入下一个阶段。
 
     如果 `callback` 内部全部是同步代码，刚刚提到的完全没有问题，`Webpack` 会依次处理完所有 `callback`，然后顺利进入下一个阶段。这种情况下，我们可以直接使用 `sync hook`，通过 `tap` 这种方式订阅。
     
@@ -275,8 +259,7 @@ func2();
     });
     ``` 
 
-    要注意哦，通过 `tapAsync` 订阅 `async hook` 时，回调函数的最后一个入参，必须时 `callback`，而且 `callback` 必须在异步代码执行完毕以后调用; 使用 `tapPromise` 时，必须要返回一个已经注册 `onFullfilled` 的 `promise` 对象，这样才能保证回调函数按序执行，`Webpack` 可以顺利进入下一个阶段。
-
+    要注意哦，通过 `tapAsync` 订阅 `async hook` 时，回调函数的最后一个入参，必须时 `callback`，而且 `callback` 必须在异步代码执行完毕以后调用； 使用 `tapPromise` 时，必须要返回一个已经注册 `onFullfilled` 的 `promise` 对象。只有这样才能保证回调函数按序执行，`Webpack` 可以顺利进入下一个阶段。
 
     了解完 `sync `和 `async` 这两大类 `hook` 之后，我们再来了解一下细分的 `9` 小类 `hook`。
 
@@ -290,21 +273,21 @@ func2();
 有了这两点说明，相信大家对如何写一个合适的自定义 `plugin`，有初步的认识了吧。
 
 
-<h4>cache</h4>
+<h4 id="1-2">cache</h4>
 
 `cache`，配置 `Webpack` 将打包构建过程中生成的 `module`、`chunk` 缓存起来, 供二次构建使用。
 
 使用 `cache`，可以有效提升二次构建的速度。
 
-<h4>externals<h4>
+<h4 id="1-3">externals</h4>
 
-`externals`，配置 `Webpack` 选择指定资源不参与打包构建，可有效提升打包构建速度。
+`externals`，配置 `Webpack` 选择不参与打包构建的资源，可有效提升打包构建速度和减小 `bundle` 体积。
 
 通常，如果应用程序中引入了第三方依赖，`webpack` 会自动把第三方依赖也打包到 `bundle` 中。在运行 `bundle` 代码时，会先运行第三方依赖代码，拿到第三方依赖的 `exports`，然后使进行下一步操作。
 
 如果使用了 `externals` 配置项指定不参与编译打包的第三方依赖，那我们在运行打包以后的 `bundle` 代码时，由于 `bundle` 并没有第三方依赖代码，直接使用第三方依赖的 `export` 是会报错的。此时我们必须先加载好第三方依赖代码。
 
-使用 `externals` 配置项 时， 会受到 `output.libraryTarget` 配置项的影响。
+使用 `externals` 配置项时， 会受到 `output.libraryTarget` 配置项的影响。
 
 举个 🌰，如果 `output.libraryTarget` 的值为 `'var'`, 应用程序会通过一个变量来获取第三方依赖的输出结果，此时当前上下文环境 - `window` 中必须存在已定义变量。
 
@@ -330,16 +313,21 @@ func2();
 ```
 
 
-<h4>mode</h4>
+<h4 id="1-4">mode</h4>
 
 `mode`, 配置 `Webpack` 的工作模式。
 
-`Webpack` 的工作模式有两种：`development` 和 `production`。各种模式都有各自的默认配置项。如 `devTool`，`production` 模式下默认为 `false`，不生成 `.map` 文件；`development` 模式下为 `eval`，使用 `eval` 包裹代码块。
+`Webpack` 的工作模式有两种：`development` 和 `production`。各种模式都有各自的默认配置项。
+
+比如:
+- `devTool`，`production` 模式下默认为 `false`，不生成 `.map` 文件；`development` 模式下为 `eval`，使用 `eval` 包裹代码块。
+- `optimization.minimize`，`production` 模式下默认为 `true`，`bundle` 文件会被压缩；`development` 模式下默认为 `false`，不压缩 `bundle` 文件。
+- `optimization.moduleIds`, `production` 模式下默认为 `natural`，`module id` 为数字；`development` 模式下默认为 `named`，`module id` 为源文件 `url`。
+- `optimization.chunkIds`, `production` 模式下默认为 `natural`，`chunk id` 为数字；`development` 模式下默认为 `named`，`chunk id` 中会包含 `module` 的文件名。
 
 `mode` 是 `webpack4` 新出现的配置项，减少了开发人员人员的心智负担。
 
-<h4>devtool</h4>
-
+<h4 id="1-5">devtool</h4>
 
 `devtool`, 配置 `Webpack` 在是否在打包过程中生成 `.map` 文件和生成什么样的 `.map` 文件。`.map` 文件不仅可以在本地开发时帮助我们调试源文件代码，还可以在线上环境出现问题时帮助我们快速定位问题出现在源文件的哪个位置，非常有用。
 
@@ -382,17 +370,22 @@ func2();
 
 针对这个问题，我们可以分 `4` 步来处理他，先完成打包构建，然后上传 `.map` 到 `Sentry`，然后再将 `.map` 文件移除，最后将删除 `.map` 文件以后的静态资源放置到合适的位置。这样就既可以保证源码不被暴露，又可以很方便的定位线上问题。
 
+<h4 id="1-6">devServer</h4>
 
-<h4>devServer</h4>
+开发模式下，我们会启动一个本地服务 `webpack-dev-server` 来进行本地开发，而 `devServer` 配置项就是用来指引 `wepack-dev-server` 工作的。
 
+`devServer` 中最受人关注的是 `HMR` 配置项。
 
+要正常使用 `HRM` 功能，需要三个前置条件:
+- `devServer.hot` 配置项为 `true`；
+- 启用 `inline` 模式；
+- 模块中必须声明 `module.hot.accept(url, callback)`;
 
+这里有的小伙伴们可能会有疑惑，自己在本地开发的时候，源文件里面并没有声明 `module.hot.accept(url, callback)`，为什么 `HMR` 还是可以正常运行呢?
 
-<h3>结束语</h3>
+答案很简单。这是因为我们在使用 `react / vue` 开发项目时，会使用对应的 `loader` 处理源文件。处理过程中，`loader` 会给源文件自动添加 `module.hot.accept(url, callback)` 逻辑。这一点，大家可以打开浏览器的源代码自己去看看噢。
 
+<h4 id="1-7">其他配置项</h4>
 
-
-
-
-<h3>传送门</h3>
+剩下几个配置项，如 `target`、`performance`、`node`、`stats` 等，由于在实际项目中用的比较少，本文就不再做介绍了。如果有小伙伴感兴趣，可以自行去官方文档了解哦噢。
 
