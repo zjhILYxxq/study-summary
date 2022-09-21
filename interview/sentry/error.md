@@ -22,6 +22,7 @@ theme: cyanosis
     - **<a href="#2-1">有效的异常监控需要哪些必备要素</a>**
     
     - **<a href="#2-2">异常详情获取</a>**
+
     - **<a href="#2-3">用户行为获取</a>**
 
 - **<a href="#3">结束语</a>**
@@ -62,12 +63,11 @@ theme: cyanosis
 
 > 具体详见: [Error - JavaScript - MDN Web Docs - Mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-通常，我们会通过 `try...catch` 语句块来捕获这一类型异常。如果不使用 `try...catch`，我们也可以通过 `window.onerror = callback
-` 或者 `window.addEventListener('error', callback)` 的方式进去全局捕获。
+通常，我们会通过 `try...catch` 语句块来捕获这一类型异常。如果不使用 `try...catch`，我们也可以通过 `window.onerror = callback` 或者 `window.addEventListener('error', callback)` 的方式进行全局捕获。
 
 <h4>promise 类异常</h4>
 
-在使用 `promise` 时，如果 `promise` 被 `reject` 但没有被 `catch` 处理时，就会抛出 `promise` 类异常。
+在使用 `promise` 时，如果 `promise` 被 `reject` 但没有做 `catch` 处理时，就会抛出 `promise` 类异常。
 
 ```
 Promise.reject(); // Uncaught (in promise) undefined
@@ -118,15 +118,17 @@ Promise.reject(); // Uncaught (in promise) undefined
 
 当项目中引用的第三方脚本执行发生错误时，会抛出一类特殊的异常。这类型异常和我们刚才讲过的异常都不同，它的 `msg` 只有 `'Script error'` 信息，没有具体的行、列、类型信息。
 
-> 之以会这样，是因为浏览器的安全机制: 浏览器只允许同域下的脚本捕获具体异常信息，跨域脚本中的异常，不会报告错误的细节。
+之以会这样，是因为浏览器的安全机制: 浏览器只允许同域下的脚本捕获具体异常信息，跨域脚本中的异常，不会报告错误的细节。
 
 针对这类型的异常，我们可以通过 `window.addEventListener('error', callback)` 或者 `window.onerror` 的方式捕获异常。
 
 当然，如果我们想获取这类异常的详情，需要做以下两个操作:
 
-- 在 `script` 添加 `crossorigin="anonymous"`;
+- 在发起请求的 `script` 标签上添加 `crossorigin="anonymous"`;
 
-- 响应头中添加 `Access-Control-Allow-Origin: *`；
+- 请求响应头中添加 `Access-Control-Allow-Origin: *`；
+
+这样就可以获取到跨域异常的细节信息了。
 
 
 <h3 id="2">Sentry 异常监控原理</h3>
@@ -148,22 +150,106 @@ Promise.reject(); // Uncaught (in promise) undefined
 2. 上报的异常，含有异常类型、发生异常的源文件及行列信息、异常的追踪栈信息等详细信息，可以帮助开发人员快速定位问题。
 3. 可以获取发生异常的用户行为，帮助开发人员、测试人员重现问题和测试回归。
 
-这三点，分别对应`异常推送`、`异常详情获取`、`用户行为获取`。
+这三点，分别对应`异常自动推送`、`异常详情获取`、`用户行为获取`。
 
-关于异常推送，小编在 [借助飞书捷径，我快速完成了 Sentry 上报异常的自动推送，点赞！]() 一文中已经做了详细说明，感兴趣的小伙伴可以去看看，在这里我们就不再做过多的说明。
+关于异常推送，小编在 [借助飞书捷径，我快速完成了 Sentry 上报异常的自动推送，点赞！](https://juejin.cn/post/7143142055294795807) 一文中已经做了详细说明，感兴趣的小伙伴可以去看看，在这里我们就不再做过多的说明。
 
 接下来，我们就重点聊一聊异常详情获取和用户行为获取。
 
 
 <h4>异常详情获取</h4>
 
+为了能自动捕获应用异常，`Sentry` 劫持覆写了 `window.onerror` 和 `window.unhandledrejection` 这两个 `api`。
+
+整个实现过程非常简单。
+
+劫持覆写 `window.onerror` 的代码如下:
+
+```
+oldErrorHandler = window.onerror;
+window.onerror = function (msg, url, line, column, error) {
+    // 收集异常信息并上报
+    triggerHandlers('error', {
+        column: column,
+        error: error,
+        line: line,
+        msg: msg,
+        url: url,
+    });
+    if (oldErrorHandler) {
+        return oldErrorHandler.apply(this, arguments);
+    }
+    return false;
+};
+
+```
+
+劫持覆写 `window.unhandledrejection` 的代码如下:
+
+```
+oldOnUnhandledRejectionHandler = window.onunhandledrejection;
+window.onunhandledrejection = function (e) {
+    // 收集异常信息并上报
+    triggerHandlers('unhandledrejection', e);
+    if (oldOnUnhandledRejectionHandler) {
+        return oldOnUnhandledRejectionHandler.apply(this, arguments);
+    }
+    return true;
+};
+```
+
+虽然通过劫持覆写 `window.onerror` 和 `window.unhandledrejection` 已足以完成异常自动捕获，但为了能获取更详尽的异常上下文, `Sentry` 在内部做了一些更细微的异常捕获。
+
+具体来说，就是 Sentry 内部对异常发生的特殊上下文，做了标记。这些特殊上下文包括: `dom` 节点事件回调、`setTimeout` / `setInterval` 回调、`xhr` 接口调用、`requestAnimationFrame` 回调等。
+
+具体处理如果如下:
+- 标记 `setTimeout` / `setInterval` / `requestAnimationFrame`
+
+    为了标记 `setTimeout / setInterval / requestAnimationFrame` 类型的异常，`Sentry` 先劫持覆写了原生的 `setTimout / setInterval / requestAnimationFrame` 方法。新的 `setTimeout / setInterval requestAnimationFrame` 方法调用时，会使用 `try ... catch` 语句块包裹 `callback`。当 `callback` 内部发生异常时，会被 `catch` 捕获，捕获的异常会标记 `setTimeout` / `setInterval` / `requestAnimationFrame`。
+
+    具体实现如下:
+
+    ```
+    var originSetTimeout = window.setTimeout;
+    window.setTimeout = function() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var originalCallback = args[0];
+        // 对 setTimeout 的入参 callback 使用 try...catch 进行包装
+        // 在 catch 中上报异常
+        args[0] = wrap$1(originalCallback, {
+            mechanism: {
+                data: { function: getFunctionName(original) },
+                handled: true,
+                // 异常的上下文是 setTimeout
+                type: 'setTimeout',
+            },
+        });
+        return original.apply(this, args);
+    }
+    ```
+
+    `setInterval`、`requestAnimationFrame` 的劫持覆写逻辑和 `setTimeout` 一样。
+
+
+
+- 标记 dom 事件回调
+
+- 标记接口回调
+
+
+
+
+
 <h4>用户行为获取</h4>
 
-常见的用户行为，可以归纳为`页面跳转`、`鼠标 click 行为`、`键盘 press 行为`、 `fetch / xhr 接口请求`、`console 打印信息`。
+常见的用户行为，可以归纳为`页面跳转`、`鼠标 click 行为`、`键盘 keypress 行为`、 `fetch / xhr 接口请求`、`console 打印信息`。
 
 `Sentry` 接入应用以后，会在用户使用应用的过程中，将上述行为一一收集起来。等到捕获到异常时，会将收集到的用户行为和异常信息一起上报。
 
-那 `Sentry` 是怎么实现收集用户行为的呢？答案: `劫持并覆写上述操作涉及的 api`。
+那 `Sentry` 是怎么实现收集用户行为的呢？答案: `劫持覆写上述操作涉及的 api`。
 
 具体实现过程如下:
 
@@ -171,10 +257,12 @@ Promise.reject(); // Uncaught (in promise) undefined
 
     为了可以收集用户页面跳转行为，`Sentry` 劫持并覆写了原生 `history` 的 `pushState`、`replaceState` 方法和 `window` 的 `onpopstate`。
     
+    劫持覆写 `onpopstate`:
     ```
-    // 劫持并覆写 onpopstate
+    // 使用 oldPopState 变量保存原生的 onpopstate
     var oldPopState = window.onpopstate;
     var lastHref;
+    // 覆写 onpopstate
     window.onpopstate = function() {
         ...
         var to = window.location.href;
@@ -187,6 +275,7 @@ Promise.reject(); // Uncaught (in promise) undefined
         });
         if (oldOnPopState) {
             try {
+                // 使用原生的 popstate 
                 return oldOnPopState.apply(this, args);
             } catch (e) {
                 ...
@@ -196,13 +285,15 @@ Promise.reject(); // Uncaught (in promise) undefined
     }
     ```
     
+    劫持覆写 `pushState`、`replaceState`：
+
     ```
-    // 劫持并覆写 pushState、replaceState
-    
+    // 保存原生的 pushState 方法
     var originPushState = window.history.pushState;
+    // 保存原生的 replaceState 方法
     var originReplaceState = window.history.replaceState;
     
-    // 覆写 pushState
+    // 劫持覆写 pushState
     window.history.pushState = function() {
         var args = [];
         for (var i = 0; i < arguments.length; i++) {
@@ -219,10 +310,11 @@ Promise.reject(); // Uncaught (in promise) undefined
                 to: to,
             });
          }
+         // 使用原生的 pushState 做页面跳转
          return originPushState.apply(this, args);
     }
     
-    // 覆写 replaceState
+    // 劫持覆写 replaceState
     window.history.replaceState = function() {
         var args = [];
         for (var i = 0; i < arguments.length; i++) {
@@ -239,26 +331,217 @@ Promise.reject(); // Uncaught (in promise) undefined
                 to: to,
             });
          }
+         // 使用原生的 replaceState 做页面跳转
          return originReplaceState.apply(this, args);
     }
     ```
-- 收集鼠标 `click` / 键盘 `press` 行为
+- 收集鼠标 `click` / 键盘 `keypress` 行为
 
-    为了收集用户鼠标 click 和键盘 press 行为， Sentry 做了双保险操作:
-    - 允许冒泡时，通过 document 代理 click、keypress 事件来收集 click、press 行为；
-    - 不允许冒泡时，通过劫持 addEventListener 方法来收集 click、press 行为；
+    为了收集用户鼠标 `click` 和键盘 `keypress` 行为， `Sentry` 做了双保险操作:
+    - 通过 `document` 代理 `click`、`keypress` 事件来收集 `click`、`keypress` 行为；
+    - 通过劫持 `addEventListener` 方法来收集 `click`、`keypress` 行为；
 
 
-    具体实现如下：
+    相关代码实现如下：
 
     ```
-    
+    function instrumentDOM() {
+        ...
+        // triggerDOMHandler 用来收集用户 click / keypress 行为
+        var triggerDOMHandler = triggerHandlers.bind(null, 'dom');
+        var globalDOMEventHandler = makeDOMEventHandler(triggerDOMHandler, true);
+
+        // 通过 document 代理 click、keypress 事件的方式收集 click、keypress 行为
+        document.addEventListener('click', globalDOMEventHandler, false);
+        document.addEventListener('keypress', globalDOMEventHandler, false);
+
+        ['EventTarget', 'Node'].forEach(function (target) {
+            var proto = window[target] && window[target].prototype;
+            if (!proto || !proto.hasOwnProperty || !proto.hasOwnProperty('addEventListener')) {
+                return;
+            }
+
+            // 劫持覆写 Node.prototype.addEventListener 和 EventTarget.prototype.addEventListener
+            fill(proto, 'addEventListener', function (originalAddEventListener) {
+                
+                // 返回新的 addEventListener 覆写原生的 addEventListener
+                return function (type, listener, options) {
+                    
+                    // click、keypress 事件，要做特殊处理，
+                    if (type === 'click' || type == 'keypress') {
+                        try {
+                            var el = this;
+                            var handlers_1 = (el.__sentry_instrumentation_handlers__ = el.__sentry_instrumentation_handlers__ || {});
+                            var handlerForType = (handlers_1[type] = handlers_1[type] || { refCount: 0 });
+                            // 如果没有收集过 click、keypress 行为
+                            if (!handlerForType.handler) {
+                                var handler = makeDOMEventHandler(triggerDOMHandler);
+                                handlerForType.handler = handler;
+                                originalAddEventListener.call(this, type, handler, options);
+                            }
+                            handlerForType.refCount += 1;
+                        }
+                        catch (e) {
+                            // Accessing dom properties is always fragile.
+                            // Also allows us to skip `addEventListenrs` calls with no proper `this` context.
+                        }
+                    }
+                    // 使用原生的 addEventListener 方法注册事件
+                    return originalAddEventListener.call(this, type, listener, options);
+                };
+            });
+            ...
+        });
+    }
     
     ```
+
+    整个实现过程还是非常巧妙的，很值得拿来细细说明。
+
+    首先， `Sentry` 使用 `document` 代理了 `click`、`keypress` 事件。通过这种方式，用户的 `click`、`keypress` 行为可以被感知，然后被 `Sentry` 收集。但这种方式有一个问题，如果应用的 `dom` 节点是通过 `addEventListener` 注册了 `click`、`keypress` 事件，并且在事件回调中做了阻止事件冒泡的操作，那么就无法通过代理的方式监控到 `click`、`keypress` 事件了。
+
+    针对这一种情况， `Sentry` 采用了覆写 `Node.prototype.addEventListener` 的方式来监控用户的 `click`、`keypress` 行为。
+
+    所有的 `dom` 节点都继承自 `Node` 对象，`dom` 订阅事件时使用的 `addEventListener` 方法来自 `Node.prototype`。
+
+    基于这一机制，`Sentry` 劫持覆写了 `Node.prototype.addEventListener`。当应用代码通过 `addEventListener` 订阅事件时，会使用覆写以后的 `addEventListener` 方法。 
+    
+    新的 `addEventListener` 方法，内部里面也有很巧妙的实现。如果不是 `click`、`keypress` 事件，会直接使用原生的 `addEventListener` 方法注册应用提供的 `listener`。但如果是 `click`、`keypress` 事件，除了使用原生的 `addEventListener` 方法注册应用提供的 `listener` 外，还使用原生 `addEventListener` 注册了一个 `handler`，这个 `handler` 执行的时候会将用户 `click`、`keypress` 行为收集起来。
+
+    也就是说，如果是 `click`、`keypress` 事件，应用程序在调用 `addEventListener` 的时候，实际上是调用了两次原生的 `addEventListener`。
+
+    为这个实现方案点赞!
+
+    另外，在收集 `click`、`keypress` 行为时，`Sentry` 还会把 `target` 节点的的父节点信息收集起来，帮助我们快速定位节点位置。
 
 - 收集 `fetch` / `xhr` 接口请求行为
 
+    同理，为了收集应用的接口请求行为，`Sentry` 对原生的 `fetch` 和 `xhr` 做了劫持覆写。
+
+    劫持覆写 `fetch`:
+
+    ```
+    var originFetch = window.fetch;
+    
+    window.fetch = function() {
+
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        // 获取接口 url、method 类型、参数、接口调用时间信息
+        var handlerData = {
+            args: args,
+            fetchData: {
+                method: getFetchMethod(args),
+                url: getFetchUrl(args),
+            },
+            startTimestamp: Date.now(),
+        };
+        // 收集接口调用信息
+        triggerHandlers('fetch', __assign({}, handlerData));
+        return originalFetch.apply(window, args).then(function (response) {
+            // 接口请求成功，收集返回数据
+            triggerHandlers('fetch', __assign(__assign({}, handlerData), { endTimestamp: Date.now(), response: response }));
+            return response;
+        }, function (error) {
+            // 接口请求失败，收集接口异常数据
+            triggerHandlers('fetch', __assign(__assign({}, handlerData), { endTimestamp: Date.now(), error: error }));
+            throw error;
+        });
+    }
+    ```
+
+    应用中使用 `fetch` 发起请求时，实际使用的是新的 `fetch` 方法。新的 `fetch` 内部，会使用原生的 `fetch` 发起请求，并收集接口请求数据和返回结果。
+
+    劫持覆写 `xhr`:
+
+    ```
+    function instrumentXHR() {
+        ...
+        var xhrproto = XMLHttpRequest.prototype;
+        // 覆写 XMLHttpRequest.prototype.open
+        fill(xhrproto, 'open', function (originalOpen) {
+            return function () {
+                ...
+                var onreadystatechangeHandler = function () {
+                    if (xhr.readyState === 4) {
+                        ...
+
+                        // 收集接口调用结果
+                        triggerHandlers('xhr', {
+                            args: args,
+                            endTimestamp: Date.now(),
+                            startTimestamp: Date.now(),
+                            xhr: xhr,
+                        });
+                    }
+                };
+                // 覆写 onreadystatechange
+                if ('onreadystatechange' in xhr && typeof xhr.onreadystatechange === 'function') {
+                    fill(xhr, 'onreadystatechange', function (original) {
+                        return function () {
+                            var readyStateArgs = [];
+                            for (var _i = 0; _i < arguments.length; _i++) {
+                                readyStateArgs[_i] = arguments[_i];
+                            }
+                            onreadystatechangeHandler();
+                            return original.apply(xhr, readyStateArgs);
+                        };
+                    });
+                }
+                else {
+                    xhr.addEventListener('readystatechange', onreadystatechangeHandler);
+                }
+                return originalOpen.apply(xhr, args);
+            };
+        });
+
+        // 覆写 XMLHttpRequest.prototype.send
+        fill(xhrproto, 'send', function (originalSend) {
+            return function () {
+                ...
+                // 收集接口调用行为
+                triggerHandlers('xhr', {
+                    args: args,
+                    startTimestamp: Date.now(),
+                    xhr: this,
+                });
+                return originalSend.apply(this, args);
+            };
+        });
+    }
+
+    ```
+
+    `Sentry` 是通过劫持覆写 `XMLHttpRequest` 原型上的 `open`、`send` 方法的方式来实现收集接口请求行为的。
+
+    当应用代码中调用 `open` 方法时，实际使用的是覆写以后的 `open` 方法。在新的 `open` 方法内部，又覆写了 `onreadystatechange`，这样就可以收集到接口请求返回的结果。新的 `open` 方法内部会使用调用原生的 `open` 方法。
+    
+    同样的，当应用代码中调用 `send` 方法时，实际使用的是覆写以后的 `send` 方法。新的 `send` 方法内部先收集接口调用信息，然后调用原生的 `send` 方法。
+
 - 收集 `console` 打印行为
+
+    有了前面的铺垫，`console` 行为的收集机制理解起来就非常简单了，实际就是对 `console` 的 `debug`、`info`、`warn`、`error`、`log`、`assert` 这借个 `api` 进行劫持覆写。
+
+    代码如下:
+
+    ```
+    var originConsoleLog = console.log;
+
+    console.log = function() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        // 收集 console.log 行为
+        triggerHandlers('console', { args: args, level: 'log' });
+        if (originConsoleLog) {
+            originConsoleLog.apply(console, args);
+        }
+    }
+
+    ```
 
 
 
