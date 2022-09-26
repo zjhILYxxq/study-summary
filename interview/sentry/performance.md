@@ -143,6 +143,7 @@ var timing = window.performance.timing;
     
     计算方式人如下:
     1. 先进行 `First Contentful Paint` 首次内容绘制；
+   
     2. 沿时间轴正向搜索时长至少为 `5` 秒的安静窗口，其中，安静窗口的定义为：没有长任务且不超过两个正在处理的网络请求;
     3. 沿时间轴反向搜索安静窗口之前的最后一个长任务，如果没有找到长任务，则在 `FCP` 步骤停止执行。
     4. `TTI` 是安静窗口之前最后一个长任务的结束时间（如果没有找到长任务，则与 `FCP` 值相同）。
@@ -180,10 +181,11 @@ var timing = window.performance.timing;
         XMLHttpRequest.prototype.send = function(...args) {
             const requestId = uniqueId++;
             // 将请求添加到请求 poll 中
-            beforeXHRSendCb(requestId);
+            push(requestId);
             this.addEventListener('readystatechange', () => {
                 if (this.readyState === 4) {
                     将请求从请求池中移除
+                    pop(requestId);
                 }
             });
             return send.apply(this, args);
@@ -197,16 +199,16 @@ var timing = window.performance.timing;
             return new Promise((resolve, reject) => {
             const requestId = uniqueId++;
             // 将请求添加到请求 poll 中
-            beforeRequestCb(requestId);
+            push(requestId);
             originalFetch(...args).then(
                 (value) => {
                     // 将请求从请求 poll 中移除
-                    afterRequestCb(requestId);
+                    pop(requestId);
                     resolve(value);
                 },
                 (err) => {
                     // 将请求从请求 poll 中移除
-                    afterRequestCb(err);
+                    pop(err);
                     reject(err);
                 });
             });
@@ -214,46 +216,67 @@ var timing = window.performance.timing;
     }
 
     // 我们通过 mutationObserver 对静态资源请求进行拦截，然后通过 PerformanceOberserver 中的 resource 的方法来检测请求是否完成
-
-    function subtreeContainsNodeName(nodes, nodeNames) {
-        for (const node of nodes) {
-            if (nodeNames.includes(node.nodeName.toLowerCase()) ||
-                subtreeContainsNodeName(node.children, nodeNames)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    const requestCreatingNodeNames = ['img', 'script', 'iframe', 'link', 'audio', 'video', 'source'];
 
     function observeResourceFetchingMutations(callback) {
         const mutationObserver = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (mutation.type == 'childList' &&
-                    //遞歸判斷節點是否爲目標節點
-                    subtreeContainsNodeName(
-                        mutation.addedNodes, requestCreatingNodeNames)) {
-                    callback(mutation);
-                } else if (mutation.type == 'attributes' &&
+                if (mutation.type == 'childList' && requestCreatingNodeNames.includes(mutation.addedNodes[0].nodeName.toLowerCase())) {
+                    // 收集静态文件链接
+                    push(mutation.addedNodes[0].href || mutation.addedNodes[0].src);
+                } else if (mutation.type == 'attributes' && (mutation.attributeName === 'href' || mutation.attributeName === 'src') && 
                     requestCreatingNodeNames.includes(
                         mutation.target.tagName.toLowerCase())) {
-                    callback(mutation);
-            }
+                    push(mutation.target.href || mutation.target.src);
+                }
             }
         });
-        //監聽整個文檔
+        // 监听静态资源节点
         mutationObserver.observe(document, {
             attributes: true,
             childList: true,
             subtree: true,
-            //需要監聽的屬性 href src 包含所有的靜態資源
+            // img、script、link
             attributeFilter: ['href', 'src'],
         });
 
-        return mutationObserver;
+        new PerformanceObserver((entryList) => {
+            for (const entry of entryList.getEntries()) {
+                // 将完成的静态资源请求移除
+                pop(entry.name);
+            }
+        }).observe({type: 'resource', buffered: true});
     }
 
+    // 请求池
+    let pool = [];
+    //定時器
+    let timer = null;
 
+    let tti
 
+    function push(id) {
+        if(poll.length < 3)
+            timer = setTimeout(() => {
+                // 如果 timer 的 callback 能顺利执行，说明连续 5 s 的请求数没有超过 2 次
+                let fcp = .getEntriesByName('first-contentful-paint');
+                tti = longTask.length ? longTask.pop() - fcp : fcp;
+            }, 5000)
+        else
+            clearTimeout(timer);
+    }
+
+    function pop(id) {
+        poll = poll.fliter(item => item !== unitId);
+        if(poll.length < 3)
+            timer = setTimeout(() => {
+                // 如果 timer 的 callback 能顺利执行，说明连续 5 s 的请求数没有超过 2 次
+                let fcp = .getEntriesByName('first-contentful-paint');
+                tti = longTask.length ? longTask.pop() - fcp : fcp;
+            }, 5000);
+        else
+            clearTimeout(timer);
+    }
     ```
 
     `TBT`, `total blocking time`，总的阻塞时间， `lighthouse` 面板中的六大指标之一，用于测量 `FCP` 到 `TTI` 之间的总的阻塞时间。
