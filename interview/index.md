@@ -299,6 +299,8 @@
       7. 谈谈你对 diff 算法的理解
       
       8. 如果判断 dom 节点是否发生了移动? 如何移动 dom 节点？ 
+      
+      9. useSyncExternalStore 的原理?
 
 
   - [x] 前端监控技术的理解
