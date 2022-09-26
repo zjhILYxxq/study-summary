@@ -282,13 +282,23 @@
 
       webpack、parcell、esbuild、vite、rollup
 
-
-
-   
-
-
-
   - [ ] react 及相关依赖技术栈的理解
+
+      1. react 各个版本的变化
+      
+      2. 谈谈你对 hooks 的理解 
+      
+      3. 谈谈你对 concurrent 模式的理解
+      
+      4. 谈谈你对 fiber tree 的理解
+      
+      5. 谈谈你对 react-router 的理解
+      
+      6. 谈谈你对 redux、mobx 的理解
+      
+      7. 谈谈你对 diff 算法的理解
+      
+      8. 如果判断 dom 节点是否发生了移动? 如何移动 dom 节点？ 
 
 
   - [x] 前端监控技术的理解
@@ -310,6 +320,8 @@
         性能数据
 
         性能面板
+
+        如何做性能优化
 
 
 
