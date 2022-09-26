@@ -152,19 +152,19 @@
     提炼了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
-  - [ ] 微前端技术的理解
+  - [x] 微前端技术的理解
 
     1. 谈谈你对微前端技术的理解
 
         微前端解决的问题、优点、挑战、常用技术方案
 
-    3. single-spa 的工作原理    
+    3. single-spa 的工作原理 
     
     2. qiankun 的工作原理
     
-    3. qiankun 的沙箱机制
+      子应用加载、js 隔离、css 隔离、副作用处理、状态重置
     
-    4. qiankun 在使用过程中有遇到哪些问题？
+    3. qiankun 在使用过程中有遇到哪些问题？
 
       对接 sentry
 
@@ -172,14 +172,15 @@
 
       首个子应用加载优化
 
-    5. 你们的微前端技术架构是怎么样子的?
+    4. 你们的微前端技术架构是怎么样子的?
+
+        ssr + qiankun
     
-    6. 谈谈你们为什么要采用 qiankun 的技术方案？  
+    5. 谈谈你们为什么要采用 qiankun 的技术方案？  
 
+        产品升级 + 用户体验 + 子应用技术栈升级
 
-
-
-  - [ ] 构建工具的理解
+  - [x] 构建工具的理解
 
     1. 谈谈你对常用构建工具的理解 ？
 
@@ -191,25 +192,65 @@
     
     3. webpack 的工作原理是怎么样的 ？
 
+        分析模块依赖关系、构建模块依赖图、tree shaking、分离 chunks、输出
+
     4. 谈谈你对 webpack 的 loader、plugin 的理解 ?
+
+      loader 的理解、执行顺序
+
+      plugins 的分类、写法
     
     5. 谈谈你对 webpack5 的 module federation 的理解 ?
+
+       微前端、配置
+
+       工作原理
     
     6. 谈谈你对 source-map 的理解?  
-    
+
+      七个关键字、 devtoo、Sentry
+
     7. 谈谈你对 module hot replace 的理解 ? 
+
+      websocket、inline、hot、module.hot.accept
     
     8. 谈谈你对 webpack5 的持久化缓存的理解？
+
+      配置 cache
     
     9.  谈谈你对 hash 的理解？
+
+      hash、chunkhash、contenthash、modulehash
     
     10. 谈谈你对 tree shaking 的理解 ？
+
+        ESM 规范、module level、statement level
+
+        sideEffects、useExports、minimize
     
     11. 谈谈你知道的 webpack 的常用优化策略 ？
+
+        速度: 缓存策略、使用更高效的语言、缩小打包范围、开启多线程、使用高版本的 node / webpack
+
+        体积: 压缩、externals、dll 等
     
     12. 谈谈你知道的 webpack 打包构建分析工具 ？
+
+        速度: speed-measure-webpack-plugin
+
+        体积: webpack-bunde-analyer
     
     13. 谈谈你对 babel 的理解 ？
+
+        做了什么、过程、用途
+
+        api、plugin、preset
+
+        plugin、preset 执行顺序
+
+        pollify 方案、runtime 方案
+
+
     
     14. 谈谈你对 AST 的理解 ？ 
 

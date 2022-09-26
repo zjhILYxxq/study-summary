@@ -341,7 +341,7 @@
 
     babel 是通过 @babel/preset-env 来做按需 polyfill 和转换的，原理是通过 browserslist 来查询出目标浏览器版本，然后根据 @babel/compat-data 的数据库来过滤出这些浏览器版本里哪些特性不支持，之后引入对应的插件处理。
 
-    babel 处理兼容行问题有两种方案:
+    babel 处理兼容性问题有两种方案:
     
     - polyfill 方案；
 
