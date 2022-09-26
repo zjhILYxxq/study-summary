@@ -288,19 +288,23 @@
       
       2. 谈谈你对 hooks 的理解 
       
-      3. 谈谈你对 concurrent 模式的理解
+      3. legacy && concurrent
       
       4. 谈谈你对 fiber tree 的理解
       
       5. 谈谈你对 react-router 的理解
       
       6. 谈谈你对 redux、mobx 的理解
+
+          redux 和 mobx 的对比
       
       7. 谈谈你对 diff 算法的理解
       
       8. 如果判断 dom 节点是否发生了移动? 如何移动 dom 节点？ 
       
-      9. useSyncExternalStore 的原理?
+      9.  useSyncExternalStore 的原理?
+      
+      10. 谈谈你对 react 严格模式的理解？
 
 
   - [x] 前端监控技术的理解
