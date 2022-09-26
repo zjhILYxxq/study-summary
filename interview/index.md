@@ -253,6 +253,37 @@
         runtime 方案
     
     14. 谈谈你对 AST 的理解 ？ 
+
+    15. 谈谈你对 Rollup 的理解 ?
+
+      配置项、插件机制、原理
+    
+    16. 谈谈你对 Esbuild 的理解 ？
+
+      配置项、插件机制、原理
+    
+    17. 谈谈你对 Vite 的理解?
+
+      unbundle 机制
+
+      预构建、二次预构建及优化
+
+      配置项
+
+      插件机制
+
+      怎么使用 esbuild
+
+      middleware
+
+      热更新
+    
+    18. 常见构建工具对比
+
+      webpack、parcell、esbuild、vite、rollup
+
+
+
    
 
 
