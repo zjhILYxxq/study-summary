@@ -421,7 +421,9 @@
     
     8. 一些关键的 manifest.json 文件
     
-    9. 代码中如何区分 client 和 server 端 
+    9. 中间件的使用 
+    
+    10. 代码中如何区分 client 和 server 端 
 
       由于 client 和 server 使用不同的 webpack 配置，所以可以定义一个变量 __client，然后通过 definePlugin 給 client 设置 true，给 server 设置为 false。
 
