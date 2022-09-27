@@ -282,7 +282,7 @@
 
       webpack、parcell、esbuild、vite、rollup
 
-  - [ ] react 及相关依赖技术栈的理解
+  - [x] react 及相关依赖技术栈的理解
 
       1. react 各个版本的变化
       
@@ -427,10 +427,44 @@
 
       由于 client 和 server 使用不同的 webpack 配置，所以可以定义一个变量 __client，然后通过 definePlugin 給 client 设置 true，给 server 设置为 false。
 
-  - [ ] ts 技术的理解
+  - [x] ts 技术的理解
+
+    1. 基础类型
+    2. any、unknow、never 类型
+    3. 元祖类型
+    4. interface(可选、只读、任意属性、继承)
+    5. 函数重载(多个连续函数定义实现函数重载)
+    6. 联合类型 & 交叉类型
+    7. 类型保护
+    8. 可辨识联合类型 ？？
+    9. type 及 type 和 interface 的区别
+    10. 字面量类型
+    11. 泛型 & 泛型约束
+    12. extends 关键字
+    13. 泛型分发
+    14. 阻止泛型分发 - 元祖类型
+    15. infer 类型推断
+    16. 索引类型: 索引查询、索引访问、索引遍历
+    17. 内置工具类型
+    18. never 类型有什么用
+
+  - [x] lerna 技术的理解
+
+    1. npm 包如何生成一个可执行文件
+    
+    2. lerna 常用命令
+
+      init / create / add / bootstrap / version / publish
+
+    3. 各个命令的执行原理
+
+      bootstrap 的原理
+
+      version 的原理
+    
+    4. 固定模式 / 独立模式
 
 
-  - [ ] lerna 技术的理解
 
 - 前端知识
   - [x] [微前端](../micro%20frontend/micro-frontend.md)
