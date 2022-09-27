@@ -409,6 +409,22 @@
     
     4. next.js 的工作机制
 
+      构建(client + server) + 启动
+
+    5. getStaticProps、getStaticPaths、getServerSideProps  
+    
+    6. 动态路由
+
+      动态路由 + getStaticProps、getStaticPaths、getServerSideProps
+
+    7. 浅层路由
+    
+    8. 一些关键的 manifest.json 文件
+    
+    9. 代码中如何区分 client 和 server 端 
+
+      由于 client 和 server 使用不同的 webpack 配置，所以可以定义一个变量 __client，然后通过 definePlugin 給 client 设置 true，给 server 设置为 false。
+
   - [ ] ts 技术的理解
 
 
