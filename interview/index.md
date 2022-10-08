@@ -69,6 +69,8 @@
 
         注意，使用 module federation 以后，css 文件也会通过动态添加 style 标签的方式异步获取。 
 
+        如果是容器化部署，项目 B 可以先把 cdn 地址存到 index.html 中，然后项目 A 打包的时候，通过 fetch 的方式读取 index.html，然后解析静态资源连接处理来，然后添加到 remote 配置项中。
+
 
     4. SaaS 首屏性能是怎么优化的？
 
