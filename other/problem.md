@@ -90,7 +90,7 @@
   - [x] tree shaking
   - [x] module federation 配置
   - [x] module federation 工作原理
-  - [ ] webpack5 持久化缓存
+  - [x] webpack5 持久化缓存
   - [x] webpack hooks
   - [x] loader 工作原理
   - [x] 编写 webpack 插件；
@@ -157,9 +157,6 @@
 - [x] SE0 ？？
 - [x] 常用的 SEO 措施 ？？
 - [x] Core Web Vitals ？？
-- [x] 测量网页内容加载速度的指标 ？？
-- [x] px2vw-view-loader
-- [x] 样式处理
 
 #### lerna 相关
 - [x] lerna 常用命令

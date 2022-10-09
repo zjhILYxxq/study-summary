@@ -198,14 +198,17 @@ window.onunhandledrejection = function (e) {
 };
 ```
 
-虽然通过劫持覆写 `window.onerror` 和 `window.unhandledrejection` 已足以完成异常自动捕获，但为了能获取更详尽的异常上下文, `Sentry` 在内部做了一些更细微的异常捕获。
+虽然通过劫持覆写 `window.onerror` 和 `window.unhandledrejection` 已足以完成异常自动捕获，但为了能获取更详尽的异常信息, `Sentry` 在内部做了一些更细微的异常捕获。
 
 具体来说，就是 Sentry 内部对异常发生的特殊上下文，做了标记。这些特殊上下文包括: `dom` 节点事件回调、`setTimeout` / `setInterval` 回调、`xhr` 接口调用、`requestAnimationFrame` 回调等。
 
-具体处理如果如下:
+举个 🌰，如果是 `click` 事件的 `callback` 中发生了异常， `Sentry` 会捕获这个异常，并将异常发生时的事件 `name`、`dom` 节点描述、`callback` 函数名等信息上报。
+
+具体处理逻辑如下:
+
 - 标记 `setTimeout` / `setInterval` / `requestAnimationFrame`
 
-    为了标记 `setTimeout / setInterval / requestAnimationFrame` 类型的异常，`Sentry` 先劫持覆写了原生的 `setTimout / setInterval / requestAnimationFrame` 方法。新的 `setTimeout / setInterval requestAnimationFrame` 方法调用时，会使用 `try ... catch` 语句块包裹 `callback`。当 `callback` 内部发生异常时，会被 `catch` 捕获，捕获的异常会标记 `setTimeout` / `setInterval` / `requestAnimationFrame`。
+    为了标记 `setTimeout` / `setInterval` / `requestAnimationFrame` 类型的异常，`Sentry` 先劫持覆写了原生的 `setTimout` / `setInterval` / `requestAnimationFrame` 方法。新的 `setTimeout` / `setInterval` / `requestAnimationFrame` 方法调用时，会使用 `try ... catch` 语句块包裹 `callback`。当 `callback` 内部发生异常时，会被 `catch` 捕获，捕获的异常会标记 `setTimeout` / `setInterval` / `requestAnimationFrame`。
 
     具体实现如下:
 
@@ -217,7 +220,7 @@ window.onunhandledrejection = function (e) {
             args[_i] = arguments[_i];
         }
         var originalCallback = args[0];
-        // 对 setTimeout 的入参 callback 使用 try...catch 进行包装
+        // wrap$1 会对 setTimeout 的入参 callback 使用 try...catch 进行包装
         // 在 catch 中上报异常
         args[0] = wrap$1(originalCallback, {
             mechanism: {
@@ -235,9 +238,103 @@ window.onunhandledrejection = function (e) {
 
 
 
-- 标记 dom 事件回调
+- 标记 `dom` 事件回调
 
-- 标记接口回调
+    所有的 `dom` 节点都继承自 `window.Node` 对象，`dom` 对象的 `addEventListener` 方法来自 `Node` 的 `prototype` 对象。
+
+    为了标记 `dom` 事件回调，`Sentry` 对 `Node.prototype.addEventListener` 进行了劫持覆写。新的 `addEventListener` 方法调用时，同样会使用 `try ... catch` 语句块包裹传入的 `handler`。当 `handler` 内部发生异常时，会被 `catch` 捕获，捕获的异常会被标记 `handleEvent`, 并携带 `event name`、`event target` 等信息。
+
+    相关代码实现如下:
+
+    ```
+    function xxx() {
+        var proto = window.Node.prototype;
+        ...
+        // 覆写 addEventListener 方法
+        fill(proto, 'addEventListener', function (original) {
+            
+            return function (eventName, fn, options) {
+                try {
+                    if (typeof fn.handleEvent === 'function') {
+                        fn.handleEvent = wrap$1(fn.handleEvent.bind(fn), {
+                            mechanism: {
+                                data: {
+                                    function: 'handleEvent',
+                                    handler: getFunctionName(fn),
+                                    target: target,
+                                },
+                                handled: true,
+                                type: 'instrument',
+                            },
+                        });
+                    }
+                }
+                catch (err) {}
+                return original.apply(this, [
+                    eventName,
+                    wrap$1(fn, {
+                        mechanism: {
+                            data: {
+                                function: 'addEventListener',
+                                handler: getFunctionName(fn),
+                                target: target,
+                            },
+                            handled: true,
+                            type: 'instrument',
+                        },
+                    }),
+                    options,
+                ]);
+            };
+        });
+    }
+    ```
+
+    其实，除了标记 `dom` 事件回调上下文，`Sentry` 还可以标记 `Notification`、`WebSocket`、`XMLHttpRequest` 等对象的事件回调上下文。可以这么说，只要一个对象有 `addEventListener` 方法并且可以被劫持覆写，那么对应的回调上下文会可以被标记。
+
+
+- 标记 `xhr` 接口回调
+
+    为了标记 `xhr` 接口回调标记，`Sentry` 先对 `XMLHttpRequest.prototype.send` 方法劫持覆写, 等 xhr 实例使用覆写以后的 send 方法时，再对 xhr 对象的 onload、onerror、onprogress、onreadystatechange 方法进行了劫持覆写, 使用 `try ... catch` 语句块包裹传入的 `callback`。当 `callback` 内部发生异常时，会被 `catch` 捕获，捕获的异常会被标记对应的请求阶段。
+
+    具体代码如下:
+
+    ```
+    fill(XMLHttpRequest.prototype, 'send', _wrapXHR);
+
+    function _wrapXHR(originalSend) {
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var xhr = this;
+            var xmlHttpRequestProps = ['onload', 'onerror', 'onprogress', 'onreadystatechange'];
+            xmlHttpRequestProps.forEach(function (prop) {
+                if (prop in xhr && typeof xhr[prop] === 'function') {
+                    fill(xhr, prop, function (original) {
+                        var wrapOptions = {
+                            mechanism: {
+                                data: {
+                                    function: prop,
+                                    handler: getFunctionName(original),
+                                },
+                                handled: true,
+                                type: 'instrument',
+                            },
+                        };
+                        var originalFunction = getOriginalFunction(original);
+                        if (originalFunction) {
+                            wrapOptions.mechanism.data.handler = getFunctionName(originalFunction);
+                        }
+                        return wrap$1(original, wrapOptions);
+                    });
+                }
+            });
+            return originalSend.apply(this, args);
+        };
+
+    ```
 
 
 
@@ -402,9 +499,7 @@ window.onunhandledrejection = function (e) {
 
     针对这一种情况， `Sentry` 采用了覆写 `Node.prototype.addEventListener` 的方式来监控用户的 `click`、`keypress` 行为。
 
-    所有的 `dom` 节点都继承自 `Node` 对象，`dom` 订阅事件时使用的 `addEventListener` 方法来自 `Node.prototype`。
-
-    基于这一机制，`Sentry` 劫持覆写了 `Node.prototype.addEventListener`。当应用代码通过 `addEventListener` 订阅事件时，会使用覆写以后的 `addEventListener` 方法。 
+    由于所有的 `dom` 节点都继承自 `Node` 对象，`Sentry` 劫持覆写了 `Node.prototype.addEventListener`。当应用代码通过 `addEventListener` 订阅事件时，会使用覆写以后的 `addEventListener` 方法。 
     
     新的 `addEventListener` 方法，内部里面也有很巧妙的实现。如果不是 `click`、`keypress` 事件，会直接使用原生的 `addEventListener` 方法注册应用提供的 `listener`。但如果是 `click`、`keypress` 事件，除了使用原生的 `addEventListener` 方法注册应用提供的 `listener` 外，还使用原生 `addEventListener` 注册了一个 `handler`，这个 `handler` 执行的时候会将用户 `click`、`keypress` 行为收集起来。
 
@@ -547,7 +642,4 @@ window.onunhandledrejection = function (e) {
 
 <h3 id="4">结束语</h3>
 
-
-
-<h3 id="5">传送门</h3>
 

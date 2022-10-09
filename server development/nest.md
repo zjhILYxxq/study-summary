@@ -26,5 +26,11 @@ pm2-axon-rpc
 
 pm2-axon、pm2-axon-rpc 这两个 npm 包怎么用？
 
+相关 npm 包: pm2-axon、 pm2-axon-rpc、@pm2/agent、@pm2/io、@pm2/js-api、@pm2/pm2-version-check？ 这些 npm 包都有什么用？
+
+进程间通信: socket 文件和 tcp。如果进程都在本地，用 socket 文件效更高些，而且不占用端口号，权限也更好控制；如果进程在不同的服务器，使用 tcp。
+
+
+
 #### node
 
