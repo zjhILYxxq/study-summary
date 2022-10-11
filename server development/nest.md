@@ -70,3 +70,49 @@ IPC 进程间通信的方式:
 
 - `net` 模块
 
+    `net` 模块提供了创建基于流的 `TCP` 或者和 `IPC` 相关的 `server`、`client` 的异步网络 `API`.
+
+    `net` 模块在 `windows` 上使用具名管道支持 `IPC`，在其他操作系统上则使用 `UNIX` 域套接字。
+
+    在 `UNIX` 上，本地域也称之为 `Unix` 域。路径是文件系统路径名。
+
+    几个关键 `API`：
+    - `net.Server`，继承自 `EventEmitter`，用于创建 `TCP` 或者 `IPC` 服务器。
+
+        `server` 实例的事件:
+        - `close`, `server` 关闭时触发；
+        - `connection`, 建立新连接时触发；
+        - `error`，发生错误时触发；
+        - `listening`， 调用 `server.listen()` 后绑定 `server` 时触发；
+        - `drop`，当连接达到 `server.maxConnections` 阈值时触发；
+
+        `server.listen`, 启动服务器监听连接。一个 `server` 是 `TCP` 还是 `IPC` 服务器，取决于它监听的内容。如果监听的是一个路径，那么就是一个 `IPC` 服务器；如果监听的是一个端口号，那么就是一个 `TCP` 服务器。
+
+        其他:
+  
+    - `net.Socket`, 继承自 `EventEmitter`，用于创建 `TCP` 套接字或者流式 `IPC` 端点。
+
+        `socket` 实例的事件:
+        - `close`, 套接字关闭时触发；
+        - `connect`， 套接字成功建立连接时触发；
+        - `data`， 套接字接收到数据时触发；
+        - `drain`， 当写缓存区变空时触发；
+        - `end`，当套接字的另一端发出传输结束时的信号时触发；
+        - `error`，发生错误时触发；
+        - `lookup`，在解析主机名但在连接之前触发；
+        - `ready`， 套接字准备好时触发；
+        - `timeout`，套接字因不活动而超时时触发；
+
+        `socket.connect`, 在给定的套接字上启动连接。如果第一个参数是端口号，那么启动的是 `TCP` 连接；如果第一个参数是 `path` 字符串，那么启动的是 `IPC` 连接；
+
+    - `net.createConnection`, 创建新的 `net.socket`, 并立即使用 socket.connect 发起连接。根据第一个入参的类型，来判断是 `TCP` 连接还是 `IPC` 连接。
+    
+    - `net.createServer`, 创建一个 TCP 或者 IPC server。
+
+- `process` 模块
+
+- `child process` 模块
+
+- `domain` 模块
+
+
