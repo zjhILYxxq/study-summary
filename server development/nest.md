@@ -10,29 +10,29 @@
 
 #### pm2
 
-预备知识点: process、child_processes、cluster；
+预备知识点: `process`、`child_processes`、`cluster`；
 
-pm2 是一个守护进程管理器，能帮助我们管理项目，并保证项目时刻在线。
+`pm2` 是一个守护进程管理器，能帮助我们管理项目，并保证项目时刻在线。
 
 负载均衡 ？？
 
 pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发 ？？
 
-rpc, remote procedure call protocol, 远程过程调用协议。
+`rpc`, `remote procedure call protocol`, 远程过程调用协议。
 
-node 的 rpc 通信 - 调用其他进程或者机器上的函数。 rpc，用于进程间的通信 ？？ 所以 rpc 最关键的就是通信 ？？
+`node` 的 `rpc` 通信 - 调用其他进程或者机器上的函数。 rpc，用于进程间的通信 ？？ 所以 rpc 最关键的就是通信 ？？
 
-pm2-axon-rpc
+`pm2-axon-rpc`
 
-pm2-axon、pm2-axon-rpc 这两个 npm 包怎么用？
+`pm2-axon`、`pm2-axon-rpc` 这两个 npm 包怎么用？
 
 相关 npm 包: pm2-axon、 pm2-axon-rpc、@pm2/agent、@pm2/io、@pm2/js-api、@pm2/pm2-version-check？ 这些 npm 包都有什么用？
 
-进程间通信: socket 文件和 tcp。如果进程都在本地，用 socket 文件效更高些，而且不占用端口号，权限也更好控制；如果进程在不同的服务器，使用 tcp。
+进程间通信: `socket` 文件和 `tcp`。如果进程都在本地，用 `socket` 文件效更高些，而且不占用端口号，权限也更好控制；如果进程在不同的服务器，使用 tcp。
 
-IPC 进程间通信的方式:
+`IPC` 进程间通信的方式:
 - 管道/匿名管道 - pipe；
-- 有名管道 - FIFO；
+- 具名管道 - FIFO；
 - 信号 - Singal；
 - 消息队列；
 - 共享内存；
@@ -109,7 +109,37 @@ IPC 进程间通信的方式:
     
     - `net.createServer`, 创建一个 TCP 或者 IPC server。
 
+    使用 `net` 模块, 建立通信:
+    - 建立一个 server；
+
+        ```
+        const net = require('net');
+        const server = new net.Server();
+        server.listen(9001, 'localhost');  // tcp 服务通信
+        server.listen('xxx.socket');  // socket 文件通信
+
+        server.on('connection', sock => {
+            sock.write('123');
+        });
+        ```
+    - 建立一个 client；
+
+        ```
+        const net = require('net');
+        const client = new net.Socket();
+        client.connect(9001);  // tcp 服务通信
+        client.connect('xxx.sock');  // socket 文件通信
+
+        client.on('data' => { ... });
+
+        client.write('hello')
+
+        ```
+
 - `process` 模块
+
+    关键 `api`：
+    - `process.cwd()`, 返回当前 `node` 进程的工作目录；
 
 - `child process` 模块
 
