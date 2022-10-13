@@ -110,7 +110,7 @@ pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发
     - `net.createServer`, 创建一个 TCP 或者 IPC server。
 
     使用 `net` 模块, 建立通信:
-    - 建立一个 server；
+    - 建立一个 `server`；
 
         ```
         const net = require('net');
@@ -122,7 +122,7 @@ pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发
             sock.write('123');
         });
         ```
-    - 建立一个 client；
+    - 建立一个 `client`；
 
         ```
         const net = require('net');
@@ -133,8 +133,9 @@ pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发
         client.on('data' => { ... });
 
         client.write('hello')
-
         ```
+
+    一个 `net.Server` 实例可以对接多个 `net.socket` ？？
 
 - `process` 模块
 
