@@ -73,8 +73,10 @@ pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发
 
     解决的办法:
 
-    - 去掉 .pm2 文件夹下的 pub.sock 和 rpc.sock 文件，重新生成守护进程；
-    - 
+    - 去掉 `.pm2` 文件夹下的 `pub.sock` 和 `rpc.sock` 文件，重新生成守护进程；
+    - 使用 `pm2 update`、 `pm2 updatePM2` 命令， 盲测原理: 杀死原来的守护进程，删除掉 `pub.sock` 和 `rpc.sock` 文件，然后重新生成守护进程；
+  
+2. 
 
 
 
