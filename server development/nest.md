@@ -61,6 +61,23 @@ pm2-axon 是一个面向消息的 node.js 套接字库，深受 zeromq 的启发
     - 开始通信；
 
 
+常用命令的工作原理:
+
+- `pm2 start`
+
+- `pm2 startup`
+
+- `pm2 update / pm2 updatePM2`
+
+- `pm2 stop`
+
+- `pm2 kill`
+
+- `pm2 log`
+
+- `pm2 list` 
+
+
 学习过程中遇到的问题:
 
 1. 使用 `pm2` 的时候，为什么有时候会提示 `pm2` 的版本不一致，需要更新？
