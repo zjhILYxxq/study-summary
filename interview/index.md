@@ -101,7 +101,41 @@
         - antd 添加样式前缀，体验会好，但是需要对子应用做改造，支持打包构建是添加样式前缀(antd 版本、构建工具类型会有影响)。
         - 开启严格样式隔离，不需要对子应用做改造，但是体验会比添加样式前缀会差点。
 
-    7. SaaS 业务相关
+    7. 如何在 qiankun 中对接一个 vite 子应用？
+
+        qiankun 中对接 vite 子应用的难点:
+        - 使用 vite 打包的代码，通常采用 es module 格式。qiankun 执行 js 代码时采用 sandbox 机制不支持 es module 格式的代码；
+        - 如果将 vite 打包设置为 umd 格式，懒加载就失效了；
+
+        解决方案:
+        1. 开发环境采用 vite，生产环境采用 webpack；
+
+           缺点:
+           - 需要做两套打包配置；
+           - 开发环境和生产环境打包产物不一致，可能会出现意外情况；
+           - vite 项目本地开发时，还是无法接入 qiankun；
+        
+        2. 将 vite 项目入口文件由静态导入，变为动态导入；
+
+            静态导入，必须在标签上添加 type="module"，且不被 qiankun 的 sandbox 支持。
+
+            如果是动态导入，则不需要在标签上添加 type="module" 属性，并且可以被 qiankun 的 sandbox 支持。
+
+            改造过程:
+            - 入口文件暴露 qiankun 需要的生命周期方法；
+            - 开发模式下，通过 transformHtmlIndex hook，修改 index.html，将入口文件由静态导入改为动态导入，并且在入口文件加载执行完毕以后，把生命周期方法暴露出去。
+            - 生成模式下，可以通过 generateBundle hook，修改 index.html。(也可以通过 gulp 修改)。
+
+        3. 修改 qiankun 的处理逻辑，对 vite 应用单独做处理， 不走 sandbox
+
+            非 vite 应用，还是走 qiankun 的那一套子应用加载逻辑，vite 应用自己写一套加载逻辑(可以是 iframe，也可以是通过 fetch 手动去获取 index.html 片段，然后添加到子应用容器节点下)。
+
+            改造过程:
+            - 主应用需要拦截路由变换。方法: 覆写 window.addEventListener，或者覆写  window.onpopstate、window.onhashchange。然后根据当前路由去决定是加载 vite 应用还是非 vite 应用；
+            - vite 应用要做一下改造，静态文件路径要全部改为绝对路径。
+
+
+    8. SaaS 业务相关
     
       AI 语音三大算法**：
       - **ASR 语音识别**, 将人的语音转化为文字；
