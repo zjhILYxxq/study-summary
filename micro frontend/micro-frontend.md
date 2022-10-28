@@ -48,9 +48,10 @@
 
     主应用会维护一个路由注册表，根据当前路由信息，获取对应的子应用的 js 脚本，然后通过 csr 的方式渲染子应用；如果是已经访问过的子应用，则从缓存中获取子应用的 mount 方法，重新激活子应用。
 
-    使用 single-spa 时， 需要对子应用做三个方面的改造：
+    使用 single-spa 时， 需要对子应用做 4 个方面的改造：
     - 提供 mount、unmount、update 生命周期方法。其中，mount 在子应用时激活调用，调用时会通过 csr 的方式渲染页面；unmount 在子应用冻结时调用；
-    - 打包构建的改造，将生命周期方法暴露给主应用(library、libraryTarget)，通过 publicPath，补全子应用资源加载路径；
+    - 打包构建的改造，将生命周期方法暴露给主应用(library、libraryTarget)；
+    - 通过 publicPath，补全子应用资源加载路径；
     - 子应用路由改造，需要添加子应用前缀；
 
     single-spa 提供了两种模式： application 模式和 parcel 模式：
@@ -99,7 +100,7 @@
   
     qiankun 的 sandbox：
     - proxySandbox - 基于 proxy 实现： 先创建一个类 window 对象，然后构建类 window 对象的 proxy 拦截对 fakeWindow 对象的读写(直接写到 fakeWindow；读时先读 fakeWindow，再读原生 window)；
-    - legacySandbox - 基于 proxy 实现，记录对 window 的修改，子应用卸载时再对 window 做恢复； 
+    - legacySandbox - 基于 proxy 实现，记录对 window 的修改(可精确定位到底是修改了哪个属性)，子应用卸载时再对 window 做恢复； 
     - snapshotSandbox - 快照沙盒: 子应用激活时，先把当前的 window 对象的可枚举属性拷贝一份，window 对象作为子应用的全局对象；子应用冻结时，对比 window 和 fakeWindow， 缓存发生变化的属性；子应用再次激活时，会先根据上次缓存的变化的属性恢复之前的状态；
 
     css 隔离：
