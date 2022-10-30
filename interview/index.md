@@ -190,19 +190,20 @@
     提炼了一套标准配置项、常用的 plugin，通过 byai-cli 的 vite-init 命令可一键初始化。
 
 - 前端知识
+  
   - [x] 微前端技术的理解
 
     1. 谈谈你对微前端技术的理解
 
         微前端解决的问题、优点、挑战、常用技术方案
 
-    3. single-spa 的工作原理 
+    2. single-spa 的工作原理 
     
-    2. qiankun 的工作原理
+    3. qiankun 的工作原理
     
       子应用加载、js 隔离、css 隔离、副作用处理、状态重置
     
-    3. qiankun 在使用过程中有遇到哪些问题？
+    4. qiankun 在使用过程中有遇到哪些问题？
 
       对接 sentry
 
@@ -210,13 +211,21 @@
 
       首个子应用加载优化
 
-    4. 你们的微前端技术架构是怎么样子的?
+    5. 你们的微前端技术架构是怎么样子的?
 
         ssr + qiankun
     
-    5. 谈谈你们为什么要采用 qiankun 的技术方案？  
+    6. 谈谈你们为什么要采用 qiankun 的技术方案？  
 
         产品升级 + 用户体验 + 子应用技术栈升级
+
+    7. 使用 qiankun 的时候如何跨子应用交互？
+
+        方式: 
+
+        - 使用 parcel 模式 + npm 发包 + 更新通知，比较麻烦；
+  
+        - 使用 webpack5 的 module federation，需要构建工具是 webpack5；
 
   - [x] 构建工具的理解
 
@@ -439,7 +448,11 @@
 
       数据同构: 数据只请求一次。
 
-      路由同构: client 还是路由懒加载那一套，借助 history； server 端通过中间件，找到请求 url 对应的 js 文件。
+      路由同构: 
+      
+      - client 还是路由懒加载那一套，借助 history，路由和对应的静态文件的链接，存在 window 里面；
+      
+      - server 端通过中间件，找到请求 url 对应的 js 文件。
 
       使用服务端渲染时，导航栏要每一个页面中都要有。导航栏中配置路由导航信息。
     
@@ -449,19 +462,21 @@
 
       构建(client + server) + 启动
 
-    5. getStaticProps、getStaticPaths、getServerSideProps  
+    5. 数据获取方法：getStaticProps、getStaticPaths、getServerSideProps  
     
     6. 动态路由
 
       动态路由 + getStaticProps、getStaticPaths、getServerSideProps
 
+      动态路由，如果需要 SSG，需要提供 getStaticProps + getStaticPaths；如果是需要 SSR，则需要提供 getServerSideProps
+
     7. 浅层路由
+  
+    8.  一些关键的 manifest.json 文件
     
-    8. 一些关键的 manifest.json 文件
+    9.  中间件的使用 
     
-    9. 中间件的使用 
-    
-    10. 代码中如何区分 client 和 server 端 
+    10.  代码中如何区分 client 和 server 端 
 
       由于 client 和 server 使用不同的 webpack 配置，所以可以定义一个变量 __client，然后通过 definePlugin 給 client 设置 true，给 server 设置为 false。
 
@@ -501,6 +516,29 @@
       version 的原理
     
     4. 固定模式 / 独立模式
+
+  - [ ] webrtc 相关
+
+    1. 
+
+
+    2. 建立 `WebRTC` 对等连接的过程及涉及的相关 `api`
+
+      建立对等连接整个过程需要的实例: 对等连接的两端 `A`、`B` 和一个 `ws` 服务器。
+
+      整个过程:
+      1. `A` 和 `B` 都和 `ws` 服务器建立 `ws` 连接。
+      2. `A` 和 `B` 都通过 `window.RTCPeerConnection` 在本地建立用于对等连接的实例 `pc`。
+      3. `A` 和 `B` 都通过 `window.navigator.getUserMedia` 获取本地音视频流 - `stream`，然后通过 `pc.addStream` 将指定的 `stream` 作为本地的音视频源。
+      4. `A` 通过 `pc.createOffer` 建立一个会话描述对象 `offer sdp`，然后通过 `ws` 连接传递给 `B`。
+      5. `A` 通过 `pc.setLocalDescription` 将 `offer sdp` 设置 `A` 端 对等连接本地描述。这一步成功以后，会去打洞，获取 `A` 端的 `ice`(候选人)信息。`ice` 信息获取成功以后，会触发 `pc` 的 `icecandidate` 事件，在 `callback` 中我们可以拿到 `ice` 信息，然后通过 `ws` 连接传递给 B。
+      6. `B` 通过 `ws` 连接收到 `A` 发送的 `offer sdp` 消息后，通过 `pc.setRemoteDescription` 将 `offer sdp` 作为 B 端对等连接的`远端描述`，然后通过 `pc.createAnswer` 创建一个会话描述对象 `answer sdp`，并通过 `ws` 连接给 `A`；
+      7. `A` 通过 `ws` 连接收到 `B` 发送的 `answer sdp` 信息, 通过 `pc.setRemoteDescription` 将 `answer sdp` 作为 `A` 端对等连接的远端描述；
+      8. `B` 通过 `pc.setLocalDescription`，将 `answer sdp` 设置对等连接的本地描述。 这一步结束以后， `B` 端开始打洞，收集 `ice` 信息。打洞成功以后，会触发 `pc` 的 `icecandidate` 事件。在 `icecandidate` 的 `callback` 中，通过 `ws` 连接将 `ice` 信息传递给 `A`。
+      9. `A`、`B` 交换完 `ice` 信息以后，各自通过 `pc.addIceCandidate` 方法添加一个 `ice` 代理；
+      10. 对等连接建立成功。 `A` 和 `B` 开始视频/音频通话。 此时会触发 `pc.ontrack` 事件。在 `callback` 中可以获取远端的媒体流，然后赋值给 `video`、`audio` 组件。
+
+
 
 
 
