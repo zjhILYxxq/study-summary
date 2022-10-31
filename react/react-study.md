@@ -595,6 +595,14 @@
 
   react 18 之前，如果触发 setState 的上下文是 click、mousemove 的事件回调或者生命周期方法，那么就是异步的；如果是 setTimeout、promise.then、网络请求 等的回调，就是同步的。
 
+- [x] React 的自定义组件头字母为什么要大写？
+
+    主要是为了区分是 React 组件还是 html 节点。
+
+- [x] 为什么我们的代码中并没有用到 React，仍然需要添加 import React from 'react';
+
+    我们写 React 组件时，会使用 JSX 语法，而 JSX 是 React.createElement 的语法糖。
+
 
 
 
