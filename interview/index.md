@@ -167,6 +167,22 @@
 
       [webrtc 相关](../WebRtc/WebRtc.md);
 
+    9. 优化相关
+
+      应用的全链路优化:
+      - 打包构建优化，优化打包速度、打包体积；
+          速度优化: 升级 webpack、dll、使用 cache、external、配置 resolve 等；
+          体积优化: 压缩、tree shaking、懒加载等；
+
+      - 网络方面的优化: cdn、缓存策略；
+      - react 方面的优化: 
+        - 使用 React.memo、useMemo、useCallback、shouldComponentUpdate，反之不必要的重复渲染；
+        - 虚拟列表，房子一次性渲染过多的节点；
+      - 用户体验:
+        - ssr 升级为 ssr + qiankun；
+        - 子应用预渲染；
+        - 使用 mf 跨子应用复用业务逻辑；
+
     
 
 
