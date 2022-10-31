@@ -73,6 +73,12 @@
 
         如果是容器化部署，项目 B 可以先把 cdn 地址存到 index.html 中，然后项目 A 打包的时候，通过 fetch 的方式读取 index.html，然后解析静态资源连接处理来，然后添加到 remote 配置项中。
 
+        其实这里不用 module federation，而是用 qiankun 的 parcel 模式也是可以实现的。
+
+        整个实现过程如下:
+        - 以要复用的组件为起点做 webpack 打包，然后发布做为一个 npm 包(依赖可以复用，就不需要将依赖达到包里面)；
+        - 使用 qiankun 提供的 parcel 模式去手动挂载组件；
+
 
     4. SaaS 首屏性能是怎么优化的？
 
