@@ -490,6 +490,8 @@
         vue 是从发生更新的节点开发， react 是从根节点开始。
 
         为什么要从根节点上开始：设计上的简化；
+    
+    - diff 算法的不同 
 
     - vue 更新调度没有优先级的概念，而 react 有;
 
@@ -586,6 +588,12 @@
     - 自动批处理， react 16、react17 在 setTimeout 中不会批处理；而 react 18，只要 update 的 lane 一致，就会批处理；
     - 服务端支持 suspense 组件；
     - 新增的 hooks - useId、useInsertionEffect、useSyncExternalStore；
+
+- [x] react 的 setState 更新 state 是同步的还是异步的？
+
+  react 18 以后，state 的更新是异步的。
+
+  react 18 之前，如果触发 setState 的上下文是 click、mousemove 的事件回调或者生命周期方法，那么就是异步的；如果是 setTimeout、promise.then、网络请求 等的回调，就是同步的。
 
 
 
