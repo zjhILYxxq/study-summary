@@ -1219,3 +1219,20 @@ type PersonPartial = Partial<Person>;  // PersonPartial 为 { name?: string; age
 #### never 类型有什么用
 
 一个简单的使用，我们定义了一个联合类型，然后在 switch 语句中做类型收敛，default 为 never 类型。这样当别人修改了联合类型，却没有修改 switch 语句块中的逻辑时，default 为新增的类型，无法赋给 never 类型，编译器会提示报错。
+
+```
+function handleValue(val: All) {
+  switch (val.type) {
+    case 'foo':
+      // 这里 val 被收窄为 Foo
+      break
+    case 'bar':
+      // val 在这里是 Bar
+      break
+    default:
+      // val 在这里是 never
+      const exhaustiveCheck: never = val
+      break
+  }
+}
+```
