@@ -603,7 +603,12 @@
 
     我们写 React 组件时，会使用 JSX 语法，而 JSX 是 React.createElement 的语法糖。
 
+- [x] React 不好的地方
 
+  1. react hooks 必须在最外层使用，不能在 if、while 语句块中使用
+  2. jsx 虽然用起来很灵活，但是必须依托于 babel 做转化，不能在编译阶段就优化(vue 在解析 template 的时候，会标注静态节点，静态节点是不需要做 diff 算法的)；
+  3. diff 算法每次要从根节点开始，同层节点 diff 时只能从左到右；
+  4. 为了跨平台，内部有大量的兼容性代码，如合成事件，体积较大；
 
 
 
