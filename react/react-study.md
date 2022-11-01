@@ -754,6 +754,7 @@
       - useMemo、useCallback 重复计算等；
       - 增量渲染，防止由于节点太多，导致 fiber tree 协调、 浏览器渲染时间过长，可以采用 setTimeout 时间分片，也可以使用 requestAnimationFrame(浏览器渲染时间占大头)；
       - 虚拟列表；
+    - 应用要尽早开始渲染，不要有太多的同步接口；
     - 其他： 数据缓存等；
 
     虚拟列表的关键:
