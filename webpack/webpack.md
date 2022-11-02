@@ -239,8 +239,35 @@
   
 
 
+- [x] 如何写一个 loader
 
-- [x] 如何写一个 loader、plugin  
+    根据执行顺序，我们可以将 `loader` 分为 `pre loader`、`normal loader`、`inline loader`、`post loader`。
+
+    根据执行阶段，我们又可以将 `loader` 分为 `pitch loader` 和 `normal loader`。
+
+    使用 `loader` 处理源文件，可以分为三个阶段:
+    - 在处理源文件之前，先经历 `pitch` 阶段；
+    - 读取源文件内容；
+    - 使用 `normal loader` 处理源文件内容；
+
+    `normal loader` 的处理顺序： `pre`、`normal`、`inline`、`post`，从右向左；
+
+    `pitch loader` 的处理顺序: `post`、`inline`、`normal`、`pre`，从左向右；
+
+    `pitch loader` 的熔断机制: 如果 `pitch loader` 返回一个非 `undefined` 的值，那么 `loader` 的执行链条会被阻断--立马掉头执行，直接掉头执行上一个已经执行的 `loader` 的 `normal` 阶段并且将 `pitch` 的返回值传递给下一个 `normal loader`。
+
+    什么时候用 `pitch loader` ？
+
+    - 不需要读取源文件内容的时候，比如说 `cache loader`;
+
+    - 上一个 `loader`的 `normal` 函数返回的并不是处理后的资源文件内容而是一段 `js` 脚本;
+
+    我们可以通过 `loader.raw` 标记 `normal loader` 的参数是 `Buffer`还是 `String`:
+    - 当 `loader.raw` 为 `false` 时，此时我们 `normal loader` 的 `source` 获取的是一个 `String` 类型，这也是默认行为。
+    - 当 `loader.raw` 为 `true` 时，此时这个 `loader`的 `normal` 函数接受的 `source` 参数就是一个 `Buffer` 类型。
+
+
+- [x] 如何写一个 plugin  
 
     loader 本质上一个函数，用于将其他类型的文件，转化为浏览器可以识别的文件类型。
 
