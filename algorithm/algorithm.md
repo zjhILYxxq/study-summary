@@ -49,7 +49,7 @@
   - [x] [经典爬楼梯](https://leetcode.cn/problems/climbing-stairs/), 解法: dp[n] = dp[n - 1] + dp[n - 2];
   - [x] [最小成本爬楼梯](https://leetcode.cn/problems/GzCJIP/), 解法: dp[n] = Math.min(dp[n - 1] + cost[n - 1], dp[n - 2] + cost[n - 2]), 这道题的有意思的点 base case 有 3 个，即 dp[1], dp[2], dp[3];
 - **单序列问题**，题目的输入通常是一个一维数组或者字符串
-  - [x] [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的同态规划问题， f(n) = Math.max(f(n - 1), f(n - 2) + n));
+  - [x] [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的动态规划问题， 解法: dp[n] = Math.max(dp[n - 1], dp[n - 2] + nums[n - 1]);
   - [x] [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
   - [x] [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本；
   - [x] [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
