@@ -88,32 +88,41 @@
     - 解析 html 文件，拿到 js 脚本、css 脚本；
     - 获取外部样式表，将外部样式表和内部样式表都添加到新生成的 html 模板中，将新生成的 html 模板添加到当前 html 页面中；
     - 手动触发 js 脚本的执行，拿到子应用生命周期方法，以 csr 的方式渲染子应用；
+
+    子应用隔离(js、css 的隔离) - sandbox：
+    - js 隔离 - proxySandbox、legacySandbox、snapshotSandbox：
+      
+      - 为每一个对象创建唯一的类 window 对象；
+      
+      - 将 js 脚本使用一个立即执行函数包裹， 将类 window 对象作为 js 脚本执行的全局变量
+
+          ```
+          (function(window) { ... })(fakeWindow)
+          ```
+      - 通过 eval 方法手动触发 js 脚本；
   
-    js 隔离 - sandbox：
-    - 为每一个对象创建唯一的类 window 对象；
-    - 将 js 脚本使用一个立即执行函数包裹， 将类 window 对象作为 js 脚本执行的全局变量
+      qiankun 的 sandbox：
+      - proxySandbox - 基于 proxy 实现： 先创建一个类 window 对象，然后构建类 window 对象的 proxy 拦截对 fakeWindow 对象的读写(直接写到 fakeWindow；读时先读 fakeWindow，再读原生 window)；
+      - legacySandbox - 基于 proxy 实现，记录对 window 的修改(可精确定位到底是修改了哪个属性)，子应用卸载时再对 window 做恢复； 
+      - snapshotSandbox - 快照沙盒: 子应用激活时，先把当前的 window 对象的可枚举属性拷贝一份，window 对象作为子应用的全局对象；子应用冻结时，对比 window 和 fakeWindow， 缓存发生变化的属性；子应用再次激活时，会先根据上次缓存的变化的属性恢复之前的状态；
 
-        ```
-        (function(window) { ... })(fakeWindow)
-        ```
-    - 通过 eval 方法手动触发 js 脚本；
-  
-    qiankun 的 sandbox：
-    - proxySandbox - 基于 proxy 实现： 先创建一个类 window 对象，然后构建类 window 对象的 proxy 拦截对 fakeWindow 对象的读写(直接写到 fakeWindow；读时先读 fakeWindow，再读原生 window)；
-    - legacySandbox - 基于 proxy 实现，记录对 window 的修改(可精确定位到底是修改了哪个属性)，子应用卸载时再对 window 做恢复； 
-    - snapshotSandbox - 快照沙盒: 子应用激活时，先把当前的 window 对象的可枚举属性拷贝一份，window 对象作为子应用的全局对象；子应用冻结时，对比 window 和 fakeWindow， 缓存发生变化的属性；子应用再次激活时，会先根据上次缓存的变化的属性恢复之前的状态；
+    - css 隔离：
+      - 开启 sandbox 之后，如果页面上每次只有一个子应用，由于样式是添加到子应用 html 片段里面的，切换子应用时会自动移除，所以能自动实现子应用的样式隔离；
+        - 父子应用样式隔离、多个子应用同时存在时的样式隔离:
+        - 严格隔离 - 基于 web component 的 shadow dom 实现；
 
-    css 隔离：
-    - 严格隔离 - 基于 web component 的 shadow dom 实现；
+            ```
+            const shadow = element.createShadowRoot();
 
-        ```
-        const shadow = element.createShadowRoot();
+            const shadow = element.attachShadow({ mode: true });
+            ```
+        - scoped 样式隔离 - 给样式添加属性选择器；
+    
+      动态添加的 script、style，也会做隔离，原因是 qinakun 对 appendChild 方法做了拦截，重写了 appendChild 方法，然后对 js、css 做隔离。
 
-        const shadow = element.attachShadow({ mode: true });
-        ```
-    - scoped 样式隔离 - 给样式添加属性选择器；
-  
-    动态添加的 script、style，也会做隔离，原因是 qinakun 对 appendChild 方法做了拦截，重写了 appendChild 方法，然后对 js、css 做隔离。
+    注意，如果 qiankun 不开启 sandbox，那么 js 代码执行时的上下文还是全局 window 对象，样式是直接添加到 html 的 head 标签里面，而不是子应用 html 片段里面。
+
+    开启 sandbox 以后，js 代码执行会根据是否支持 window.proxy 而采取 proxySandbox 还是 snapshotSandbox，css 代码如果未做特殊配置，会通过添加到子应用 html 片段里面的手段实现子应用之间的样式隔离(每次页面上只有一个子应用)，但是此时子应用和主应用之间仍然存在样式干扰的问题，需要通过严格样式隔离或者 scoped 样式隔离。
 
     副作用的清理： 
     - sandbox 隔离，没有副作用；
