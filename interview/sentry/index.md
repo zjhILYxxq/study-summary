@@ -47,6 +47,14 @@
 
     `ReportingObserver`, 可以监听过时的 api、浏览器干预如删除广告、替换大图片等报告等的打印。
 
+9. 异常上报
+
+    接口上报
+
+    jsonp
+
+    sendBeacon
+
 
 
 
