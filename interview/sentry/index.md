@@ -34,3 +34,19 @@
     页面截屏： 将 dom 节点转化为 canvas，然后获取到内容再上传？
 
     再获取这个页面相关的异常报错、首屏上报数据，定位到底是哪一步操作导致了白屏；
+
+8. 前端做监控，可以用到的几个 api
+
+    `IntersectionObserver`，监听一个元素和可视区域相交部分的比例，然后在可视比例达到某个阈值的时候触发回调，可以在图片懒加载、监控元素是否可见时使用。
+
+    `MutationObserver`, 监听对元素属性的修改、元素子节点的变化。(监控对象变化，可以使用 Object.defineProperty 或者 proxy)。
+
+    `ResizeObserver`, 监听元素大小的变化。
+
+    `PerformanceObserver`, 性能监控。
+
+    `ReportingObserver`, 可以监听过时的 api、浏览器干预如删除广告、替换大图片等报告等的打印。
+
+
+
+
