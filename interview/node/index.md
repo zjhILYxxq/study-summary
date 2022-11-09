@@ -115,8 +115,17 @@
     - 在 `/usr/local/bin` 目录下新增命令文件；
 
     `npm install` 发生了什么:
+    - 先执行 `preinstall hook`； 
+    - 读取 `npm` 配置，即 `.npmrc` 文件，优先级顺序为: 项目级的 .npmrc 文件 > 用户级的 .npmrc 文件 > 全局的 .npmrc 文件 > npm 内置的 .npmrc 文件；
+    - 然后检查项目根目录中有没有 `package-lock.json` 文件，如果有 `package-lock.json` 文件，则检查 `package-lock.json` 文件和 `package.json` 文件中声明的版本是否一致。一致，直接使用 `package-lock.json` 文件中的信息，从缓存或从网络仓库中加载依赖。不一致，则根据 `npm` 版本进行处理。
+    - 如果没有 `package-lock.json` 文件，则根据 `package.json` 文件递归构建依赖树，然后按照构建好的依赖树下载完整的依赖资源，在下载时会检查是否有相关缓存。有，则将缓存内容解压到 `node_modules` 目录中。没有，则先从 `npm` 远程仓库下载包资源，检查包的完整性，并将其添加到缓存，同时解压到 `node_modules` 目录中。
+    - 生成 `package-lock.json` 文件。
+    - 执行 `postinstall hook`。
 
-    幽灵依赖: 项目中使用了一些没有被定义在项目中的 `package.json` 文件中的包。
+    构建依赖树时，首先将项目根目录的 `package.json` 文件中 `dependencies` 和 `devDependencies` 选项的依赖按照首字母（@排最前）进行排序，排好序后 `npm` 会开启多进程从每个首层依赖模块向下递归获取子依赖。这样便获得一棵完整的依赖树，其中可能包含大量重复依赖。在 `npm3` 以前会严格按照依赖树的结构进行安装，因此会造成依赖冗余。 从 `npm3` 开始默认加入了一个 `dedupe` 的过程。它会遍历所有依赖，将每个依赖 安装在根目录的 `node_modules `文件夹中，当发现有重复依赖时，则将其丢弃。这就是所谓依赖扁平化结构处理。
+
+
+    扁平化结构，会带来幽灵依赖问题。幽灵依赖: 项目中使用了一些没有被定义在项目中的 `package.json` 文件中的包。
 
     `npm`、`yarn`、`pnpm` 的对比：
     - `npm2` 是通过嵌套的方式管理 `node_modules` 的，会有同样的依赖复制多次的问题;
