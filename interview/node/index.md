@@ -105,9 +105,9 @@
     - 执行相关模块命令时会先进行依赖安装，但会在安装成功并执行完相关命令代码后便删除此依赖，从而避免了全局安装带来的问题;
 
     `npm run xx` 的原理： 
-    - npm run 会创建一个 shell 脚本，package.json 文件的 scripts 选项中自定义的脚本内容就会在这个新创建的 shell 脚本中运行；
-    - 把当前目录下的 node_modules/.bin 目录路径添加到系统环境变量 PATH 中，这样 Shell 脚本的命令解析器就可以查找当前目录中的 node_modules/.bin 目录中的命令了；
-    - 执行结束后，再将 PATH 变量恢复原样；
+    - `npm run` 会创建一个 `shell` 脚本，`package.json` 文件的 `scripts` 选项中自定义的脚本内容就会在这个新创建的 `shell` 脚本中运行；
+    - 把当前目录下的 `node_modules/.bin` 目录路径添加到系统环境变量 `PATH` 中，这样 `Shell` 脚本的命令解析器就可以查找当前目录中的 `node_modules/.bin` 目录中的命令了；
+    - 执行结束后，再将 `PATH` 变量恢复原样；
     - 通过命令执行对应的应用程序，然后输出结果；
 
     `npm link`： 
