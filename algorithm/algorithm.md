@@ -133,8 +133,12 @@
 
     解题思路: dp[i] = Math.max(dp[i], j * (i - j), j * dp[i - j], dp[j] * (i - j), dp[j] * dp[i - j]);
 
-  - [ ] [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
+  - [x] [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
+
+    解题思路: dp[n] = dp[n - 1] * x;
+
   - [ ] [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
+  
   - [ ] [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
 
     一个问题，可以使用回溯、暴力求解，但是会超时，可以考虑是否可以使用动态回归。
