@@ -52,7 +52,7 @@
   - [x] [房屋偷盗问题](https://leetcode.cn/problems/Gu0c2T/) - 典型的动态规划问题， 解法: dp[n] = Math.max(dp[n - 1], dp[n - 2] + nums[n - 1]);
   - [x] [环形房屋偷盗问题](https://leetcode.cn/problems/PzWKhm/) - 环形房屋偷盗问题，和普通偷盗问题的区别是最后一个屋子和第一个屋子相邻。解决思路是，将整个问题分解为两个子问题，从 0 - n - 2 和 从 1 到 n - 1 两个子问题。  
   - [x] [粉刷房子](https://leetcode.cn/problems/JEj789/) - 思路是找到各个颜色粉刷房子的最小成本，然后自从各个颜色的最小成本中找出最小成本(这道题还是比较简单的);
-  - [x] [翻转字符](https://leetcode.cn/problems/cyJERH/) - 思路是只需统计 0 翻转成 1 的最小次数；
+  - [x] [翻转字符](https://leetcode.cn/problems/cyJERH/) - 解题思路: 先统计翻转为 0 的次数，再统计翻转成 1 的次数，再判断此次需不需要将 0 翻转为 。
   - [x] [最长斐波那契数列](https://leetcode.cn/problems/Q91FMA/) - 解题思路，dp[i][j] = dp[j][k] + 1, dp[i][j] 代表最后一位为 i， 前一位为 j 的斐波那契数列， d[j][k] 为最后一位为 j，前一位为 k 的斐波那契数列。解题时，需要建立一个 n * n 的 dp 数组。
   - [ ] [最少回文分割](https://leetcode.cn/problems/omKAoA/) - 困难
   
