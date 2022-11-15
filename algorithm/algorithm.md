@@ -129,7 +129,10 @@
 
 
 - **其他动态规划问题**
-  - [ ] [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
+  - [x] [剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/) - 这道题值得再回来回顾一下，是自己一遍做出来的，赞
+
+    解题思路: dp[i] = Math.max(dp[i], j * (i - j), j * dp[i - j], dp[j] * (i - j), dp[j] * dp[i - j]);
+
   - [ ] [数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/) - 好题！！
   - [ ] [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
   - [ ] [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
