@@ -103,13 +103,13 @@
 
     股票问题有三个状态：股票交易天数、交易次数、持有股票情况
 
-    当天不持有股票: dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+    当天不持有股票的最大收益: dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
 
-    当天持有股票: dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+    当天持有股票的最大收益: dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
 
     当股票只能交易一次时：
     - 持有股票:  dp[i][1] = max(dp[i - 1][1], -prices[i]), 即要么之前买了没卖，要么今天买；
-    - 不持有股票: dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+    - 不持有股票: dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i]), 即之前持有今天卖出，或者之前不持有今天也没有买入；
 
     当股票可以交易无数次时:
     - 持有股票: dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
@@ -137,7 +137,9 @@
 
     解题思路: dp[n] = dp[n - 1] * x;
 
-  - [ ] [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
+  - [x] [礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/) - dfs 超时，改用动态回归，好题！！
+
+    解题思路: 二维数组，只要是从左上角移动到右下角的题目，都直接用动态规划直接解就好了。
   
   - [ ] [回文字符串的个数](https://leetcode.cn/problems/a7VOhD/) - 使用动态规划可解，但是时间复杂度较大；
 
