@@ -67,6 +67,8 @@
 
     在编译过程中，node 会对获取的 javascript 文件进行头尾包装，在头部添加 `(function(exports, require, module, __filename, __dirname) {`, 在尾部添加 `\n}`，然后通过类似 `eval` 的方式执行 `js` 代码。
 
+6. 包和 npm
+
 
 
 
