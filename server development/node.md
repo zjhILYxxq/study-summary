@@ -102,6 +102,16 @@
     - `types`, 对外暴露 typescript 相关的类型定义；
     - `workspaces`, `monorepo` 开发时使用；
 
+7. 依赖包全局安装模式
+
+    全局模式安装:
+
+    ```
+    npm install xxx -g
+    ```
+
+    `-g` 是将一个包安装为全局可用的可执行文件。假如可执行文件的位置是 `/usr/local/bin/webpack`, 那么模块的目录就是 `/usr/local/lib/node_modules/webpack`, 然后通过软链接的方式，将 `bin` 字段配置的可执行文件链接到 `/usr/local/bin` 目录下。
+
 
 
 
