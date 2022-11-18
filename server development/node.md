@@ -67,7 +67,43 @@
 
     在编译过程中，node 会对获取的 javascript 文件进行头尾包装，在头部添加 `(function(exports, require, module, __filename, __dirname) {`, 在尾部添加 `\n}`，然后通过类似 `eval` 的方式执行 `js` 代码。
 
-6. 包和 npm
+6. `commonjs` 的包规范
+
+    `commonjs` 的包规范也非常简单，分为两个部分: 包结构和包描述文件。
+
+    包实际上是一个存档文件，即一个目录直接打包为 `.zip` 或者 `tar.gz` 格式的文件，安装后解压还原为目录。
+
+    完全符合 `commonjs` 规范的包，应该包含一下文件:
+    - `package.json`， 包描述文件；
+    - `bin`, 用于存储可执行二进制文件的目录；
+    - `lib`, 用于存放 javascript 代码的目录;
+    - `doc`, 用于存放文档的目录；
+    - `test`，用于存放单元测试用例的代码；
+
+    包描述文件 `package.json` 的常用字段:
+    - `name`, 包名;
+    - `description`, 包简介；
+    - `version`, 包版本号；
+    - `keywords`, 关键词数组，主要用来做分类搜索，一个好的关键词数组有利于用户可以快速找到自己编写的包；
+    - `maintainers`，包维护者列表；
+    - `contributors`，贡献者列表；
+    - `bugs`，一个可以反馈 bug 的网页地址或者邮箱地址；
+    - `dependences`，当前包所需要依赖的包列表，这个属性非常重要，npm 会通过这个属性自动加载依赖的包；
+    - `devDependencies`，开发依赖，npm 不会自动加载，需要开发人员自己手动下载；
+    - `peerDependencies`，当开发一些插件和工具包时，对使用方的运行环境的依赖包版本有要求，可以使用 `peerDependencies` 字段进行声明;
+    - `scripts`, 脚本说明对象；
+    - `bin`，当我们希望包可以作为命令行工具使用时，可以配置 bin 字段。配置好 bin 字段以后，包在安装的时候会自动将脚本添加到执行路径中。如果是全局安装，会添加到全局环境中；如果是局部安装，会添加到项目的 node_modules/.bin 目录中。
+    - `files`, 声明 `npm publish` 时要上传的文件，如果未指定，默认上传当前文件夹下的全部文件。我们可以在包的根目录或子目录中提供 .npmignore 文件，以防止某些文件被发布。.npmignore 文件的工作原理与.gitignore 一样。如果存在.gitignore 文件，而缺少.npmignore，则将改用.gitignore 的内容。files字段内容会覆盖.npmignore 和.gitignore的内容。
+    - `private`，和发布 `npm` 包相关，如果为 `ture`，`npm` 会拒绝发布；
+    - `main`, 定义包的入口文件，`browser` 环境和 `node` 环境均可使用；
+    - `module`，定义包的符合 `ESM` 规范的入口文件，`broser` 环境和 `node` 环境均可使用；
+    - `browser`，定义包在 `browser` 环境下的入口文件；
+    - `type`， 包遵循的模块化规范，默认 `commonjs`；
+    - `types`, 对外暴露 typescript 相关的类型定义；
+    - `workspaces`, `monorepo` 开发时使用；
+
+
+
 
 
 
