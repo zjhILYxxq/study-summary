@@ -34,13 +34,26 @@
 
     强制刷新浏览器，会给请求头添加 `cache-control: no-cache` 字段。
 
+- [ ] 前端鉴权认证
+
+- [ ] 竞态问题
+
+- [ ] 手写 promise
+
+
 
 - [x] 从输入 url 到页面展示
+
 - [x] es6 module 和 commonjs
+
 - [x] 跨域
+
 - [x] xss 和 csrf
+
 - [x] dom2.0
+
 - [x] 闭包
+
 - [x] eval 和 new Function 的区别
 
     eval中的代码执行时的作用域为当前作用域。它可以访问到函数中的局部变量。
