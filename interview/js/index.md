@@ -81,7 +81,7 @@
       - `pre-connect`、`pre-load`、`pre-fetch`;
       - 合理的浏览器缓存策略；
     - 页面渲染优化
-      - 避免回流、重绘 - 批量操作 `dom tree`，给 `dom` 节点设置高度、宽度，频繁操作的 `dom` 节点脱离文档流；
+      - 避免回流、重绘 - 批量操作 `dom tree`，给 `dom` 节点设置高度、宽度，频繁操作的 `dom` 节点脱离文档流,能用 `css` 实现的动画不要使用 `js` 实现；；
       - 增量渲染 - 避免一次性渲染太多节点；
       - 虚拟列表
       - `react` 的 `useMemo`、`memo`、`shouldComponentUpdate`；
