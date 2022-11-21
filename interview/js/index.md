@@ -62,3 +62,35 @@
     new Function中的代码执行时的作用域为全局作用域，不论它的在哪个地方调用的。
 
 下午把性能优化、光神最近的博客看看
+
+- [x] 前端性能优化
+
+    前端的针对性优化:
+    - 构建优化
+      - 构建体积、速度的优化；
+      - `tree shaking`、`code spliting`、`code preload`；
+      - 将有繁重计算的 `javascript` 抽离到 `web worker`;
+      - 在 `javascript` 中使用 `module/nomodule` 模式，即打包两份文件，一份符合 `esm` 规范，不使用 `babel` 处理源文件，一份使用 `babel` 处理，`index.html` 文件提供两个入口文件，即 `type="module"` 和 `type="nomodule"`,能够识别 `type="module"` 会自动忽略 `type="nomoudle"`;
+      - 使用体积小巧的库，替换到之前添加的大型库，比如 `day.js` 替换 `moment.js`;
+    - 资源请求优化
+      - `gzip` 预压缩静态资源；
+      - 对字体可以进行 `preload`、缓存到 `service worker` 中；
+      - 静态资源如 `html`、`js`、`css`、图片压缩、`preload`；
+      - `js` 异步加载；
+      - 内联关键 `css`、`js`；
+      - `pre-connect`、`pre-load`、`pre-fetch`;
+      - 合理的浏览器缓存策略；
+    - 页面渲染优化
+      - 避免回流、重绘 - 批量操作 `dom tree`，给 `dom` 节点设置高度、宽度，频繁操作的 `dom` 节点脱离文档流；
+      - 增量渲染 - 避免一次性渲染太多节点；
+      - 虚拟列表
+      - `react` 的 `useMemo`、`memo`、`shouldComponentUpdate`；
+      - 选择合适的渲染策略: `csr` / `ssr` / `ssg` / `hydate` 等；
+
+- [x] `preload` 和 `prefetch`
+
+    `preload` 是一种声明式的资源请求方式，用于提前加载一些首屏需要的资源，不会阻塞 `onload` 事件；
+
+    `prefetch` 是利用浏览器空闲时间去加载浏览器将来可能用来的资源的一种机制。
+
+    简单来说，`preload` 可以用于优化首屏性能，`prefetch` 用于优化懒加载性能。
