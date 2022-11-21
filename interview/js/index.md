@@ -17,10 +17,23 @@
     [缓存机制](https://juejin.cn/post/6844904063193219080#heading-54)。
 
     应用的通用缓存配置:
-    - 入口文件采用协商缓存；
+    - 入口文件采用协商缓存(这里以前居然一直记的是不缓存，有点搞笑)；
     - 静态文件采用强缓存；
 
     要注意请求头和响应头里面的 `cache-control` 字段。
+
+    响应头的 `cache-control` 字段:
+    - `private`, 内容只能被缓存到浏览器中，不能缓存到代理服务器中；
+    - `public`, 内容可以被缓存到浏览器、代理服务器中；
+    - `no-cache`，协商缓存；
+    - `no-store`，所有的内容都不可以被缓存；
+    - `max-age`，强缓存；
+
+    请求头的 `cache-control` 字段:
+    - `no-cache`，忽略本地缓存，强制与服务器进行协商。
+
+    强制刷新浏览器，会给请求头添加 `cache-control: no-cache` 字段。
+
 
 - [x] 从输入 url 到页面展示
 - [x] es6 module 和 commonjs
