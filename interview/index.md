@@ -73,7 +73,9 @@
 
         如果是容器化部署，项目 B 可以先把 cdn 地址存到 index.html 中，然后项目 A 打包的时候，通过 fetch 的方式读取 index.html，然后解析静态资源连接处理来，然后添加到 remote 配置项中。
 
-        其实这里不用 module federation，而是用 qiankun 的 parcel 模式也是可以实现的。
+        其实这里不用 module federation，用 qiankun 的 parcel 模式也是可以实现的:
+        - 将应用B 通过 parcel 的方式添加，然后通知子应用 B 展示指定页面；
+        - 将复用逻辑抽离为 npm 包；
 
         整个实现过程如下:
         - 以要复用的组件为起点做 webpack 打包，然后发布做为一个 npm 包(依赖可以复用，就不需要将依赖达到包里面)；
@@ -235,7 +237,7 @@
     
     3. qiankun 的工作原理
     
-      子应用加载、js 隔离、css 隔离、副作用处理、状态重置
+      子应用加载、js 隔离、css 隔离、副作用处理、状态恢复
     
     4. qiankun 在使用过程中有遇到哪些问题？
 
