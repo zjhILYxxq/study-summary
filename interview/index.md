@@ -259,6 +259,8 @@
 
         方式: 
 
+        - 使用 parcel 模式手动挂载某个子应用，通知子应用进行某些操作；
+
         - 使用 parcel 模式 + npm 发包 + 更新通知，比较麻烦；
   
         - 使用 webpack5 的 module federation，需要构建工具是 webpack5；
