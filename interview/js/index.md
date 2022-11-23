@@ -75,9 +75,21 @@
 
     限制原因: 防止服务器压力过大。
 
-    > 不过这个问题，在 http2.0 已经被解决。
+    > 不过这个问题，在 `http2.0` 已经被解决。
 
-- [ ] `eval` 和 `new Function` 的区别
+- [ ] `map` 和 `object` 的区别
+
+    `object` 作为 `hash map` 的缺点:
+    - `key` 只能是字符串、数字、`symbol`，而 `map` 可以使用对象作为 `key`；
+    - 使用 `object` 作为 hash map，会存在不必要的继承，不过这一点可以通过 `Object.create(null)` 来解决；
+    - 读取 `object` 属性时，需要通过 `hasOwnProperty` 做防御性编程, 当然也可以借助 `object.keys`;
+    - 读取 `object` 属性的 `length`、遍历属性、清空属性，都不方便；
+    - `object` 每个属性都会有属性描述符数据;
+    - `object` 中的键是无序的；
+    - `object` 没有 `map` 高效；
+
+
+- [x] `eval` 和 `new Function` 的区别
 
     `eval` 中的代码执行时的作用域为当前作用域。它可以访问到函数中的局部变量。
     
