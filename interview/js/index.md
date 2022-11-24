@@ -101,7 +101,47 @@
 
     后端: 数据分片组合，利用 `Nodejs` 的 读写流（`readStream/writeStream`），将所有切片的流传输到最终文件的流里;
 
+- [x] promise 输出
 
+    ```
+    async function async1() {
+        console.log("async1 start");
+        await async2();
+        console.log("async1 end");
+    }
+    async function async2() {
+        console.log("async2");
+    }
+    async1();
+    console.log('start')
+    ```
+
+    输出结果:
+
+    ```
+    async1 start
+    async2
+    async1 end
+    start
+    ```
+
+    本质上，上面的那块代码，可以转化为:
+
+    ```
+    async function async1() {
+        console.log("async1 start");
+        // 转换后代码
+        new Promise(resolve => {
+            console.log("async2")
+            resolve()
+        }).then(res => console.log("async1 end"))
+    }
+    async function async2() {
+        console.log("async2");
+    }
+    async1();
+    console.log("start")
+    ```
 
 - [ ] 服务端流式渲染、三方同构渲染？？
 
