@@ -71,10 +71,19 @@
 
     React18 新定义的 hook，使用时可以开启 concurrent 模式。
 
+  - [ ] `useSyncExternal` 的实现原理
+
   - **封装自定义 hook**
 
     自定义 hook，要 use 开头。
 
+- [x] 怎么在 `react hooks` 中实现 `forceUpdate`
+
+    要在 hooks 中实现 forceUpdate， 关键是要把函数组件内部定义的 seState 暴露出去。
+
+    我们无法直接将 setState 暴露出去，但是可以通过其他方式:
+    - 发布/订阅模式，子组件内部通过 subscribe 方法把 setState 注册进去，其他地方触发发布；
+    - 修改 props，把 setState 暴露出去，但是不建议这么做，因为 props 只读；
 
 - [x] 类组件生命周期方法使用
 
@@ -737,6 +746,8 @@
 
 
     redux 触发更新是通过 dispatch 方式手动触发的，方便追踪，整个更新过程有清晰的脉络；而 mobx 是通过修改 state，然后自动触发更新的，追踪起来就比较麻烦了。尤其是项目越来越大，mobx 定义的 state 越来越复杂，更新的追踪就更复杂了。
+
+
 
 
 
