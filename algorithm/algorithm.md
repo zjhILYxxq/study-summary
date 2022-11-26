@@ -188,9 +188,9 @@ function backTrack(list, track) {
 
 常见的回溯算法问题：
 - **集合、排列、子集问题**
-  - [x] [所有子集](https://leetcode.cn/problems/TVdhkn/)
+  - [x] [所有子集](https://leetcode.cn/problems/TVdhkn/)，没有重复元素
   - [x] [包含 K 个元素的组合](https://leetcode.cn/problems/uUsW3B/)
-  - [x] [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/)
+  - [x] [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/), 这道题比较简单，有两个关键点要注意 - 元素可以重复选择和组合内部没有重复元素；
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题的关键是先排序，然后去除重复的组合(去除重复的组合的方法要回来回顾一下)
   - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/)
   - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/)
@@ -516,6 +516,7 @@ function threeSum(nums) {
 常见的递归解法:
 - **反转链表**
 - **有序链表合并**
+- **二叉树递归**
 
 
 #### 递归
