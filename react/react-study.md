@@ -79,7 +79,17 @@
 
 - [ ] `useTranstion` 的实现原理
 
-- [ ] 使用 `hooks` 遇到闭包问题怎么解决？？  
+- [x] 使用 `hooks` 遇到闭包问题怎么解决？？  
+
+  首先要看，为什么使用 `hooks` 为什么会产生闭包问题。
+
+  要产生闭包问题，需要存在两个要素:
+  - 有 `useState` 返回一个 `state`；
+  - 在 `useEffect`、`useMemo`、`useCallback` 的入参 `callback` 中使用了 state，并且依赖项和 `state` 无关；
+
+  解决方案：
+  - 要添加相应的依赖项；
+  - 使用 `useRef`；
 
 - [x] 怎么在 `react hooks` 中实现 `forceUpdate`
 
