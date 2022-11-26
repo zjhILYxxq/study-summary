@@ -71,11 +71,15 @@
 
     React18 新定义的 hook，使用时可以开启 concurrent 模式。
 
-  - [ ] `useSyncExternal` 的实现原理
-
   - **封装自定义 hook**
 
     自定义 hook，要 use 开头。
+
+- [ ] `useSyncExternal` 的实现原理
+
+- [ ] `useTranstion` 的实现原理
+
+- [ ] 使用 `hooks` 遇到闭包问题怎么解决？？  
 
 - [x] 怎么在 `react hooks` 中实现 `forceUpdate`
 
