@@ -206,7 +206,7 @@ function backTrack(list, track) {
     去重有一个小技巧：如果当前元素和上一个元素相等，且上一个元素还没有被选择，那么当前元素不可选。如果不这么处理，那就造成重复了。
 
 - **其他问题**
-  - [生成匹配的括号](https://leetcode.cn/problems/IDBivT/)
+  - [生成匹配的括号](https://leetcode.cn/problems/IDBivT/), 这个题可以使用动态规划算法来解
   - [分割回文子字符串](https://leetcode.cn/problems/M99OJA/)
   - [恢复 IP 地址](https://leetcode.cn/problems/0on3uN/)
 
