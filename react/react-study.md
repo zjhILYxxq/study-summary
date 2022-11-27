@@ -75,9 +75,29 @@
 
     自定义 hook，要 use 开头。
 
-- [ ] `useSyncExternal` 的实现原理
+- [x] `useSyncExternalStore` 的实现原理
 
-- [ ] `useTranstion` 的实现原理
+  `useSyncExternal` 这个 `api` 是给第三方类库，如 redux、mobx 使用的，主要是为了解决开启 concurrent 模式下，store 状态不一致的问题。
+
+  机制: 将 `concurrent` 模式变为 `sync` 模式。
+
+  核心机制: 
+  - 通过 `dispatch` 修改 `store` 状态时，强制使用 `Sync` 同步不可中断渲染；
+  - `Concurrent` 模式下，协调结束以后会进行一致性检查，如果发现状态不一致，强制重新进行一次 `Sync` 同步不可中断渲染；
+  - `commit` 阶段时，再进行一次一致性检查，如果发现状态不一致，强制重新进行一次 `Sync` 同步不可中断渲染；
+
+
+- [x] `useTranstion` 的实现原理
+
+  `useTransition` 如何实现 concurrent 模式和类似防抖、节流的效果的。
+
+  调用 useTransition 返回的 startTransiton 方式时，会确定一个 transition 上下文，此时如果触发 setState，那么该更新就会是 concurrent 模式。
+
+  我们知道，调用 useTransition 会返回一个 `isPending`, 这个 isPending 是通过 useState 返回的，默认为 `false`。当调用 startTransition 方法时，会先通过 setState 将 isPending 设置为 true， 上下文直接上下文或者其他；然后将上下文设置为 transition，这样 callback 中的 setState 执行时，上下文就变成了 transition。
+
+  这样，如果一直触发 startTransition， 那么高优先级的更新先处理，低优先的更新被阻塞，所以能得到防抖的效果。
+
+  低优先级的更新，会设置一个最迟必须处理时间，超过 5s 必须被处理，所以能得大哦 throttle 的效果。
 
 - [x] 使用 `hooks` 遇到闭包问题怎么解决？？  
 
