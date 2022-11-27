@@ -198,8 +198,8 @@ function backTrack(list, track) {
   - [x] [组合总和-2](https://leetcode.cn/problems/combination-sum-ii/), 这道题和上面 [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/) 是同一道题；
   - [x] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/), 这道题和上面两道题稍微不同，不能重复选择元素，也不含有重复元素，要稍微简单一点；
   - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/) - 使用回溯会超时，这就要考虑使用动态规划了
-  - [x] [子集-1](https://leetcode.cn/problems/subsets
-  - [x] [子集-2](https://leetcode.cn/problems/subsets-ii/)
+  - [x] [子集-1](https://leetcode.cn/problems/subsets， 这道题和 [所有子集](https://leetcode.cn/problems/TVdhkn/) 是同一道题；
+  - [x] [子集-2](https://leetcode.cn/problems/subsets-ii/), 这道题和上一道题的区别是列表中会存在重复元素，需要排序和去重；
 
     在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
 
