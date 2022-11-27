@@ -192,13 +192,13 @@ function backTrack(list, track) {
   - [x] [包含 K 个元素的组合](https://leetcode.cn/problems/uUsW3B/)
   - [x] [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/), 这道题比较简单，有两个关键点要注意 - 元素可以重复选择和组合内部没有重复元素；
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题有两个关键点要注意: 排序 + 重复元素的去重处理；
-  - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/), 这道题有三个关键点要注意: 排序 + 重复元素的去重处理 + 元素顺序不同；
-  - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/)
-  - [x] [组合总和-1](https://leetcode.cn/problems/combination-sum/)
+  - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/), 这道题有三个关键点要注意: 排序 + 重复元素的去重处理 + 元素顺序不同(需要一个缓存来处理)；
+  - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/), 这道题比上一个题要简单一些，不需要排序，不需要重复元素的去重，关键是元素顺序不同，要全排列；
+  - [x] [组合总和-1](https://leetcode.cn/problems/combination-sum/),
   - [x] [组合总和-2](https://leetcode.cn/problems/combination-sum-ii/)
   - [x] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/)
   - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/) - 使用回溯会超时，这就要考虑使用动态规划了
-  - [x] [子集-1](https://leetcode.cn/problems/subsets/)
+  - [x] [子集-1](https://leetcode.cn/problems/subsets
   - [x] [子集-2](https://leetcode.cn/problems/subsets-ii/)
 
     在集合、排列、子集问题中，如果给定的列表中有重复元素，那么就需要先做排序，然后再去做去重。
