@@ -194,7 +194,7 @@ function backTrack(list, track) {
   - [x] [含有重复元素的组合](https://leetcode.cn/problems/4sjJUc/), 这道题有两个关键点要注意: 排序 + 重复元素的去重处理；
   - [x] [含有重复元素的全排列组合](https://leetcode.cn/problems/7p8L0Z/), 这道题有三个关键点要注意: 排序 + 重复元素的去重处理 + 元素顺序不同(需要一个缓存来处理)；
   - [x] [没有重复元素的全排列组合](https://leetcode.cn/problems/VvJkup/), 这道题比上一个题要简单一些，不需要排序，不需要重复元素的去重，关键是元素顺序不同，要全排列；
-  - [x] [组合总和-1](https://leetcode.cn/problems/combination-sum/),
+  - [x] [组合总和-1](https://leetcode.cn/problems/combination-sum/), 这道题和上面 [允许选择重复元素的组合](https://leetcode.cn/problems/Ygoe9J/) 是同一道题；
   - [x] [组合总和-2](https://leetcode.cn/problems/combination-sum-ii/)
   - [x] [组合总和-3](https://leetcode.cn/problems/combination-sum-iii/)
   - [ ] [组合总和-4](https://leetcode.cn/problems/combination-sum-iv/) - 使用回溯会超时，这就要考虑使用动态规划了
