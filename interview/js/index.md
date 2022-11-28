@@ -121,8 +121,8 @@
     ```
     async1 start
     async2
-    async1 end
     start
+    async1 end
     ```
 
     本质上，上面的那块代码，可以转化为:
