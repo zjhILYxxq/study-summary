@@ -68,8 +68,8 @@
         手写 `promise`: 关键是要实现 `async task queue`、`resolve`、`reject`、`then`、`all`、`race`、`allSettled`、`any` 等。
 
         `url` 的编码解码:
-        - 使用 encodeURI 编码以后的 uri 可以继续访问，而使用 encodeComponentURI 编码以后的 uri 不可以访问；
-        - encodeURI / decodeURI, encodeComponentURI / decodeComponentURI
+        - 使用 `encodeURI` 编码以后的 `uri` 可以继续访问，而使用 `encodeComponentURI` 编码以后的 `uri` 不可以访问；
+        - `encodeURI` / `decodeURI`, `encodeComponentURI` / `decodeComponentURI`
 
 
 
