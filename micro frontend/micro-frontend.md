@@ -152,7 +152,11 @@
 - [x] **qiankun 存在的问题**
 
 
-    qiankun 的问题： 子应用首次加载时 preload、prefetch 会失效。
+    qiankun 的问题： 
+    - 子应用首次加载时 preload、prefetch 会失效；
+    - 主应用先渲染，子应用后渲染，首屏性能会有影响；
+    - 开启 sandbox 以后，子应用切换会出现页面抖动问题；
+    - 开启 sandbox 以后，读取全局变量的值，都要经过 proxy，会影响性能；
     
     解决方式:
     - 主应用通过 ssr 对子应用的入口资源进行预加载；
