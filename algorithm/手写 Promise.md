@@ -2,7 +2,7 @@
 
     手写 `promise`，要实现一下功能:
     - `promise` 类
-    - `micro` 任务队列相关方法
+    - `micro` 任务队列相关方法, 要实现一个添加队列、启动队列的方法；
     - 实例方法: `then`、`catch`、`finally`
     - 静态方法：`resolve`、`reject`、`all`、`race`、`allSettled`、`any`
 
