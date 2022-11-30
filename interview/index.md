@@ -314,6 +314,16 @@
         - 根据业务代码的类型，分为 `pages`、`routers`、`store`、`components`、`utils`、`server`、`ts` 等；
         - 根目录下面要有 `readme.md`、`changelog.md`；
 
+  - [x] 写过哪些自定义 `hook`
+
+    自定义 `hook`, 把一些复用逻辑封装一下。
+
+    比如:
+    - modal 框的 vibile 设置， useState，返回 state、showMoal、hideModal；
+    - 一些数据的获取，useEffect，返回数据；
+    - 获取指定的 context，useContext，返回 context；
+
+
   - [x] Sentry 前端监控的亮点
   
     建立一套异常处理的闭环逻辑: 项目初始化、异常捕获、异常自动上报对应子应用、异常自动通知(飞书捷径)、异常处理；
