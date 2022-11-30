@@ -266,6 +266,14 @@
         - 子应用预渲染；
         - 使用 mf 跨子应用复用业务逻辑；
 
+    14. 移动 `hybrid` 通信模式
+
+      借助 `webview`，实现原生和 `h5` 的通信。
+
+      `h5` 调用原生: `url` 拦截(`iframe`)、`alert/confirm` 拦截等；
+
+      原生调用 `h5`： `webview`.执行 `js` 的 `api`, 唤起 jsbridege 中提供的全局 dispatch 方法；
+
     
 
 
