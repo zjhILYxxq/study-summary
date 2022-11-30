@@ -323,6 +323,14 @@
     - 一些数据的获取，useEffect，返回数据；
     - 获取指定的 context，useContext，返回 context；
 
+  - [x] 前端实现高并发
+
+    请求高并发 - http2.0, 多路复用
+
+    web worker，克服浏览器单线程能力
+
+
+
 
   - [x] Sentry 前端监控的亮点
   
