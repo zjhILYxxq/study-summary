@@ -1236,3 +1236,7 @@ function handleValue(val: All) {
   }
 }
 ```
+
+#### 遇到引入的第三方库没有 ts 声明怎么办？
+
+自己写一个 `.d.ts` 文件，然后在 `typescript.json` 文件中引入。
