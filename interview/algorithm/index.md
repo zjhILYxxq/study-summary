@@ -71,6 +71,8 @@
         - 使用 `encodeURI` 编码以后的 `uri` 可以继续访问，而使用 `encodeComponentURI` 编码以后的 `uri` 不可以访问；
         - `encodeURI` / `decodeURI`, `encodeComponentURI` / `decodeComponentURI`
 
+        
+
 
 
 
