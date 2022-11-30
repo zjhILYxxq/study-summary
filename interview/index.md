@@ -274,6 +274,20 @@
 
       原生调用 `h5`： `webview`.执行 `js` 的 `api`, 唤起 jsbridege 中提供的全局 dispatch 方法；
 
+    15. 做过的一些 `eslint` 配置
+
+      `no-console`: `0`, 不禁用 `console`；
+
+      `no-debugger`: `2`, 禁用 `debugger`;
+
+      `no-alert`: `2`， 禁用 `alert`;
+
+      `no-mixed-spaces-and-tabs`: `2`， 禁止混用 `tab` 和 空格；
+
+      可以自定义插件进行自定义控制；
+
+
+
     
 
 
