@@ -181,6 +181,13 @@
 
     简单来说，`preload` 可以用于优化首屏性能，`prefetch` 用于优化懒加载性能。
 
+- [x] `css modules` 和 `css scoped`
+
+    `css modules` 和 `css scoped` 都可以使样式变为组件私有，但是原理不一样。
+
+    `css scoped` 的实质是利用 `css` 属性选择器 使得样式称为局部样式，而 `css modules` 的实质是让样式的类名、`id` 名唯一 使得样式称为局部样式。
+
+
 - [x] `PWA`
 
     **PWA**, 即 **渐进式网页应用(progressive web app)**, 主要用于解决两个问题: **用户体验** 和 **用户留存**。
