@@ -347,11 +347,13 @@
 
 
 
-  - [x] Sentry 前端监控的亮点
+  - [x] `Sentry` 前端监控的亮点
   
     建立一套异常处理的闭环逻辑: 项目初始化、异常捕获、异常自动上报对应子应用、异常自动通知(飞书捷径)、异常处理；
 
-    项目初始化: 通过 byai-cli 的 sentry-init 功能，可以根据项目的类型对项目进行 sentry 配置初始化。为每一个项目初始化 .sentryclirc 文件、初始化 package.json 中上传 source-map 的命令、初始化一个 HOC - SentryErrorWrapper、安装 @sentry/browser @sentry/tracing @sentry/react 等依赖包。
+    项目初始化: 
+    - 通过 byai-cli 的 sentry-init 功能，可以根据项目的类型对项目进行 sentry 配置初始化。
+    - 为每一个项目初始化 .sentryclirc 文件、初始化 package.json 中上传 source-map 的命令、初始化一个 HOC - SentryErrorWrapper、安装 @sentry/browser @sentry/tracing @sentry/react 等依赖包。
 
     微前端的异常处理逻辑: 
     - 主应用接入 Sentry.init 逻辑，通过 props 将 Sentry 对象传递给子应用；
