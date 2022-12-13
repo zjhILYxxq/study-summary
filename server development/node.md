@@ -299,6 +299,16 @@
 
         `Cookie` 是浏览器将服务端返回的数据保存在本地的一小块数据(大约 `4 KB`)。当服务端收到 `http` 请求时, 可以在响应头里面设置 `set-cookie` 字段。浏览器接收到响应之后会自动保存 `cookie`, 并在之后的每一次请求中都会自动在请求头中添加 `cookie` 字段，把 `cookie` 信息发送给服务器。
 
+        
+
+        设置 `cookie` 是的几个关键属性
+        - `domain`, 指定哪些 `host` 可以接受 `cookie`, 如果 `domain` 和当前页面的 `host` 匹配，那么是 `first-part cookie`，否则是 `third-part cookie`；
+        - `path`, 指定哪些 `url` 请求时可以携带 `cookie`, `domain` 和 `path` 定义了 `cookie` 的作用域，即允许 `cookie` 发送给哪些 `url`；
+        - `HttpOnly`, 设置是否可以通过 `document.cookie` 来读写 `cookie`，可以用来预防 `xss` 攻击；
+        - `Secure`，标记为 `Secure` 的 `Cookie` 只能通过被 `https` 协议加密过的请求发送给服务端；
+        - `SameSite`, 设置是否可以在跨站点发送请求时携带 `cookie`, 
+        - `SamePart`
+
         `cookie` 在顶级域名、二级域名、三级域名之间的共享情况:
         - 在 `set-cookie` 中省略 `domain`，那么 `domain` 默认为当前域名；
         - 在设置 `domain` 时，可以设置父域名以及自身，但不能设置子域名及其他域名，否则 `cookie` 不生效；
