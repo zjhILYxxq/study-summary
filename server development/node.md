@@ -306,8 +306,8 @@
         - `path`, 指定哪些 `url` 请求时可以携带 `cookie`, `domain` 和 `path` 定义了 `cookie` 的作用域，即允许 `cookie` 发送给哪些 `url`；
         - `HttpOnly`, 设置是否可以通过 `document.cookie` 来读写 `cookie`，可以用来预防 `xss` 攻击；
         - `Secure`，标记为 `Secure` 的 `Cookie` 只能通过被 `https` 协议加密过的请求发送给服务端；
-        - `SameSite`, 设置是否可以在跨站点发送请求时携带 `cookie`, 
-        - `SamePart`
+        - `SameSite`, 设置是否可以在跨站点发送请求时携带第三方 `cookie`, 可以设置的值为 `strict`、`lax`、`none`。`strict` 最为严格，`cookie` 只能作为 `firsr-part cookie` 使用；`none` 最为宽松，`cookie` 可以作为 `first-part cookie`、`third-part cookie` 使用；`lax` 和 `strict` 类似，只是在用户导航到 `cookie` 的源站点时发送 `cookie`。使用 `SameSite` 可以用来预防 `csrf` 攻击。
+        - `SamePart`, 为了绕开浏览器对 `thirt-part cookie` 的限制，又不想使用 `same-sit:none`，这个时候可以使用 `same-part`。`same-part` 可以设置 `cookie` 在指定集合内不会当做 `third-part cookie`。具体实现参见: [same-part](https://zhuanlan.zhihu.com/p/499812907)
 
         `cookie` 在顶级域名、二级域名、三级域名之间的共享情况:
         - 在 `set-cookie` 中省略 `domain`，那么 `domain` 默认为当前域名；
