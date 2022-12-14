@@ -324,6 +324,14 @@
 
         简单来说，就是服务端生成一个 `session id`，然后保存到 `cookie` 中。等到客户端再次发起请求时，携带 `cookie` 信息，然后由服务端去解析 `cookie` 中的 `session id`，判断请求是否合法。
 
+        `Session-Cookie` 的优点：
+        - `cookie` 简单易用；
+        - `session` 保存到服务端，方便新增删除，便于管理；
+
+        `Session-Cookie` 的缺点：
+        - 依赖 `cookie`, 不安全；
+        - 存储在服务端，会增大服务端的开销； 
+
 
 
 
