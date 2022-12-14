@@ -361,6 +361,16 @@
 
             当用户登录时，根据用户名、密码等信息生成一个 `Access Token` 和一个 `Refresh Token`。`Refresh Token` 的有效期比 `Access Token` 长。 当 `Access Token` 失效时，再根据 `Refresh Token` 生成一个新的 `Access Token`，然后重新发起请求。
 
+        另外，服务端接收到客户端发起的请求以后，需要对 `Token` 进行验证, 这个时候需要获取用户基本信息，会存在读写数据库的操作。这对性能会造成影响。
+
+        为了解决这个问题，有了 `JWT` - `JSON Web Token` 方式，即根据一个 `JSON` 生成 `Token`。`JSON` 中会包含用户信息、有效时间等。然后选择一定的加密算法，对 `JSON` 进行加密，然后返回给客户端。等服务端接收到客户端发起的请求以后，对 `Token` 进行解密。
+
+        `JWT` 的优点：易于扩展，降低服务器的负载；
+
+        `JWT` 的缺点: `token` 体积过大; 无法在使用过程中废除某个 `token`，必须要等 `token` 失效；
+
+
+
 
 
 
