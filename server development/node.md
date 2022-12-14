@@ -351,6 +351,15 @@
         - 性能问题，服务端每次都需要验证？时间换空间？；
         - 有效期短？？
 
+        为了安全，通常会把 `Access Token` 的有效期设置的较短，以避免被盗用。而过短的有效期又经常会导致 `Access Token` 失效。
+
+        解决方案:
+        - 刷新 `Access Token`，需要用户重新登录，比较麻烦。
+        - 生成一个 `Refresh Token`，专门用来生成 `Access Token`, 有效期比 `Access Token` 要长。
+
+            也比较好理解。
+
+            当用户登录时，根据用户名、密码等信息生成一个 `Access Token` 和一个 `Refresh Token`。`Refresh Token` 的有效期比 `Access Token` 长。 当 `Access Token` 失效时，再根据 `Refresh Token` 生成一个新的 `Access Token`，然后重新发起请求。
 
 
 
