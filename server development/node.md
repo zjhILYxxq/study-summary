@@ -271,6 +271,8 @@
 
     鉴权: 对访问者进行鉴别确认的过程，如确认访问者提供的 `cookie`、`session`、`token` 是否有效。
 
+    > 关于鉴权，详见: [一文教你搞定所有前端鉴权与后端鉴权方案，让你不再迷惘](https://juejin.cn/post/7129298214959710244)
+
     常用的鉴权方案:
 
     - `http` 基本鉴权(`Basic Access Authentication` - 基本认证方案)
